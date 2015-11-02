@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>When do we use Initializer List in C++?</title>
+  <meta name="description" content="Initializer List is used to initialize data members of a class. The list of members to be initialized is indicated with constructor as a comma separated list...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/cpp/2013/04/18/when-do-we-use-initializer-list-in-c.html">
+  <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Your awesome title</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">When do we use Initializer List in C++?</h1>
+    <p class="post-meta">Apr 18, 2013 • {"login"=>"rameshnagaraj", "email"=>"rameshn@live.in", "display_name"=>"R@M3$H.N", "first_name"=>"", "last_name"=>""} • {"_edit_last"=>"18160588", "_publicize_job_id"=>"16454369127"}</p>
+  </header>
+
+  <article class="post-content">
+    <p>Initializer List is used to initialize data members of a class. The list of members to be initialized is indicated with constructor as a comma separated list followed by a colon. Following is an example that uses initializer list to initialize x and y of Point class.</p>
+<div>
+<div id="highlighter_774859">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Point {</code></div>
+<div><code>private</code><code>:</code></div>
+<div><code>    </code><code>int</code> <code>x;</code></div>
+<div><code>    </code><code>int</code> <code>y;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>Point(</code><code>int</code> <code>i = 0, </code><code>int</code> <code>j = 0):x(i), y(j) {} </code></div>
+<div><code>    </code><code>/*  The above use of Initializer list is optional as the </code></div>
+<div><code>        </code><code>constructor can also be written as:</code></div>
+<div><code>        </code><code>Point(int i = 0, int j = 0) {</code></div>
+<div><code>            </code><code>x = i;</code></div>
+<div><code>            </code><code>y = j;</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>    </code><code>*/</code></div>
+<div><code>    </code></div>
+<div><code>    </code><code>int</code> <code>getX() </code><code>const</code> <code>{</code><code>return</code> <code>x;}</code></div>
+<div><code>    </code><code>int</code> <code>getY() </code><code>const</code> <code>{</code><code>return</code> <code>y;}</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>  </code><code>Point t1(10, 15);</code></div>
+<div><code>  </code><code>cout&lt;&lt;</code><code>"x = "</code><code>&lt;&lt;t1.getX()&lt;&lt;</code><code>", "</code><code>;</code></div>
+<div><code>  </code><code>cout&lt;&lt;</code><code>"y = "</code><code>&lt;&lt;t1.getY();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>/* OUTPUT:</code></div>
+<div><code>   </code><code>x = 10, y = 15</code></div>
+<div><code>*/</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The above code is just an example for syntax of Initializer list. In the above code, x and y can also be easily initialed inside the constructor. But there are situations where initialization of data members inside constructor doesn’t work and Initializer List must be used. Following are such cases:</p>
+<p><strong>1) For initialization of non-static const data members:</strong><br />
+const data members must be initialized using Initializer List. In the following example, “t” is a const data member of Test class and is initialized using Initializer List.</p>
+<div>
+<div id="highlighter_560905">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Test {</code></div>
+<div><code>    </code><code>const</code> <code>int</code> <code>t;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>Test(</code><code>int</code> <code>t):t(t) {}  </code><code>//Initializer list must be used</code></div>
+<div><code>    </code><code>int</code> <code>getT() { </code><code>return</code> <code>t; }</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>    </code><code>Test t1(10);</code></div>
+<div><code>    </code><code>cout&lt;&lt;t1.getT();</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>/* OUTPUT:</code></div>
+<div><code>   </code><code>10 </code></div>
+<div><code>*/</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>2) For initialization of reference members:</strong><br />
+Reference members must be initialized using Initializer List. In the following example, “t” is a reference member of Test class and is initialized using Initializer List.</p>
+<div>
+<div id="highlighter_304974">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// Initialization of reference data members</code></div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Test {</code></div>
+<div><code>    </code><code>int</code> <code>&amp;t;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>Test(</code><code>int</code> <code>&amp;t):t(t) {}  </code><code>//Initializer list must be used</code></div>
+<div><code>    </code><code>int</code> <code>getT() { </code><code>return</code> <code>t; }</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>    </code><code>int</code> <code>x = 20;</code></div>
+<div><code>    </code><code>Test t1(x);</code></div>
+<div><code>    </code><code>cout&lt;&lt;t1.getT()&lt;&lt;endl;</code></div>
+<div><code>    </code><code>x = 30;</code></div>
+<div><code>    </code><code>cout&lt;&lt;t1.getT()&lt;&lt;endl;</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+<div><code>/* OUTPUT:</code></div>
+<div><code>    </code><code>20</code></div>
+<div><code>    </code><code>30</code></div>
+<div><code> </code><code>*/</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>3) For initialization of member objects which do not have default constructor:</strong><br />
+In the following example, an object “a” of class “A” is data member of class “B”, and “A” doesn’t have default constructor. Initializer List must be used to initialize “a”.</p>
+<div>
+<div id="highlighter_549646">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include &lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>A {</code></div>
+<div><code>    </code><code>int</code> <code>i;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>A(</code><code>int</code> <code>);</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>A::A(</code><code>int</code> <code>arg) {</code></div>
+<div><code>    </code><code>i = arg;</code></div>
+<div><code>    </code><code>cout &lt;&lt; </code><code>"A's Constructor called: Value of i: "</code> <code>&lt;&lt; i &lt;&lt; endl;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>// Class B contains object of A</code></div>
+<div><code>class</code> <code>B {</code></div>
+<div><code>    </code><code>A a;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>B(</code><code>int</code> <code>);</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>B::B(</code><code>int</code> <code>x):a(x) {  </code><code>//Initializer list must be used</code></div>
+<div><code>    </code><code>cout &lt;&lt; </code><code>"B's Constructor called"</code><code>;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>    </code><code>B obj(10);</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+<div><code>/* OUTPUT:</code></div>
+<div><code>    </code><code>A's Constructor called: Value of i: 10</code></div>
+<div><code>    </code><code>B's Constructor called</code></div>
+<div><code>*/</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>If class A had both default and parameterized constructors, then Initializer List is not must if we want to initialize “a” using default constructor, but it is must to initialize “a” using parameterized constructor.</p>
+<p><strong>4) For initialization of base class members :</strong> Like point 3, parameterized constructor of base class can only be called using Initializer List.</p>
+<div>
+<div id="highlighter_471702">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include &lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>A {</code></div>
+<div><code>    </code><code>int</code> <code>i;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>A(</code><code>int</code> <code>);</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>A::A(</code><code>int</code> <code>arg) {</code></div>
+<div><code>    </code><code>i = arg;</code></div>
+<div><code>    </code><code>cout &lt;&lt; </code><code>"A's Constructor called: Value of i: "</code> <code>&lt;&lt; i &lt;&lt; endl;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>// Class B is derived from A</code></div>
+<div><code>class</code> <code>B: A {</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>B(</code><code>int</code> <code>);</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>B::B(</code><code>int</code> <code>x):A(x) { </code><code>//Initializer list must be used</code></div>
+<div><code>    </code><code>cout &lt;&lt; </code><code>"B's Constructor called"</code><code>;</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>    </code><code>B obj(10);</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>5) When constructor’s parameter name is same as data member</strong><br />
+If constructor’s parameter name is same as data member name then the data member must be initialized either using <a href="http://msdn.microsoft.com/en-us/library/y0dddwwd.aspx">this pointer </a>or Initializer List. In the following example, both member name and parameter name for A() is “i”.</p>
+<div>
+<div id="highlighter_627370">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include &lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>A {</code></div>
+<div><code>    </code><code>int</code> <code>i;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>A(</code><code>int</code> <code>);</code></div>
+<div><code>    </code><code>int</code> <code>getI() </code><code>const</code> <code>{ </code><code>return</code> <code>i; }</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>A::A(</code><code>int</code> <code>i):i(i) { }  </code><code>// Either Initializer list or this pointer must be used</code></div>
+<div><code>/* The above constructor can also be written as </code></div>
+<div><code>A::A(int i) { </code></div>
+<div><code>    </code><code>this-&gt;i = i;</code></div>
+<div><code>}</code></div>
+<div><code>*/</code></div>
+<div></div>
+<div><code>int</code> <code>main() {</code></div>
+<div><code>    </code><code>A a(10);</code></div>
+<div><code>    </code><code>cout&lt;&lt;a.getI();</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+<div><code>/* OUTPUT:</code></div>
+<div><code>    </code><code>10</code></div>
+<div><code>*/</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>6) For Performance reasons:</strong><br />
+It is better to initialize all class variables in Initializer List instead of assigning values inside body. Consider the following example:</p>
+<div>
+<div id="highlighter_55993">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// Without Initializer List</code></div>
+<div><code>class</code> <code>MyClass {</code></div>
+<div><code>    </code><code>Type variable;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>MyClass(Type a) {  </code><code>// Assume that Type is an already</code></div>
+<div><code>                     </code><code>// declared class and it has appropriate </code></div>
+<div><code>                     </code><code>// constructors and operators</code></div>
+<div><code>      </code><code>variable = a;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>};</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Here compiler follows following steps to create an object of type MyClass<br />
+1. Type’s constructor is called first for “a”.<br />
+2. The assignment operator of “Type” is called inside body of MyClass() constructor to assign</p>
+<pre>	variable = a;</pre>
+<p>3. And then finally destructor of “Type” is called for “a” since it goes out of scope.</p>
+<p>Now consider the same code with MyClass() constructor with Initializer List</p>
+<div>
+<div id="highlighter_831145">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// With Initializer List</code></div>
+<div><code>class</code> <code>MyClass {</code></div>
+<div><code>    </code><code>Type variable;</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>    </code><code>MyClass(Type a):variable(a) {   </code><code>// Assume that Type is an already</code></div>
+<div><code>                     </code><code>// declared class and it has appropriate</code></div>
+<div><code>                     </code><code>// constructors and operators</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>};</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>With the Initializer List, following steps are followed by compiler:<br />
+1. Copy constructor of “Type” class is called to initialize : variable(a). The arguments in initializer list are used to copy construct “variable” directly.<br />
+2. Destructor of “Type” is called for “a” since it goes out of scope.</p>
+<p>As we can see from this example if we use assignment inside constructor body there are three function calls: constructor + destructor + one addition assignment operator call. And if we use Initializer List there are only two function calls: copy constructor + destructor call. See <a href="http://www.geeksforgeeks.org/archives/23018">this </a>post for a running example on this point.</p>
+<p>This assignment penalty will be much more in “real” applications where there will be many such variables. Thanks to <a href="http://geeksforgeeks.org/forum/profile/ptr">ptr </a>for adding this point.</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Your awesome title</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Your awesome title</li>
+          <li><a href="mailto:your-email@domain.com">your-email@domain.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyll</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyllrb</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

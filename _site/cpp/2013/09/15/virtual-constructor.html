@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Virtual Constructor</title>
+  <meta name="description" content="To implement virtual functions, C++ uses a special form of late binding known as the virtual table. The virtual table is a lookup table of functions used to ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/cpp/2013/09/15/virtual-constructor.html">
+  <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Your awesome title</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Virtual Constructor</h1>
+    <p class="post-meta">Sep 15, 2013 • {"login"=>"rameshnagaraj", "email"=>"rameshn@live.in", "display_name"=>"R@M3$H.N", "first_name"=>"", "last_name"=>""} • {"_edit_last"=>"18160588", "_publicize_job_id"=>"16454368428"}</p>
+  </header>
+
+  <article class="post-content">
+    <p>To implement virtual functions, C++ uses a special form of late binding known as the virtual table. The <b>virtual table</b> is a lookup table of functions used to resolve function calls in a dynamic/late binding manner. The virtual table sometimes goes by other names, such as “vtable”, “virtual function table”, “virtual method table”, or “dispatch table”.</p>
+<p>Because knowing how the virtual table works is not necessary to use virtual functions, this section can be considered optional reading.</p>
+<p>The virtual table is actually quite simple, though it’s a little complex to describe in words. First, every class that uses virtual functions (or is derived from a class that uses virtual functions) is given it’s own virtual table. This table is simply a static array that the compiler sets up at compile time. A virtual table contains one entry for each virtual function that can be called by objects of the class. Each entry in this table is simply a function pointer that points to the most-derived function accessible by that class.</p>
+<p>Second, the compiler also adds a hidden pointer to the base class, which we will call *__vptr. *__vptr is set (automatically) when a class instance is created so that it points to the virtual table for that class. Unlike the *this pointer, which is actually a function parameter used by the compiler to resolve self-references, *__vptr is a real pointer. Consequently, it makes each class object allocated bigger by the size of one pointer. It also means that *__vptr is inherited by derived classes, which is important.</p>
+<p>By now, you’re probably confused as to how these things all fit together, so let’s take a look at a simple example:</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</td>
+<td width="951">class Base{</p>
+<p>public:</p>
+<p>virtual void function1() {};</p>
+<p>virtual void function2() {};</p>
+<p>};</p>
+<p>class D1: public Base</p>
+<p>{</p>
+<p>public:</p>
+<p>virtual void function1() {};</p>
+<p>};</p>
+<p>class D2: public Base</p>
+<p>{</p>
+<p>public:</p>
+<p>virtual void function2() {};</p>
+<p>};</td>
+</tr>
+</tbody>
+</table>
+<p>Because there are 3 classes here, the compiler will set up 3 virtual tables: one for Base, one for D1, and one for D2.</p>
+<p>The compiler also adds a hidden pointer to the most base class that uses virtual functions. Although the compiler does this automatically, we’ll put it in the next example just to show where it’s added:</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</td>
+<td width="951">class Base{</p>
+<p>public:</p>
+<p>FunctionPointer *__vptr;</p>
+<p>virtual void function1() {};</p>
+<p>virtual void function2() {};</p>
+<p>};</p>
+<p>class D1: public Base</p>
+<p>{</p>
+<p>public:</p>
+<p>virtual void function1() {};</p>
+<p>};</p>
+<p>class D2: public Base</p>
+<p>{</p>
+<p>public:</p>
+<p>virtual void function2() {};</p>
+<p>};</td>
+</tr>
+</tbody>
+</table>
+<p>When a class object is created, *__vptr is set to point to the virtual table for that class. For example, when a object of type Base is created, *__vptr is set to point to the virtual table for Base. When objects of type D1 or D2 are constructed, *__vptr is set to point to the virtual table for D1 or D2 respectively.</p>
+<p>Now, let’s talk about how these virtual tables are filled out. Because there are only two virtual functions here, each virtual table will have two entries (one for function1(), and one for function2()). Remember that when these virtual tables are filled out, each entry is filled out with the most-derived function an object of that class type can call.</p>
+<p>Base’s virtual table is simple. An object of type Base can only access the members of Base. Base has no access to D1 or D2 functions. Consequently, the entry for function1 points to Base::function1(), and the entry for function2 points to Base::function2().</p>
+<p>D1′s virtual table is slightly more complex. An object of type D1 can access members of both D1 and Base. However, D1 has overridden function1(), making D1::function1() more derived than Base::function1(). Consequently, the entry for function1 points to D1::function1(). D1 hasn’t overridden function2(), so the entry for function2 will point to Base::function2().</p>
+<p>D2′s virtual table is similar to D1, except the entry for function1 points to Base::function1(), and the entry for function2 points to D2::function2().</p>
+<p>Here’s a picture of this graphically:</p>
+<p>Although this diagram is kind of crazy looking, it’s really quite simple: the *__vptr in each class points to the virtual table for that class. The entries in the virtual table point to the most-derived version of the function objects of that class are allowed to call.</p>
+<p>So consider what happens when we create an object of type D1:</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</td>
+<td width="960">int main(){</p>
+<p>D1 cClass;</p>
+<p>}</td>
+</tr>
+</tbody>
+</table>
+<p>Because cClass is a D1 object, cClass has it’s *__vptr set to the D1 virtual table.</p>
+<p>Now, let’s set a base pointer to D1:</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</p>
+<p>5</td>
+<td width="960">int main(){</p>
+<p>D1 cClass;</p>
+<p>Base *pClass = &amp;cClass;</p>
+<p>}</td>
+</tr>
+</tbody>
+</table>
+<p>Note that because pClass is a base pointer, it only points to the Base portion of cClass. However, also note that *__vptr is in the Base portion of the class, so pClass has access to this pointer. Finally, note that pClass-&gt;__vptr points to the D1 virtual table! Consequently, even though pClass is of type Base, it still has access to D1′s virtual table.</p>
+<p>So what happens when we try to call pClass-&gt;function1()?</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</td>
+<td width="960">int main(){</p>
+<p>D1 cClass;</p>
+<p>Base *pClass = &amp;cClass;</p>
+<p>pClass-&gt;function1();</p>
+<p>}</td>
+</tr>
+</tbody>
+</table>
+<p>First, the program recognizes that function1() is a virtual function. Second, uses pClass-&gt;__vptr to get to D1′s virtual table. Third, it looks up which version of function1() to call in D1′s virtual table. This has been set to D1::function1(). Therefore, pClass-&gt;function1() resolves to D1::function1()!</p>
+<p>Now, you might be saying, “But what if Base really pointed to a Base object instead of a D1 object. Would it still call D1::function1()?”. The answer is no.</p>
+<table width="996" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>12</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</td>
+<td width="960">int main(){</p>
+<p>Base cClass;</p>
+<p>Base *pClass = &amp;cClass;</p>
+<p>pClass-&gt;function1();</p>
+<p>}</td>
+</tr>
+</tbody>
+</table>
+<p>In this case, when cClass is created, __vptr points to Base’s virtual table, not D1′s virtual table. Consequently, pClass-&gt;__vptr will also be pointing to Base’s virtual table. Base’s virtual table entry for function1() points to Base::function1(). Thus, pClass-&gt;function1() resolves to Base::function1(), which is the most-derived version of function1() that a Base object should be able to call.</p>
+<p>By using these tables, the compiler and program are able to ensure function calls resolve to the appropriate virtual function, even if you’re only using a pointer or reference to a base class!</p>
+<p>Calling a virtual function is slower than calling a non-virtual function for a couple of reasons: First, we have to use the *__vptr to get to the appropriate virtual table. Second, we have to index the virtual table to find the correct function to call. Only then can we call the function. As a result, we have to do 3 operations to find the function to call, as opposed to 2 operations for a normal indirect function call, or one operation for a direct function call. However, with modern computers, this added time is usually fairly insignificant.</p>
+<p>What happens in the below code:</p>
+<p>class Base</p>
+<p>{</p>
+<p>public:</p>
+<p>void func() {</p>
+<p>cout &lt;&lt; "Base Class" &lt;&lt; endl ;</p>
+<p>}</p>
+<p>} ;</p>
+<p>class D1: public Base</p>
+<p>{</p>
+<p>public:</p>
+<p>virtual void func() {</p>
+<p>cout &lt;&lt; "D1 Class" &lt;&lt; endl ;</p>
+<p>}</p>
+<p>} ;</p>
+<p>int main ()</p>
+<p>{</p>
+<p>Base * p = new D2() ;</p>
+<p>p-&gt;func() ;</p>
+<p>}</p>
+<p>Will the base func() be called or the D1 func() will. It will be Base.func() will be called.</p>
+<p>the appropriate method to be called is decided by <em>fetching</em> the <code>vpt</code>, <em>fetching</em> the address of the appropriate method and then <em>calling</em> the appropiate member function.<br />
+Thus dynamic dispatch is essentially a <code>fetch-fetch-call</code> instead of a normal <code>call</code> in case of static binding.</p>
+<p><b><span style="text-decoration:underline;">_vptr :</span></b></p>
+<p>This vtable pointer or _vptr, is a hidden pointer added by the Compiler to the base class. And this pointer is pointing to the virtual table of that particular class.</p>
+<p>This _vptr is inherited to all the derived classes.</p>
+<p>Each object of a class with virtual functions transparently stores this _vptr.</p>
+<p>Call to a virtual function by an object is resolved by following this hidden _vptr.</p>
+<p>Here, I will explain what happens when you use the “virtual” keyword in C++.</p>
+<p>This post will cover the following topics:</p>
+<ul>
+<li><em><b>virtual</b></em><b> </b><strong>keyword</strong></li>
+<li><em><b>vtable</b></em><b> </b><strong>(</strong><em><b>virtual function table</b></em><b> </b><strong>or</strong><b> </b><em><b>virtual method table</b></em><strong>) and</strong><b> </b><em><b>vptr</b></em></li>
+<li><em><b>this</b></em><b> </b><strong>pointer and virtual functions</strong></li>
+</ul>
+<p>I will use many code examples, so don’t worry if you don’t understand something, look at the code example and it would be ok :)</p>
+<h4>Virtual keyword</h4>
+<p>When you use a pointer to a base class that was instantiated from a derived class, you can use the <em>virtual</em>keyword to call functions from the real instance.</p>
+<p><i>#include &lt;iostream&gt;</i></p>
+<p>class Human<br />
+<i>/* ^ Human is the base class */</i><br />
+{<br />
+public:<br />
+virtual ~Human() {}<br />
+void sayHello() const { std::cout &lt;&lt; "Hello, I'm a Human!" &lt;&lt; std::endl; }<br />
+virtual void talk() const { std::cout &lt;&lt; "Hey, how are you?" &lt;&lt; std::endl; }<br />
+};</p>
+<p>class Sprinter : public Human<br />
+<i>/* ^ Sprinter is the derived class */</i><br />
+{<br />
+public:<br />
+virtual ~Sprinter() {}<br />
+<i>/* ^ Not mandatory here, the compiler will create a default virtual</i><br />
+<i>       destructor because we inherit from Human that already defines a virtual destructor */</i></p>
+<p>void sayHello() const { std::cout &lt;&lt; "Hi, I'm a Sprinter!" &lt;&lt; std::endl; }<br />
+virtual void talk() const { std::cout &lt;&lt; "Do you like to run?" &lt;&lt; std::endl; }<br />
+};</p>
+<p>int main()<br />
+{<br />
+Human* fakeHuman = new Sprinter();<br />
+<i>/* ^ implicit static_cast from Sprinter* to Human* */</i><br />
+Human* human = new Human();</p>
+<p>fakeHuman-&gt;sayHello();<br />
+<i>/* ^ non-virtual function: static call to Human::sayHello()</i><br />
+<i>     output: Hello, I'm a Human! */</i><br />
+fakeHuman-&gt;talk();<br />
+<i>/* ^ virtual function: dynamic call to Sprinter::talk()</i><br />
+<i>     output: Do you like to run? */</i></p>
+<p>human-&gt;sayHello();<br />
+<i>/* ^ non-virtual function: static call to Human::sayHello()</i><br />
+<i>     output: Hello, I'm a Human! */</i><br />
+human-&gt;talk();<br />
+<i>/* ^ virtual function: dynamic call to Human::talk()</i><br />
+<i>     output: Hey, how are you? */</i></p>
+<p>delete fakeHuman;<br />
+<i>/* ^ thanks to the virtual destructor, it will be cleaned by calling Sprinter::~Sprinter() */</i><br />
+delete human;<br />
+<i>/* ^ Human::~Human() is called here */</i></p>
+<p>return 0;<br />
+}</p>
+<p>Ok, we understand how to use the virtual keyword, but how the compiler manages to call the correct function?!</p>
+<h4>vtable and vptr</h4>
+<p>A <em>virtual function table</em> is like a static array that contains pointers to the (virtual) functions of a class.<br />
+Each class having at least one virtual function will get its own <em>vtable</em>.</p>
+<p>When one of these classes is instantiated, it gets an extra variable member (called <em>vptr</em>) that will contains a pointer to its <em>vtable</em>.</p>
+<p>Here’s what the <em>vtables</em> might look like:</p>
+<p>You have to know that when you compile a C++ code, the class functions are transformed into regular functions having an extra parameter: a pointer to the instance of the class, named “this” (yes, that’s where the “this” pointer comes from).</p>
+<p>So, a class function void Human::talk(); could be transformed to a C function like void_human_talk(Human* this); (you can Google <em>C++ name mangling</em> if you are interested to how compilers name symbols after C++ function names).</p>
+<p>To simplify, let’s use a <em>FuncPtr</em> type as a basic pointer to function: typedef void (*FuncPtr)(void*this);</p>
+<p>The Human <em>vtable</em> might be:</p>
+<p>static const FuncPtr _vtable_Human[] =<br />
+{<br />
+&amp;_human_destructor,<br />
+&amp;_human_talk<br />
+};</p>
+<p>The compiler just has to add an extra variable member to these classes: private: FuncPtr* _vptr;<br />
+Then initialize it in the constructor of these classes.<br />
+In the constructor of <em>Human</em>: this-&gt;_vptr = &amp;_vtable_Human;<br />
+In the constructor of <em>Sprinter</em>: this-&gt;_vptr = &amp;_vtable_Sprinter;</p>
+<p>When you call a virtual function, the compiler just has to look at the <em>vtable</em> to call the correct function.</p>
+<p>When you write:</p>
+<p>Human* human = new Sprinter();</p>
+<p>human-&gt;talk();</p>
+<p>A compiler might generate this code:</p>
+<p>Human* human = new Sprinter();<br />
+<i>/* ^ the constructor of Sprinter will initialize the _vptr attribute. */</i></p>
+<p>FuncPtr talkPtr = human-&gt;_vptr[1];<br />
+<i>/* ^ [0]: destructor, [1]: talk */</i><br />
+(*talkPtr)(human);<br />
+<i>/* ^ Call to the correct function! Here, "human" is the "this" pointer.</i><br />
+<i>       It's sometimes a little bit more complicated to get a correct</i><br />
+<i>       "this" pointer, more on that bellow. */</i></p>
+<p>For your information, you can call a specific implementation of a class function by explicitly naming it:</p>
+<p>Human* human = new Sprinter();</p>
+<p>human-&gt;Human::talk();<br />
+<i>/* ^ Will NOT use the vtable, and will directly call "talk"</i><br />
+<i>     implementation of the Human class */</i></p>
+<h4><em>this</em> pointer and virtual functions</h4>
+<p>Sometimes, the compiler has to do a little bit of arithmetic to pass the correct <em>this</em> pointer to a virtual function.</p>
+<p>Imagine a class <em>Centaur</em> that inherits from both <em>Human</em> and <em>Horse</em>:</p>
+<p>Here is a possible memory representation of the <em>Centaur</em> class (note: in this example, the compiler optimizes the memory by using the same <em>vptr</em> attribute for both the <em>Human</em> and <em>Centaur</em> classes):</p>
+<p>So, what happens if we delete an instance of <em>Centaur</em> through a pointer to <em>Human</em>?<br />
+As the data for a <em>Human</em> and a <em>Centaur</em> starts at the same position in memory, no special operations are needed. The <em>this</em> pointer is the same for both classes.</p>
+<p>But what happens when we use an instance of <em>Centaur</em> through a pointer to <em>Horse</em>?<br />
+Well… the static cast from a <em>Centaur</em> pointer to a <em>Horse</em> pointer will move the data pointer from some bytes (from the <em>Centaur</em> data to the <em>Horse</em> data).</p>
+<p>Centaur* centaur = new Centaur();<br />
+Human* human = static_cast&lt;Human*&gt;(centaur);<br />
+<i>/* ^ Internally: human = ((void*)centaur) + 0; // &lt;= same pointer ! */</i><br />
+Horse* horse = static_cast&lt;Horse*&gt;(centaur);<br />
+<i>/* ^ Internally: horse = ((void*)centaur) + sizeof(Human); // &lt;= different pointer ! */</i></p>
+<p>So, when you delete the “horse” pointer that is an instance of <em>Centaur</em>, how the compiler passes the correct<em>this</em> pointer?</p>
+<p>A way to do that (the g++ way!) is to use a “wrapper” that will modify the <em>this</em> pointer then call the correct function.</p>
+<p>void _destructor_horse_fromCentaur(Horse* this)<br />
+{<br />
+Centaur* centaur = static_cast&lt;Centaur*&gt;(this);<br />
+<i>/* ^ Internally: centaur = ((void*)this) - sizeof(Human); */</i></p>
+<p>_destructor_centaur(centaur);<br />
+<i>/* ^ Call to Centaur::~Centaur() then operator delete(centaur) to free the memory. */</i><br />
+}</p>
+<p>The <em>vtable</em> of <em>Centaur</em> will use the <em>_destructor_centaur</em> function as destructor.<br />
+While the <em>vtable</em> of <em>Horse</em> instantiated from a <em>Centaur</em> will use the <em>_destructor_horse_fromCentaur</em> function as destructor.</p>
+<p>I hope this explanation helped you to understand how the “magic” of C++ really works!<br />
+Please tell me if I made some mistakes or if something is unclear. Thank you!</p>
+<p>&nbsp;<br />
+<img alt="enter image description here" src="/assets/cJQqM.png" /></p>
+<p>The runtime class of the object is a property of the object itself. In effect, <code>vptr</code> represents the runtime class, and therefore can't be <code>static</code>. What it points to, however, can be shared by all instances of the same runtime class.</p>
+<p>The whole point of the <code>vptr</code> is because you don't know exactly which class an object has at runtime. If you knew that, then the virtual function call would be unnecessary. That is, in fact, what happens when you're not using virtual functions. But with virtual functions, if I have</p>
+<pre><code>class Sub : Parent {};</code></pre>
+<p>and a value of type <code>Parent*</code>, I don't know at runtime if this is really an object of type <code>Parent</code> or one of type <code>Sub</code>. The vptr lets me figure that out.</p>
+<p>&nbsp;</p>
+<p>END</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Your awesome title</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Your awesome title</li>
+          <li><a href="mailto:your-email@domain.com">your-email@domain.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyll</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyllrb</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>[Linked List] Find kth Node from the end of Linked List that contains Loop</title>
+  <meta name="description" content="In current post we discuss how to find kth node from end of the linked list that contains loop.Finding kth node from the end of single linked list that does ...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/algos/2013/09/17/linked-list-find-kth-node-from-the-end-of-linked-list-that-contains-loop.html">
+  <link rel="alternate" type="application/rss+xml" title="Your awesome title" href="http://yourdomain.com/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Your awesome title</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">[Linked List] Find kth Node from the end of Linked List that contains Loop</h1>
+    <p class="post-meta">Sep 17, 2013 • {"login"=>"rameshnagaraj", "email"=>"rameshn@live.in", "display_name"=>"R@M3$H.N", "first_name"=>"", "last_name"=>""} • {"_edit_last"=>"18160588", "_publicize_job_id"=>"16454361353"}</p>
+  </header>
+
+  <article class="post-content">
+    <p>In current post we discuss how to find k<sup>th</sup> node from end of the linked list that contains loop.</p>
+<p>Finding k<sup>th </sup>node from the end of single linked list that does not contain loop is pretty much easy. Take two pointers one at the head of the list and one at k nodes from the head of the list. Traverse both the pointers simultaneously one at a time, by the time second pointer reaches end of the list, first pointer will be at k<sup>th</sup> position from the end of the list. Or if we know the length of the list in hand, traverse n-k nodes from the head of the list which gives k<sup>th</sup> node.</p>
+<p>Following is the procedure to be followed to find kth node from the end of the linked list that contains a loop:</p>
+<ul>
+<li>From previous post we know the loop detection node, merging point node, loop length and length of the list</li>
+<li>If loop length &gt;= k, we need to traverse loop length – k nodes from the merging point node</li>
+<li>If loop length &lt; k, we need to traverse length of list – k nodes from the head of linked list</li>
+</ul>
+<p>Consider the following list that contains loop:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist1.jpeg"><img title="LoopList1" alt="" src="/assets/looplist1.jpeg?w=675&amp;h=153" width="450" height="102" /></a></p>
+<p>Dry run for the above example:</p>
+<p>From previous posts, we know how to calculate merging point node, length of the loop and length of the list.</p>
+<p>Consider the following figure:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist18.jpeg"><img title="LoopList18" alt="" src="/assets/looplist18.jpeg?w=675&amp;h=269" width="450" height="179" /></a></p>
+<p>To find 2<sup>nd</sup> node from the end of the list:</p>
+<p>Here loopLength (4) &gt; k (2).</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist19.jpeg"><img title="LoopList19" alt="" src="/assets/looplist19.jpeg?w=675&amp;h=308" width="450" height="205" /></a></p>
+<p>To find 5<sup>th</sup> node from the end of the list:</p>
+<p>Here loopLength (4) &lt; k (5).</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist20.jpeg"><img title="LoopList20" alt="" src="/assets/looplist20.jpeg?w=675&amp;h=312" width="450" height="208" /></a></p>
+<p>Implementation for class ListNode and class SingleLinkedList is given in the<a href="http://crackinterviewtoday.wordpress.com/2010/03/16/loop-in-a-linked-list/"> previous post.</a></p>
+<p>Code for the above solution is as follows:</p>
+<div>
+<div id="highlighter_870633">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+<div>12</div>
+<div>13</div>
+<div>14</div>
+<div>15</div>
+<div>16</div>
+<div>17</div>
+<div>18</div>
+<div>19</div>
+<div>20</div>
+<div>21</div>
+<div>22</div>
+<div>23</div>
+<div>24</div>
+<div>25</div>
+<div>26</div>
+<div>27</div>
+<div>28</div>
+<div>29</div>
+<div>30</div>
+<div>31</div>
+<div>32</div>
+<div>33</div>
+<div>34</div>
+<div>35</div>
+<div>36</div>
+<div>37</div>
+<div>38</div>
+<div>39</div>
+<div>40</div>
+<div>41</div>
+<div>42</div>
+<div>43</div>
+<div>44</div>
+<div>45</div>
+<div>46</div>
+<div>47</div>
+<div>48</div>
+<div>49</div>
+<div>50</div>
+<div>51</div>
+<div>52</div>
+<div>53</div>
+<div>54</div>
+<div>55</div>
+<div>56</div>
+<div>57</div>
+<div>58</div>
+<div>59</div>
+<div>60</div>
+<div>61</div>
+<div>62</div>
+<div>63</div>
+<div>64</div>
+<div>65</div>
+<div>66</div>
+<div>67</div>
+<div>68</div>
+<div>69</div>
+<div>70</div>
+<div>71</div>
+<div>72</div>
+<div>73</div>
+<div>74</div>
+<div>75</div>
+<div>76</div>
+<div>77</div>
+<div>78</div>
+<div>79</div>
+<div>80</div>
+<div>81</div>
+<div>82</div>
+<div>83</div>
+<div>84</div>
+<div>85</div>
+<div>86</div>
+<div>87</div>
+<div>88</div>
+<div>89</div>
+<div>90</div>
+<div>91</div>
+<div>92</div>
+<div>93</div>
+<div>94</div>
+<div>95</div>
+<div>96</div>
+<div>97</div>
+<div>98</div>
+<div>99</div>
+<div>100</div>
+<div>101</div>
+<div>102</div>
+<div>103</div>
+<div>104</div>
+<div>105</div>
+<div>106</div>
+<div>107</div>
+<div>108</div>
+<div>109</div>
+<div>110</div>
+<div>111</div>
+<div>112</div>
+<div>113</div>
+<div>114</div>
+<div>115</div>
+<div>116</div>
+<div>117</div>
+<div>118</div>
+<div>119</div>
+<div>120</div>
+<div>121</div>
+<div>122</div>
+<div>123</div>
+<div>124</div>
+<div>125</div>
+<div>126</div>
+<div>127</div>
+<div>128</div>
+<div>129</div>
+<div>130</div>
+<div>131</div>
+<div>132</div>
+<div>133</div>
+<div>134</div>
+<div>135</div>
+<div>136</div>
+<div>137</div>
+<div>138</div>
+<div>139</div>
+<div>140</div>
+<div>141</div>
+<div>142</div>
+<div>143</div>
+<div>144</div>
+<div>145</div>
+<div>146</div>
+<div>147</div>
+<div>148</div>
+<div>149</div>
+<div>150</div>
+</td>
+<td>
+<div>
+<div><code>package</code> <code>ds;</code></div>
+<div></div>
+<div><code>public</code> <code>class</code> <code>KthNodeFromEndOfLoopedList</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>public</code> <code>KthNodeFromEndOfLoopedList()</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>public</code> <code>ListNode returnLoopDetectionNode(ListNode loopedList)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode fastNode = loopedList;</code></div>
+<div><code>        </code><code>ListNode slowNode = loopedList;</code></div>
+<div></div>
+<div><code>        </code><code>while</code> <code>(fastNode.next.next != </code><code>null</code><code>)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>slowNode = slowNode.next;</code></div>
+<div><code>            </code><code>fastNode = fastNode.next.next;</code></div>
+<div></div>
+<div><code>            </code><code>if</code> <code>(slowNode == fastNode)</code></div>
+<div><code>            </code><code>{</code></div>
+<div><code>                </code><code>break</code><code>;</code></div>
+<div><code>            </code><code>}</code></div>
+<div><code>        </code><code>}</code></div>
+<div></div>
+<div><code>        </code><code>return</code> <code>slowNode;</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>public</code> <code>int</code> <code>getLoopLength(ListNode loopDetectionNode)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>//  Take two pointers at loop detection node and calculate loop length</code></div>
+<div><code>        </code><code>ListNode P1 = loopDetectionNode;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div></div>
+<div><code>        </code><code>int</code> <code>loopLength = </code><code>1</code><code>;</code></div>
+<div></div>
+<div><code>        </code><code>do</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>loopLength++;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>        </code><code>while</code> <code>(P1 != P2);</code></div>
+<div></div>
+<div><code>        </code><code>return</code> <code>(loopLength - </code><code>1</code><code>);</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>public</code> <code>ListNode getMergingPointNode(ListNode loopedList,</code></div>
+<div><code>        </code><code>ListNode loopDetectionNode)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode P1 = loopedList;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div></div>
+<div><code>        </code><code>while</code> <code>(P1 != P2)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>P1 = P1.next;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>        </code><code>}</code></div>
+<div></div>
+<div><code>        </code><code>return</code> <code>P1;</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>public</code> <code>int</code> <code>getMergingPointLength(ListNode loopedList,</code></div>
+<div><code>        </code><code>ListNode loopDetectionNode)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode P1 = loopedList;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div></div>
+<div><code>        </code><code>//  Calculate length till the merging point</code></div>
+<div><code>        </code><code>int</code> <code>length = </code><code>1</code><code>;</code></div>
+<div></div>
+<div><code>        </code><code>while</code> <code>(P1 != P2)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>P1 = P1.next;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>            </code><code>length++;</code></div>
+<div><code>        </code><code>}</code></div>
+<div></div>
+<div><code>        </code><code>return</code> <code>(length - </code><code>1</code><code>);</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>public</code> <code>static</code> <code>void</code> <code>main(String[] args)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>// Need to find kth node from end of linked list that contains loop</code></div>
+<div><code>        </code><code>int</code> <code>k = </code><code>2</code><code>;</code></div>
+<div></div>
+<div><code>        </code><code>SingleLinkedList newList = </code><code>new</code> <code>SingleLinkedList();</code></div>
+<div><code>        </code><code>newList.add(</code><code>1</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>2</code><code>);</code></div>
+<div></div>
+<div><code>        </code><code>ListNode loopNode = newList.add(</code><code>3</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>4</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>5</code><code>);</code></div>
+<div></div>
+<div><code>        </code><code>ListNode endNode = newList.add(</code><code>6</code><code>);</code></div>
+<div><code>        </code><code>//  Creating a loop</code></div>
+<div><code>        </code><code>endNode.next = loopNode;</code></div>
+<div></div>
+<div><code>        </code><code>ListNode loopedList = newList.getList();</code></div>
+<div><code>        </code><code>KthNodeFromEndOfLoopedList kthNodeList = </code><code>new</code> <code>KthNodeFromEndOfLoopedList();</code></div>
+<div></div>
+<div><code>        </code><code>ListNode loopDetectionNode = kthNodeList.returnLoopDetectionNode(loopedList);</code></div>
+<div><code>        </code><code>int</code> <code>loopLength = kthNodeList.getLoopLength(loopDetectionNode);</code></div>
+<div><code>        </code><code>int</code> <code>lengthTillMergingPoint = kthNodeList.getMergingPointLength(loopedList,</code></div>
+<div><code>                </code><code>loopDetectionNode);</code></div>
+<div><code>        </code><code>int</code> <code>lengthOfList = loopLength + lengthTillMergingPoint;</code></div>
+<div></div>
+<div><code>        </code><code>if</code> <code>(k &amp;gt; lengthOfList)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>System.out.println(</code><code>"Cannot find kth in the linked list"</code><code>);</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>        </code><code>else</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>if</code> <code>(loopLength &amp;gt;= k)</code></div>
+<div><code>            </code><code>{</code></div>
+<div><code>                </code><code>//  Need to traverse (loopLength-k nodes from mergingPointNode to get kth Node from end of the list)</code></div>
+<div><code>                </code><code>ListNode mergingPointNode = kthNodeList.getMergingPointNode(loopedList,</code></div>
+<div><code>                        </code><code>loopDetectionNode);</code></div>
+<div><code>                </code><code>ListNode kthNode = mergingPointNode;</code></div>
+<div></div>
+<div><code>                </code><code>for</code> <code>(</code><code>int</code> <code>i = </code><code>0</code><code>; i &lt; (loopLength - k); i++)</code></div>
+<div><code>                </code><code>{</code></div>
+<div><code>                    </code><code>if</code> <code>(kthNode != </code><code>null</code><code>)</code></div>
+<div><code>                    </code><code>{</code></div>
+<div><code>                        </code><code>kthNode = kthNode.next;</code></div>
+<div><code>                    </code><code>}</code></div>
+<div><code>                </code><code>}</code></div>
+<div></div>
+<div><code>                </code><code>System.out.println(</code></div>
+<div><code>                    </code><code>"Kth Node from end of linked list that contains loop is "</code> <code>+</code></div>
+<div><code>                    </code><code>kthNode.data);</code></div>
+<div><code>            </code><code>}</code></div>
+<div><code>            </code><code>else</code></div>
+<div><code>            </code><code>{</code></div>
+<div><code>                </code><code>//  Need to traverse (lengthOfList-k nodes from head of the list to get kth Node from end of the list)</code></div>
+<div><code>                </code><code>ListNode kthNode = loopedList;</code></div>
+<div></div>
+<div><code>                </code><code>for</code> <code>(</code><code>int</code> <code>i = </code><code>0</code><code>; i &lt; (lengthOfList - k); i++)</code></div>
+<div><code>                </code><code>{</code></div>
+<div><code>                    </code><code>if</code> <code>(kthNode != </code><code>null</code><code>)</code></div>
+<div><code>                    </code><code>{</code></div>
+<div><code>                        </code><code>kthNode = kthNode.next;</code></div>
+<div><code>                    </code><code>}</code></div>
+<div><code>                </code><code>}</code></div>
+<div></div>
+<div><code>                </code><code>System.out.println(</code></div>
+<div><code>                    </code><code>"Kth Node from end of linked list that contains loop is "</code> <code>+</code></div>
+<div><code>                    </code><code>kthNode.data);</code></div>
+<div><code>            </code><code>}</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>&nbsp;</p>
+<p>END</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Your awesome title</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Your awesome title</li>
+          <li><a href="mailto:your-email@domain.com">your-email@domain.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyll</span>
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb">
+              <span class="icon  icon--twitter">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                  c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+                </svg>
+              </span>
+
+              <span class="username">jekyllrb</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
