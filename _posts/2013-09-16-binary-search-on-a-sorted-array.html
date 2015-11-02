@@ -1,0 +1,38 @@
+---
+layout: post
+title: "[ARRAY] Binary Search on a Sorted Array"
+date: 2013-09-16 15:27:22.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454368344'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: Write a function to perform a binary search on a Sorted Array.</p>
+<p>Solution: The recursive solution below runs in O(log(n)) because the problem size is halved with each recursive call.</p>
+<pre>// returns the index of the target element if found, else returns -1
+        static int Binary_Search(int[] arr, int start, int end, int target)
+        {
+           int medianIndex = (end - start) /2 + start;
+           int medianValue = arr[medianIndex];
+
+           if(start == end &amp;&amp; arr[start] != target)
+               return -1;
+           if (medianValue == target)
+               return medianIndex;
+           else if (medianValue &lt; target)
+               return Binary_Search(arr, medianIndex + 1, end, target);
+           else
+               return Binary_Search(arr, start, medianIndex - 1, target);
+        }</pre>
+<p>END</p>

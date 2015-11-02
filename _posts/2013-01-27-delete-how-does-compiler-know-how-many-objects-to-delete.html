@@ -1,0 +1,33 @@
+---
+layout: post
+title: delete[] --- How does Compiler know how many Objects to Delete
+date: 2013-01-27 00:59:24.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784547263'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>delete[] p</p>
+<p>The run-time system stores the number of objects, <tt>n</tt>, somewhere where it can be retrieved if you only know the pointer, <tt>p</tt>. There are two popular techniques that do this. Both these techniques are in use by commercial-grade compilers, both have tradeoffs, and neither is perfect. These techniques are:</p>
+<ul>
+<li><span style="color:#333333;font-family:'Helvetica Neue', Helvetica, Arial, 'Nimbus Sans L', sans-serif;font-style:normal;">Over-allocate the array and put n just to the left of the first Fred object.</span></li>
+</ul>
+<p>new char[10] could allocates a few extra bytes, put the number of elements at the beginning, then return the pointer to the first element after that. delete[] could then look behind the pointer at the stored count</p>
+<ul>
+<li><span style="color:#333333;font-family:'Helvetica Neue', Helvetica, Arial, 'Nimbus Sans L', sans-serif;font-style:normal;">Use an associative array with p as the key and n as the value.</span></li>
+</ul>
+<p>store the equivalent of std::map&lt;void*, size_t&gt;, and new T[n] would create a key with the returned pointer, and a value with the count. delete[] would look up the pointer in this map</p>
+<p>&nbsp;</p>

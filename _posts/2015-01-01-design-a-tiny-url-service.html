@@ -1,0 +1,75 @@
+---
+layout: post
+title: Design a Tiny URl Service
+date: 2015-01-01 18:34:54.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Design
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784142646'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Redirect Part:</p>
+<p>When you click on a link of any tiny url, an HTTP Request is sent to their server with the full URL, like http // bit.ly / b9 (not a real one).</p>
+<p>They read the path part (here b9), which maps to their Database.</p>
+<p>In the Database, they find the real URL. Then they issue a redirect, which is a HTTP 302 response and the target URL in the header.</p>
+<p>Encoding Part:</p>
+<p>One of the most popular URL shortening services simply take the ID in the database of the URL and then convert it to Base 62[a-zA-Z0-9].</p>
+<p>import static org.testing.AssertJUnit.assertEquals ;</p>
+<p>public class TinyURL {<br />
+private static final String ALPHABET_MAP = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" ;<br />
+private static final int BASE = ALPHABET_MAP.length() ;</p>
+<p>public static String encode ( int IndexNum ) {<br />
+StringBuilder sb = new StringBuilder() ;</p>
+<p>while ( IndexNum &gt; 0 ) {<br />
+sb.append ( ALPHABET_MAP.charAt ( IndexNum % BASE ) ) ;<br />
+IndexNum /= BASE ;<br />
+}<br />
+return sb.reverse().toString() ;<br />
+}</p>
+<p>public static int decode ( String str ) {<br />
+int Num = 0 ;</p>
+<p>for ( int i = 0, len = str.length(); i &lt; len; i++ ) {<br />
+Num = Num * BASE + ALPHABET_MAP.indexOf ( str.charAt(i) ) ;<br />
+}<br />
+return Num ;<br />
+}</p>
+<p>public static void main ( String[] args ) {<br />
+//System.out.println ( "Encoding for 123 is " + encode(123) ) ;<br />
+//System.out.println ( "Decoding for b9 is " + decode ("b9" ) ) ;</p>
+<p>assertEquals ( "b9", encode(123) ) ;<br />
+assertEquals ( 123, decode("b9") ) ;<br />
+}<br />
+}</p>
+<p>I think this is more of a design question than a coding one.</p>
+<p>We can think about<br />
+- reducing the response time of the server<br />
+---- by using a distributed system to share the load based on geography<br />
+---- by using a central server but many caching servers at various geographical locations<br />
+---- what would be the right database design</p>
+<p>- reducing the storage space<br />
+---- database design</p>
+<p>- backup and failover</p>
+<p>- security issues<br />
+---- prevent people from creating links to ---whatever---</p>
+<p>- handling old/obsolete urls<br />
+---- may be, while creating the url we can say to the user that it will be deleted if the url is never used for more than say 3 years<br />
+---- may be allow the user to login and delete unused ones</p>
+<p>- how a company like bit.ly is going to make profit out of this service! how can that be improved</p>
+<p>- user friendly things<br />
+---- browser plugins to speed up creating links (youtube sharing has an option to create short urls)<br />
+---- giving report to user about the usage statistics<br />
+---- mobile app to create urls quickly</p>
+<p>.....</p>

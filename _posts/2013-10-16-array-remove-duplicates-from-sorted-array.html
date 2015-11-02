@@ -1,0 +1,223 @@
+---
+layout: post
+title: "[ARRAY] Remove Duplicates from Sorted Array"
+date: 2013-10-16 14:55:11.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  image_url: https://dl.dropboxusercontent.com/u/9599522/remove_duplicates.svg
+  image_md5: d41d8cd98f00b204e9800998ecf8427e
+  image_tag: <img src="https://dl.dropboxusercontent.com/u/9599522/remove_duplicates.svg?w=840"
+    alt=""    />
+  image_colors_bg: a:11:{i:0;s:6:"ffffff";s:2:"+1";s:6:"ffffff";s:2:"+2";s:6:"ffffff";s:2:"+3";s:6:"ffffff";s:2:"+4";s:6:"ffffff";s:2:"+5";s:6:"ffffff";i:-1;s:6:"d9d9d9";i:-2;s:6:"bfbfbf";i:-3;s:6:"808080";i:-4;s:6:"404040";i:-5;s:6:"1a1a1a";}
+  image_colors_fg: a:11:{i:0;s:6:"404040";s:2:"+1";s:6:"404040";s:2:"+2";s:6:"404040";s:2:"+3";s:6:"404040";s:2:"+4";s:6:"404040";s:2:"+5";s:6:"404040";i:-1;s:6:"404040";i:-2;s:6:"000000";i:-3;s:6:"000000";i:-4;s:6:"ffffff";i:-5;s:6:"ffffff";}
+  _publicize_job_id: '16454352430'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p><span style="font-family:Aria;font-size:medium;">Given a sorted array, remove the duplicates in place such that each element appear only <i>once</i> and return the new length.</span></p>
+<p><span style="font-family:Aria;font-size:medium;">Do not allocate extra space for another array, you must do this in place with constant memory.</span></p>
+<p><span style="font-family:Aria;font-size:medium;">For example,<br />
+Given input array A = <code>[1,1,2]</code>,</span></p>
+<p><span style="font-family:Aria;font-size:medium;">Your function should return length = <code>2</code>, and A is now <code>[1,2]</code>.</span></p>
+<p><img alt="" src="{{ site.baseurl }}/assets/remove_duplicates.svg" /></p>
+<div class="csharpcode-wrapper" id="codeSnippetWrapper"></div>
+<div id="codeSnippetWrapper" style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:20px 0 10px;width:97.5%;font-family:'Courier New', courier, monospace;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;cursor:text;padding:4px;border:silver 1px solid;">
+<div id="codeSnippet" style="text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;">
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum1" style="color:#606060;">   1:</span> <span style="color:#0000ff;">class</span> Solution {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum2" style="color:#606060;">   2:</span> <span style="color:#0000ff;">public</span>:</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum3" style="color:#606060;">   3:</span>     <span style="color:#0000ff;">int</span> removeDuplicates(<span style="color:#0000ff;">int</span> A[], <span style="color:#0000ff;">int</span> n) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum4" style="color:#606060;">   4:</span>       <span style="color:#0000ff;">if</span> ( n &lt;= 1 )</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum5" style="color:#606060;">   5:</span>             <span style="color:#0000ff;">return</span> n ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum6" style="color:#606060;">   6:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum7" style="color:#606060;">   7:</span>         <span style="color:#0000ff;">int</span> Index = 0, Itr = 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum8" style="color:#606060;">   8:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum9" style="color:#606060;">   9:</span>         <span style="color:#0000ff;">while</span> ( Itr &lt; n ) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum10" style="color:#606060;">  10:</span>             <span style="color:#0000ff;">if</span> ( A[Itr] != A[Index] )</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum11" style="color:#606060;">  11:</span>                 A[++Index] = A[Itr] ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum12" style="color:#606060;">  12:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum13" style="color:#606060;">  13:</span>             Itr++ ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum14" style="color:#606060;">  14:</span>         }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum15" style="color:#606060;">  15:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum16" style="color:#606060;">  16:</span>         <span style="color:#0000ff;">return</span> Index + 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum17" style="color:#606060;">  17:</span>     }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum18" style="color:#606060;">  18:</span> };</pre>
+<p><!--CRLF--></p>
+</div>
+</div>
+<p><span style="font-family:Arial;font-size:medium;">Use two pointers, one head, one next. If A[head] == A[next], then move next forward. Otherwise, copy A[next] to A[head+1], then increment both head and next.</span></p>
+<div class="csharpcode-wrapper" id="codeSnippetWrapper">
+<div class="csharpcode" id="codeSnippet">
+<div id="codeSnippetWrapper" style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:20px 0 10px;width:97.5%;font-family:'Courier New', courier, monospace;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;cursor:text;padding:4px;border:silver 1px solid;">
+<div id="codeSnippet" style="text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;">
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum1" style="color:#606060;">   1:</span> <span style="color:#0000ff;">int</span> removeDuplicates(<span style="color:#0000ff;">int</span> A[], <span style="color:#0000ff;">int</span> n) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum2" style="color:#606060;">   2:</span>     <span style="color:#008000;">// Start typing your C/C++ solution below</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum3" style="color:#606060;">   3:</span>     <span style="color:#008000;">// DO NOT write int main() function</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum4" style="color:#606060;">   4:</span>     <span style="color:#0000ff;">if</span> (n == 0 || n == 1) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum5" style="color:#606060;">   5:</span>         <span style="color:#0000ff;">return</span> n;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum6" style="color:#606060;">   6:</span>     }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum7" style="color:#606060;">   7:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum8" style="color:#606060;">   8:</span>     <span style="color:#0000ff;">int</span> hd = 0, nx = 0;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum9" style="color:#606060;">   9:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum10" style="color:#606060;">  10:</span>     <span style="color:#0000ff;">for</span> (; nx != n;) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum11" style="color:#606060;">  11:</span>         <span style="color:#0000ff;">if</span> (A[hd] == A[nx]) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum12" style="color:#606060;">  12:</span>             nx++;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum13" style="color:#606060;">  13:</span>         } <span style="color:#0000ff;">else</span> {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum14" style="color:#606060;">  14:</span>             A[++hd] = A[nx++];</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum15" style="color:#606060;">  15:</span>         }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum16" style="color:#606060;">  16:</span>     }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum17" style="color:#606060;">  17:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum18" style="color:#606060;">  18:</span>     <span style="color:#0000ff;">return</span> hd+1;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum19" style="color:#606060;">  19:</span> }</pre>
+<p><!--CRLF--></p>
+</div>
+</div>
+<p><!--CRLF--></p>
+</div>
+</div>
+<p><span style="font-family:ari;font-size:medium;">What if duplicates are allowed at most <i>twice</i>?</span></p>
+<p><span style="font-family:ari;font-size:medium;">For example,<br />
+Given sorted array A = <code>[1,1,1,2,2,3]</code>,</span></p>
+<p><span style="font-family:ari;font-size:medium;">Your function should return length = <code>5</code>, and A is now <code>[1,1,2,2,3]</code>.</span></p>
+<p>&nbsp;</p>
+<div id="codeSnippetWrapper" style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:20px 0 10px;width:97.5%;font-family:'Courier New', courier, monospace;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;cursor:text;padding:4px;border:silver 1px solid;">
+<div id="codeSnippet" style="text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;">
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum1" style="color:#606060;">   1:</span> <span style="color:#0000ff;">class</span> Solution {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum2" style="color:#606060;">   2:</span> <span style="color:#0000ff;">public</span>:</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum3" style="color:#606060;">   3:</span>     <span style="color:#0000ff;">int</span> removeDuplicates(<span style="color:#0000ff;">int</span> A[], <span style="color:#0000ff;">int</span> n) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum4" style="color:#606060;">   4:</span>         <span style="color:#0000ff;">if</span> ( n &lt;= 2 )</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum5" style="color:#606060;">   5:</span>             <span style="color:#0000ff;">return</span> n ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum6" style="color:#606060;">   6:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum7" style="color:#606060;">   7:</span>         <span style="color:#0000ff;">int</span> Index = 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum8" style="color:#606060;">   8:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum9" style="color:#606060;">   9:</span>         <span style="color:#0000ff;">for</span> ( <span style="color:#0000ff;">int</span> Itr = 2; Itr &lt; n; Itr++ ) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum10" style="color:#606060;">  10:</span>             <span style="color:#0000ff;">if</span> ( !( ( A[Index] == A[Itr] ) &amp;&amp; ( A[Index - 1] == A[Itr] )  ) )</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum11" style="color:#606060;">  11:</span>                 A[++Index] = A[Itr] ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum12" style="color:#606060;">  12:</span>         }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum13" style="color:#606060;">  13:</span>         <span style="color:#0000ff;">return</span> Index+1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum14" style="color:#606060;">  14:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum15" style="color:#606060;">  15:</span>     }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum16" style="color:#606060;">  16:</span> };</pre>
+<p><!--CRLF--></p>
+</div>
+</div>
+<p>&nbsp;</p>
+<p><span style="font-size:medium;">Can be made generic as below:</span></p>
+<div id="codeSnippetWrapper" style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:20px 0 10px;width:97.5%;font-family:'Courier New', courier, monospace;direction:ltr;max-height:200px;font-size:8pt;overflow:auto;cursor:text;padding:4px;border:silver 1px solid;">
+<div id="codeSnippet" style="text-align:left;line-height:12pt;background-color:#f4f4f4;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;">
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum1" style="color:#606060;">   1:</span> <span style="color:#0000ff;">class</span> Solution {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum2" style="color:#606060;">   2:</span> <span style="color:#0000ff;">public</span>:</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum3" style="color:#606060;">   3:</span>     <span style="color:#008000;">// Here k = 2</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum4" style="color:#606060;">   4:</span>     <span style="color:#0000ff;">int</span> removeDuplicates(<span style="color:#0000ff;">int</span> A[], <span style="color:#0000ff;">int</span> n, <span style="color:#0000ff;">int</span> k ) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum5" style="color:#606060;">   5:</span>         <span style="color:#0000ff;">if</span> ( n &lt;= k )</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum6" style="color:#606060;">   6:</span>         <span style="color:#0000ff;">return</span> n ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum7" style="color:#606060;">   7:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum8" style="color:#606060;">   8:</span>         <span style="color:#0000ff;">int</span> Index = 0, Itr = 1, Count = 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum9" style="color:#606060;">   9:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum10" style="color:#606060;">  10:</span>         <span style="color:#0000ff;">while</span> ( Itr &lt; n ) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum11" style="color:#606060;">  11:</span>             <span style="color:#0000ff;">if</span> ( A[Itr] != A[Index] ) {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum12" style="color:#606060;">  12:</span>                 A[++Index] = A[Itr] ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum13" style="color:#606060;">  13:</span>                 Count = 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum14" style="color:#606060;">  14:</span>             }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum15" style="color:#606060;">  15:</span>             <span style="color:#0000ff;">else</span> {</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum16" style="color:#606060;">  16:</span>                 <span style="color:#0000ff;">if</span> ( Count &lt; k ){</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum17" style="color:#606060;">  17:</span>                     A[++Index] = A[Itr] ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum18" style="color:#606060;">  18:</span>                     Count++ ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum19" style="color:#606060;">  19:</span>                 }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum20" style="color:#606060;">  20:</span>             }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum21" style="color:#606060;">  21:</span>             Itr++ ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum22" style="color:#606060;">  22:</span>         }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum23" style="color:#606060;">  23:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum24" style="color:#606060;">  24:</span>         <span style="color:#0000ff;">return</span> Index + 1 ;</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum25" style="color:#606060;">  25:</span></pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum26" style="color:#606060;">  26:</span>     }</pre>
+<p><!--CRLF--></p>
+<pre style="text-align:left;line-height:12pt;background-color:#f4f4f4;margin:0;width:100%;font-family:'Courier New', courier, monospace;direction:ltr;color:black;font-size:8pt;overflow:visible;border-style:none;padding:0;"><span id="lnum27" style="color:#606060;">  27:</span> };</pre>
+<p><!--CRLF--></p>
+</div>
+</div>
+<p>END</p>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: "[Linked List] Loop"
+date: 2013-09-17 13:45:32.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361569'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>A linked list is a data structure that consists of a sequence of data records such that in each record there is a field that contains a reference (i.e., a <em>link</em>) to the next record in the sequence.</p>
+<p>Lot of questions on linked lists appears in the interviews. Interviewers in these types of questions will be more interested on how we handle pointers, how we use linked list properties etc. In this series I discuss some of the questions that appear in interviews for the linked lists.</p>
+<p>When working with singly linked list, we are typically given a link to the first node. Common operations on a singly linked list are iterating through all the nodes, adding to the list, or deleting from the list. Algorithms for these operations generally require a well formed linked list. That is a linked list without loops or cycles in it.</p>
+<p>If a linked list has a cycle:</p>
+<ul>
+<li>The malformed linked list has no end (no node ever has a null next pointer)</li>
+<li>The malformed linked list contains two links to some node</li>
+<li>Iterating through the malformed linked list will yield all nodes in the loop multiple times</li>
+</ul>
+<p>A malformed linked list with a loop causes iteration over the list to fail because the iteration will never reach the end of the list. Therefore, it is desirable to be able to detect that a linked list is malformed before trying iteration.</p>
+<p>The following are the questions that may arise in case of linked lists having loops:</p>
+<ul>
+<li>To detect loop in a linked list</li>
+<li>To calculate the node that causes loop</li>
+<li>To calculate length of linked list that contains loop</li>
+<li>To find kth node from the end of linked list that contains loop</li>
+</ul>
+<p>END</p>

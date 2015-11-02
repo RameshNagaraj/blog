@@ -1,0 +1,56 @@
+---
+layout: post
+title: Limit the creation of object on Stack
+date: 2013-01-27 00:31:59.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '15850416195'
+  geo_public: '0'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>You can prevent an object being declared with automatic duration ("on the stack") by making its constructor private and providing a factory (abstract factory or factory method) to control creation of new objects.</p>
+<p>To prevent accidental creation on the stack, make all constructors private, and/or make the destructor private, and provide friend or static functions that perform the same functionality.</p>
+<p>Use the <a title="[10.8] What is the &quot;Named Constructor Idiom&quot;?" href="http://www.parashift.com/c++-faq-lite/named-ctor-idiom.html">Named Constructor Idiom</a>.</p>
+<p>As usual with the Named Constructor Idiom, the constructors are all <tt>private</tt> or <tt>protected</tt>, and there are one or more <tt>public</tt> <tt>static</tt> <tt>create()</tt> methods (the so-called "named constructors"), one per constructor. In this case the <tt>create()</tt> methods allocate the objects via <tt>new</tt>. Since the constructors themselves are not <tt>public</tt>, there is no other way to create objects of the class.</p>
+<pre>class Fred {
+public:
+  // <em>The <tt>create()</tt> methods are the "named constructors":</em>
+  static Fred* create()                 { return new Fred();     }
+  static Fred* create(int i)            { return new Fred(i);    }
+  static Fred* create(Fred const&amp; fred) { return new Fred(fred); }
+  <em>...</em>
+
+private:
+  // <em>The constructors themselves are <tt>private</tt> or <tt>protected</tt>:</em>
+  Fred();
+  Fred(int i);
+  Fred(Fred const&amp; fred);
+  Fred&amp; operator= ( const Fred&amp; fred) ;
+  <em>...</em>
+};</pre>
+<p>Now the only way to create <tt>Fred</tt> objects is via <tt>Fred::create()</tt>:</p>
+<pre>int main()
+{
+  Fred* p = Fred::create(5);
+  <em>...</em>
+  delete p;
+  <em>...</em>
+}</pre>
+<p>Make sure your constructors are in the <tt>protected</tt> section if you expect <tt>Fred</tt> to have derived classes.</p>
+<p>To prevent an object from being allocated on the stack define a private destructor. This results in a compilation error for a stack based object, as it prohibits the implicit destructor call when a stack based object goes out of scope. You will need to implement a public destroy method, something along the lines of:</p>
+<pre><code>void MyObject::destroy() const
+{
+   delete this;
+}</code></pre>
+<p>&nbsp;</p>

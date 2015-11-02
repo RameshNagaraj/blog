@@ -1,0 +1,28 @@
+---
+layout: post
+title: Searching a string in a set of strings
+date: 2014-01-20 22:44:24.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454350894'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Given a string, search it in a set of strings (say among 1000s of string). What data structure would you use to store those 1000 strings and get the results fastest?<br />
+<span style="text-decoration:underline;"><b>Strategy:</b></span><br />
+<b>Solution 1 : Simple, but not best solution</b><br />
+Create a hashtable, and store all the strings in that hashtable. For the given string, search in that hashtable. In the worst case, if we get same hashcode for all the strings, then we have to compare with all the strings.<br />
+<b>Solution 2 : Best solution</b><br />
+Create a <a href="http://en.wikipedia.org/wiki/Trie">Trie</a> structure, and search for the string in that trie. Depending upon how we construct the trie, the complexity varies from O(n) to O(n*m) where n is the no.of characters in the given string, and m is the no.of different characters that we have in all the strings.<br />
+In the trie, for each node, if we create children for all the possible characters, then the complexity will be O(n), where n is the no.of characters in the given string. The memory requirement will be high in this case.<br />
+If we don't create children for all the possible characters, and create children only for the strings that exist in our set, then at each level, we have to search among the children to find the string. So, the complexity would be O(n*m) where n is the no.of characters in the given string, and m is the no.of different characters that we have in all the strings. In this case, we will not use extra memory.</p>

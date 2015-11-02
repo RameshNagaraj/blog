@@ -1,0 +1,65 @@
+---
+layout: post
+title: "[STRING] Convert Integer to String itoa()"
+date: 2013-09-16 16:40:44.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361845'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<pre>// val: integer that needs to be converted to string representation
+// destBuffer: buffer where the output string will be written
+// radix: is the radix of the numbering system (10 for decimal, 16 for Hexadecimal,
+// 2 for binary)
+
+char * my_itoa(int val, char * destBuffer, int radix)
+{
+   if(val == 0)
+   {
+      destBuffer = "0";
+      return destBuffer;
+   }
+
+   bool isNeg = false;
+   // if input integer is negative set the isNeg flag and make it positive
+   // we will do the conversion using the absolute value and then append the
+   // the - sign in the end
+   if(val &lt; 0)
+   {
+      isNeg = true;
+      val *= -1; 
+   }
+
+   char *currentDest = destBuffer;
+
+   while(val &gt; 0)
+   {
+     int digit = val % radix;
+     val /= radix;
+     *currentDest = (char) (digit + '0');
+     currentDest++;
+   }
+
+   if(isNeg)
+   {
+     *currentDest = '-';
+     currentDest++;
+   }
+
+   *currentDest = '';
+   reverse(destBuffer);
+   return destBuffer;
+}</pre>
+<p>&nbsp;</p>
+<p>END</p>

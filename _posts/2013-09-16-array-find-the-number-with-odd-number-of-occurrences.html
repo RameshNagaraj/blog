@@ -1,0 +1,55 @@
+---
+layout: post
+title: "[ARRAY] Find the number with odd number of occurrences"
+date: 2013-09-16 15:28:39.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361871'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: You are given an array containing positive integers. All the integers occur even number of times except one. Find this special integer.</p>
+<p>Solution: A naive approach would be to loop over the elements of the given array and keep a count of each integer in a hash table or another counter array. But, this quickly becomes unfeasible as the range of integers could be 2^31 (one less). This is an O(n) solution that takes at memory O(range(n)).</p>
+<p>The next approach is to sort the array and then loop on it counting occurrences of the integers. When there is a change in the integer we check its count to see if its odd or even. If its odd we have found our special integer. This is an O(n log n) solution that uses constant memory.</p>
+<p>Lets try to see if we can use the property that there is one number that occurs odd number of times and every other number occurs even number of times. Since an even number is divisible by 2, you could think of the even occurrences as being present in pairs. The integer with the odd number of occurrences will have 0 or more pairs and one single number. So, if we could some how get rid of all the pairs then all we'd be left with is the single number. Now, what gets rid of pairs? Hint: think of an operator.</p>
+<p>XOR will do the trick. Its gives you O(n) solution with no extra memory.</p>
+<p>Ex: 3,5,3,2,2</p>
+<pre> 011  -- 3
+^101  -- 5
+----------
+ 110
+^011  -- 3
+----------
+ 101
+^010  -- 2
+----------
+ 111
+^010  -- 2
+----------
+ 101  -- 5 (special one)</pre>
+<p>Code:</p>
+<pre>//
+// will return the number with odd number of occurrences
+// will return 0 if all numbers occur even number of times
+//
+int GetSpecialOne(int[] array, int length)
+{
+   int specialOne = array[0];
+
+   for(int i=1; i &lt; length; i++)
+   {
+      specialOne ^= array[i];
+   }
+   return specialOne;
+}</pre>
+<p>END</p>

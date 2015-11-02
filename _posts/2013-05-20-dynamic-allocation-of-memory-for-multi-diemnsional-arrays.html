@@ -1,0 +1,168 @@
+---
+layout: post
+title: Dynamic Allocation of Memory for Multi Dimensional Arrays
+date: 2013-05-20 15:04:10.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784528879'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>The traditional solution is to allocate an array <a href="http://c-faq.com/aryptr/arraysim.html" rel="subdocument">[footnote]</a> of pointers to pointers, and then initialize each pointer to a dynamically-allocated ``row.'' Here is a two-dimensional example:</p>
+<pre>	#include &lt;stdlib.h&gt;
+
+	int **array1 = malloc(nrows * sizeof(int *));
+	for(i = 0; i &lt; nrows; i++)
+		array1[i] = malloc(ncolumns * sizeof(int));</pre>
+<p>(In real code, of course, all of <tt>malloc</tt>'s return values would be checked. You can also use <tt>sizeof(*array1)</tt> and <tt>sizeof(**array1)</tt> instead of <tt>sizeof(int *)</tt> and <tt>sizeof(int)</tt>; see <a href="http://c-faq.com/aryptr/fn33.html" rel="subdocument">[footnote]</a> .)</p>
+<p>You can keep the array's contents contiguous, at the cost of making later reallocation of individual rows more difficult, with a bit of explicit pointer arithmetic:</p>
+<pre>	int **array2 = malloc(nrows * sizeof(int *));
+	array2[0] = malloc(nrows * ncolumns * sizeof(int));
+	for(i = 1; i &lt; nrows; i++)
+		array2[i] = array2[0] + i * ncolumns;</pre>
+<p>In either case (i.e for <tt>array1</tt> or <tt>array2</tt>), the elements of the dynamic array can be accessed with normal-looking array subscripts: <tt>arrayx[i][j]</tt> (for 0 &lt;= <tt>i</tt> &lt; <tt>nrows</tt> and 0 &lt;= <tt>j</tt> &lt; <tt>ncolumns</tt>). Here is a schematic illustration of the layout of <tt>array1</tt> and<tt>array2</tt>:</p>
+<p><img alt="" src="{{ site.baseurl }}/assets/array1.gif" /></p>
+<p><img alt="" src="{{ site.baseurl }}/assets/array2.gif" /></p>
+<p>If the double indirection implied by the above schemes is for some reason unacceptable,<a href="http://c-faq.com/aryptr/doubleindir.html" rel="subdocument">[footnote]</a> you can simulate a two-dimensional array with a single, dynamically-allocated one-dimensional array:</p>
+<pre>	int *array3 = malloc(nrows * ncolumns * sizeof(int));</pre>
+<p>However, you must now perform subscript calculations manually, accessing the <tt>i</tt>,<tt>j</tt>th element with the expression</p>
+<pre><tt>array3[i * ncolumns + j]</tt></pre>
+<p>and this array cannot necessarily be passed to functions which expect multidimensional arrays. (A macro such as</p>
+<pre>	#define Arrayaccess(a, i, j) ((a)[(i) * ncolumns + (j)])</pre>
+<p>could hide the explicit calculation, but invoking it would require parentheses and commas which wouldn't look exactly like conventional C multidimensional array syntax, and the macro would need access to at least one of the dimensions, as well. See also question <a href="http://c-faq.com/aryptr/ary2dfunc2.html">6.19</a>.)</p>
+<p>Yet another option is to use pointers to arrays:</p>
+<pre>	int (*array4)[NCOLUMNS] = malloc(nrows * sizeof(*array4));</pre>
+<p>or even</p>
+<pre>	int (*array5)[NROWS][NCOLUMNS] = malloc(sizeof(*array5));</pre>
+<p>but the syntax starts getting horrific (accesses to <tt>array5</tt> look like <tt>(*array5)[i][j]</tt>), and at most one dimension may be specified at run time.</p>
+<p>With all of these techniques, you may of course need to remember to free the arrays when they are no longer needed; in the case of <tt>array1</tt> and <tt>array2</tt> this takes several steps (see also question <a href="http://c-faq.com/malloc/freeforall.html">7.23</a>):</p>
+<pre>	for(i = 0; i &lt; nrows; i++)
+		free((void *)array1[i]);
+	free((void *)array1);
+
+	free((void *)array2[0]);
+	free((void *)array2);</pre>
+<p>Also, you cannot necessarily intermix dynamically-allocated arrays with conventional, statically-allocated ones (see question <a href="http://c-faq.com/aryptr/ary2dfunc3.html">6.20</a>, and also question <a href="http://c-faq.com/aryptr/pass2dary.html">6.18</a>).</p>
+<p>Finally, in C99 you can use a variable-length array.</p>
+<p>All of these techniques can also be extended to three or more dimensions. Here is a three-dimensional version of the first technique (which, like the rest of the fragments presented here, requires error-checking before being used in a real program):</p>
+<pre>	int ***a3d = (int ***)malloc(xdim * sizeof(int **));
+	for(i = 0; i &lt; xdim; i++) {
+		a3d[i] = (int **)malloc(ydim * sizeof(int *));
+		for(j = 0; j &lt; ydim; j++)
+			a3d[i][j] = (int *)malloc(zdim * sizeof(int));
+	}</pre>
+<p><strong>Dynamic 2d array method 1:</strong></p>
+<p>This one works if you know the the number of columns at compile time.</p>
+<pre><code>#define CCOLS 200
+
+int (*m)[CCOLS] = malloc(cRows * sizeof(*m));
+m[iRow][iCol] = n; // sets the item at iRow*CCOLS + iCol
+
+...
+
+free(m);
+</code></pre>
+<p>This works because m is declared as a pointer to an array of CCOLS ints. The compiler knows its size and does the math for you. m[iRow] = an array of CCOLS ints.</p>
+<p>You can only pass this to functions with this signature:</p>
+<pre><code>foo(int (*m)[CCOLS]) { ... }
+</code></pre>
+<p>and maybe this signature, depending upon your compiler and the switches you use:</p>
+<pre><code>foo(int m[][CCOLS]) { ... }
+</code></pre>
+<p>not this signature:</p>
+<pre><code>foo(int **m) { ... }
+</code></pre>
+<p>Since the memory layouts and sizes are different.</p>
+<p>int m[][CCOLS] looks like this:</p>
+<pre><code>+---------+---------+---------+---------+     
+| m[0][0] | m[0][1] | m[0][2] | m[0][3] |     
++---------+---------+---------+---------+     
+| m[1][0] | m[1][1] | m[1][2] | m[1][3] |     
++---------+---------+---------+---------+     
+| m[2][0] | m[2][1] | m[2][2] | m[2][3] |     
++---------+---------+---------+---------+     
+| m[3][0] | m[3][1] | m[3][2] | m[3][3] |     
++---------+---------+---------+---------+     
+</code></pre>
+<p>int **m looks like this:</p>
+<pre><code>+----+        +----+----+----+----+----+      
+|m[0]|  ---&gt;  |    |    |    |    |    |      
++----+        +----+----+----+----+----+      
+|m[1]|  ---&gt;  |    |    |    |    |    |      
++----+        +----+----+----+----+----+      
+|m[2]|  ---&gt;  |    |    |    |    |    |      
++----+        +----+----+----+----+----+      
+|m[3]|  ---&gt;  |    |    |    |    |    |      
++----+        +----+----+----+----+----+      
+</code></pre>
+<p><strong>Dynamic 2d array method 2 (C99 which is not supported by all compilers):</strong></p>
+<p>This one is the same as the previous but you don't need to know dimensions at compile time.</p>
+<pre><code>int cCols, cRows, iCol, iRow;
+... set cRows, cCols somehow, they could be passed in as parameters also ...
+int (*m)[cCols] = malloc(cRows * sizeof(*m));
+m[iRow][iCol] = n; // sets the item at iRow*cCols + iCol
+
+...
+
+free(m);
+</code></pre>
+<p>You can only pass this to functions with this signature:</p>
+<pre><code>foo(int cCols, m[][cCols])  {}
+</code></pre>
+<p>or this one</p>
+<pre><code>foo(int cRows, int cCols, m[cRows][cCols])  {}
+</code></pre>
+<p>If you use gcc, here is more <a href="http://gcc.gnu.org/onlinedocs/gcc/Variable-Length.html">info</a>.</p>
+<p><strong>Dynamic 2d array method 3 using the STACK! (C99 which is not supported by all compilers):</strong></p>
+<p>This lets you avoid malloc entirely if you are ok with your 2d array on the stack.</p>
+<pre><code>int cRows, cCols;
+... set cRows, cCols somehow ...
+int m[cRows][cCols];
+m[iRow][iCol] = n; 
+</code></pre>
+<p>I assume you could declare a global variable this way too.</p>
+<p>You pass this to functions the same way as method 2.</p>
+<p><strong>Dynamic 2d array method 4:</strong></p>
+<p>This is the array of pointers method that a lot of people use.</p>
+<p>You use one malloc to allocate to be efficient. And of course you then only use one free. Only if you have HUGE arrays where contiguous memory becomes and issue, would you want to malloc each row individually.</p>
+<pre><code>int cCols = 10, cRows = 100, iRow;
+
+// allocate:
+// cCols*cRows*sizeof(int) = space for the data
+// cRows*sizeof(int*) = space for the row ptrs
+int **m = malloc(cCols*cRows*sizeof(int) + cRows*sizeof(int*));
+
+// Now wire up the row pointers.  They take the first cRows*sizeof(int*) 
+// part of the mem becasue that is what m[row] expects.
+// we want each row pointer to have its own cCols sized array of ints.
+// We will use the space after the row pointers for this.
+// One way to calc where the space after the row pointers lies is to
+// take the address of the nth + 1 element: &amp;m[cRows].
+// To get a row ptr, cast &amp;m[cRows] as an int*, and add iRow*cCols to that.
+for (iRow = 0; iRow &lt; cRows; ++iRow)
+    m[iRow] = (int*)&amp;m[cRows] + iRow*cCols; 
+
+// or 
+for (p=(int*)&amp;m[cRows] ; iRow = 0; iRow &lt; cRows; ++iRow, p+=cCols)
+    m[iRow] = p; 
+
+// use it:
+...
+m[iRow][iCol] = 10;
+...
+
+// free it
+free(m);</code></pre>
+<p>END</p>

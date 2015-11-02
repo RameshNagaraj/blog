@@ -1,0 +1,32 @@
+---
+layout: post
+title: Size of Structure without using sizeof()
+date: 2013-02-01 23:01:51.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454369212'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>#define SIZEOF(X) (unsigned int)( (char *)(&amp;X+1)-(char *)(&amp;X) )</p>
+<p>struct sample *ptr;<br />
+ptr=(struct sample*)0;<br />
+printf("%d",++ptr);</p>
+<p>p1 = (unsigned char*)(ptr);</p>
+<p>p2 = (unsigned char*)(++ptr);</p>
+<p>size = p2 - p1;</p>
+<p>Can also find out by declaring an Array of structure and finding the difference between addresses of the first and second element in the array.</p>
+<p>struct sample s[2] ;</p>
+<p>int s1 = (int) &amp;s[0] ;</p>
+<p>int s2 = (int) &amp;s[1] ;</p>
+<p>printf ( "%d\n", s2 - s1 ) ;</p>

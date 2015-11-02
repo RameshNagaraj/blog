@@ -1,0 +1,53 @@
+---
+layout: post
+title: "[Dynamic Prog] Number Of Bus-Stations"
+date: 2014-01-06 12:12:43.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784433060'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>At a bus-station, you have time-table for buses arrival and departure. You need to find the minimum number of platforms so that all the buses can be accommodated as per their schedule.</p>
+<p><a href="https://rameshnagaraj.files.wordpress.com/2014/01/9705e-bus-1.gif"><img id="BLOGGER_PHOTO_ID_5617572055676903538" alt="" src="{{ site.baseurl }}/assets/9705e-bus-1.gif?w=300" border="0" /></a><b></b></p>
+<p><b>Example:</b> Time table is like below:</p>
+<blockquote>
+<pre><b>Bus</b>         <b>Arrival</b>         <b>Departure</b> 
+BusA        0900 hrs        0930 hrs
+BusB        0915 hrs        1300 hrs
+BusC        1030 hrs        1100 hrs
+BusD        1045 hrs        1145 hrs</pre>
+</blockquote>
+<p>Then the answer must be 3. Otherwise the bus-station will not be able to accommodate all the buses.</p>
+<p><b>Answer:</b><br />
+Let’s take the same example as described above. Now if we apply dynamic programming and calculate the number of buses at station at any time (when a bus comes or leaves). Maximum number in that pool will be nothing but the maximum number of buses at the bus-station at any time, which is same as max number of platforms required.</p>
+<p>So first sort all the arrival(A) and departure(D) time in an int array. Please save the corresponding arrival or departure in the array also. Either you can use a particular bit for this purpose or make a structure. After sorting our array will look like this:</p>
+<blockquote>
+<pre>0900    0915    1930    1030    1045    1100    1145    1300
+A       A       D       A       A       D       D       D</pre>
+</blockquote>
+<p>Now modify the array as put 1 where you see A and -1 where you see D. So new array will be like this:</p>
+<blockquote>
+<pre>1       1       -1      1       1       -1      -1      -1</pre>
+</blockquote>
+<p>And finally make a cumulative array out of this:</p>
+<blockquote>
+<pre>1       2       1       2       3       2       1       0</pre>
+</blockquote>
+<p>Your solution will be the maximum value in this array. Here it is 3.</p>
+<p>I think that code for this will not be complex so I am skipping that part. The complexity of this solution depends on the complexity of sorting.</p>
+<p><b>PS:</b> If you have a arriving and another departing at same time then put departure time first in sorted array.</p>
+<div></div>
+<div><b>Further Thoughts:</b> You don not need to create a cumulative array or an array with 1 and -1; you just need a counter (cnt) initialized at '0'. Whenever, you find an 'A' in arrival-departure array, increment cnt by 1. Compare it with maximum value (max); if it is greater than max, make max equal to cnt. If you get a 'D' in arrival-departure array, decrement cnt by 1. At the end, return 'max'.</div>

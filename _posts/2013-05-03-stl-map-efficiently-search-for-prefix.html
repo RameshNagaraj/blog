@@ -1,0 +1,80 @@
+---
+layout: post
+title: STL Map - efficiently search for Prefix
+date: 2013-05-03 23:19:34.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- STL
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850512056'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>For <em>prefix</em>  searching, you can use <a href="http://www.cplusplus.com/reference/stl/map/lower_bound/" rel="nofollow"><code>lower_bound</code></a> to search for <code>"Marl"</code>.</p>
+<pre><code>    map&lt;string,string&gt;::const_iterator m = tMap.lower_bound("Marl");
+    cerr &lt;&lt; (*m).second &lt;&lt; endl;</code></pre>
+<p>This does not work for non-prefix substrings: in the general case, searching a map is not much different from searching other containers.</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+typedef map&lt;string, string&gt; TStrStrMap;
+typedef pair&lt;string, string&gt; TStrStrPair;
+
+TStrStrMap::const_iterator FindPrefix(const TStrStrMap&amp; map, const string&amp; search_for) {
+    TStrStrMap::const_iterator i = map.lower_bound(search_for);
+    if (i != map.end()) {
+        const string&amp; key = i-&gt;first;
+        if (key.compare(0, search_for.size(), search_for) == 0) // Really a prefix?
+            return i;
+    }
+    return map.end();
+}
+
+void Test(const TStrStrMap&amp; map, const string&amp; search_for) {
+    cout &lt;&lt; search_for;
+    auto i = FindPrefix(map, search_for);
+    if (i != map.end())
+        cout &lt;&lt; '\t' &lt;&lt; i-&gt;first &lt;&lt; ", " &lt;&lt; i-&gt;second;
+    cout &lt;&lt; endl;
+}
+
+int main(int argc, char *argv[])
+{
+    TStrStrMap tMap;
+
+    tMap.insert(TStrStrPair("John", "AA"));
+    tMap.insert(TStrStrPair("Mary", "BBB"));
+    tMap.insert(TStrStrPair("Mother", "A"));
+    tMap.insert(TStrStrPair("Marlon", "C"));
+
+    Test(tMap, "Marl");
+    Test(tMap, "Mo");
+    Test(tMap, "ther");
+    Test(tMap, "Mad");
+    Test(tMap, "Mom");
+    Test(tMap, "Perr");
+    Test(tMap, "Jo");
+
+    return 0;
+}</code></pre>
+<p>This prints:</p>
+<pre><code>Marl    Marlon, C
+Mo      Mother, A
+ther
+Mad
+Mom
+Perr
+Jo      John, AA</code></pre>
+<p>End</p>

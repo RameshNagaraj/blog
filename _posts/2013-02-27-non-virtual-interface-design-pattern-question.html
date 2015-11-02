@@ -1,0 +1,70 @@
+---
+layout: post
+title: Non-virtual interface design pattern question
+date: 2013-02-27 18:28:36.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Design Pattern
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784556109'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>When design interface, someone recommend to use non-virtual interface pattern.</p>
+<p>The essence of the non-virtual interface pattern is that you have <strong>private virtual</strong> functions, which are called by <strong>public non-virtual</strong> functions (the non-virtual interface).</p>
+<p>The advantage of this is that the base class has more control over its behaviour than it would if derived classes were able to override any part of its interface. In other words, the base class (the interface) can provide more guarantees about the functionality it provides.</p>
+<p>As a simple example, consider the good old animal class with a couple of typical derived classes:</p>
+<pre><code>class Animal
+{
+public:
+    virtual void speak() const = 0;
+};
+
+class Dog : public Animal
+{
+public:
+    void speak() const { std::cout &lt;&lt; "Woof!" &lt;&lt; std::endl; }
+};
+
+class Cat : public Animal
+{
+public:
+    void speak() const { std::cout &lt;&lt; "Meow!" &lt;&lt; std::endl; }
+};</code></pre>
+<p>This uses the usual public virtual interface that we're used to, but it has a couple of problems:</p>
+<ol>
+<li>Each derived animal is repeating code -- the only part that changes is the string, yet each derived class needs the whole <code>std::cout &lt;&lt; ... &lt;&lt; std::endl;</code> boilerplate code.</li>
+<li>The base class can't make guarantees about what <code>speak()</code> does. A derived class may forget the new line, or write it to <code>cerr</code> or anything for that matter.</li>
+</ol>
+<p>To fix this, you can use a non-virtual interface that is supplemented by a private virtual function that allows polymorphic behaviour:</p>
+<pre><code>class Animal
+{
+public:
+   void speak() const { std::cout &lt;&lt; getSound() &lt;&lt; std::endl; }
+private:
+   virtual std::string getSound() const = 0;
+};
+
+class Dog : public Animal
+{
+private:
+   std::string getSound() const { return "Woof!"; }
+};
+
+class Cat : public Animal
+{
+private:
+   std::string getSound() const { return "Meow!"; }
+};</code></pre>
+<p>Now the base class can guarantee that it will write out to <code>std::cout</code> and end with a new line. It also makes maintenance easier as derived classes don't need to repeat that code.</p>
+<p>Herb Sutter wrote <a href="http://www.gotw.ca/publications/mill18.htm" rel="nofollow">a good article on non-virtual interfaces</a> that I would recommend checking out.</p>

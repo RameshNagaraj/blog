@@ -1,0 +1,84 @@
+---
+layout: post
+title: Virtual Destructor
+date: 2013-08-08 10:24:15.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '16454368517'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>If the destructor in the base class is not made virtual, then an object that might have been declared of type base class and instance of child class would simply call the base class destructor without calling the derived class destructor.</p>
+<p>Hence, by making the destructor in the base class virtual, we ensure that the derived class destructor gets called before the base class destructor.</p>
+<p>class a<br />
+{<br />
+public:<br />
+a(){printf("\nBase Constructor\n");}<br />
+~a(){printf("\nBase Destructor\n");}<br />
+};</p>
+<p>class b : public a<br />
+{<br />
+public:<br />
+b(){printf("\nDerived Constructor\n");}<br />
+~b(){printf("\nDerived Destructor\n");}<br />
+};<br />
+int main()<br />
+{<br />
+a* obj=new b;<br />
+delete obj;<br />
+return 0;<br />
+}</p>
+<p>Output:<br />
+Base Constructor<br />
+Derived Constructor<br />
+Base Destructor</p>
+<p>By Changing<br />
+~a(){printf("\nBase Destructor\n");}<br />
+to<br />
+virtual ~a(){printf("\nBase Destructor\n");}</p>
+<p>Output:<br />
+Base Constructor<br />
+Derived Constructor<br />
+Derived Destructor<br />
+Base Destructor.</p>
+<p>&nbsp;</p>
+<p><strong>Virtual destructors:</strong></p>
+<p>The explicit destroying of object with the use of delete operator to a base class pointer to the object is performed by the destructor of the base-class is invoked on that object.</p>
+<p>The above process can be simplified by declaring a virtual base class destructor.<br />
+All the derived class destructors are made virtual in spite of having the same name as the base class destructor. In case the object in the hierarchy is destroyed explicitly by using delete operator to the base class pointer to a derived object, the appropriate destructor will be invoked.</p>
+<p><strong>Virtual constructor:</strong></p>
+<p>A constructor of a class can not be virtual and if causes a syntax error.</p>
+<p>Disclaimer: The standard does not mandate any particular way of performing this operations, it only mandates what the behavior of the operations at a higher level are. These are implementation details that are common to various implementations, but not mandated by the standard.</p>
+<p><strong>How does the compiler dispatch to the final overrider?</strong></p>
+<p>The first answer is the simple one, the same dynamic dispatch mechanism that is used for other<code>virtual</code> functions is used for destructors. To refresh it, each object stores a pointer (<code>vptr</code>) to each of its <code>vtable</code>s (in the event of multiple inheritance there can be more than one), when the compiler sees a call to any virtual function, it follows the <code>vptr</code> of the static type of the pointer to find the<code>vtable</code> and then uses the pointer in that table to forward the call. In most cases the call can be directly dispatched, in others (multiple inheritance) it calls some intermediate code (<em>thunk</em>) that fixes the <code>this</code>pointer to refer to the type of the <em>final overrider</em> for that function.</p>
+<p><strong>How does the compiler then call the base destructors?</strong></p>
+<p>The process of destructing an object takes more operations than those you write inside the body of the destructor. When the compiler generates the code for the destructor, it adds extra code both before and after the user defined code.</p>
+<p>Before the first line of a user defined destructor is called, the compiler injects code that will make the type of the object be that of the destructor being called. That is, right before <code>~derived</code> is entered, the compiler adds code that will modify the <code>vptr</code> to refer to the <code>vtable</code> of <code>derived</code>, so that effectively, the runtime type of the object <em>becomes</em> <code>derived</code> (*).</p>
+<p>After the last line of your user defined code, the compiler injects calls to the member destructors as well as base destructor(s). This is performed <em>disabling</em> dynamic dispatch, which means that it will no longer come all the way down to the just executed destructor. It is the equivalent of adding <code>this-&gt;~mybase();</code> for each base of the object (in reverse order of declaration of the bases) at the end of the destructor.</p>
+<p>With virtual inheritance, things get a bit more complex, but overall they follow this pattern.</p>
+<p><em>EDIT</em> (forgot the (*)): (*) The standard mandates in §12/3:</p>
+<blockquote><p>When a virtual function is called directly or indirectly from a constructor (including from the mem-initializer for a data member) or from a destructor, and the object to which the call applies is the object under construction or destruction, the function called is the one defined in the constructor or destructor’s own class or in one of its bases, but not a function overriding it in a class derived from the con- structor or destructor’s class, or overriding it in one of the other base classes of the most derived object.</p></blockquote>
+<p>That requirement implies that the runtime type of the object is that of the class being constructed/destructed at this time, even if the original object that is being constructed/destructed is of a derived type. A simple test to verify this implementation can be:</p>
+<pre><code>struct base {
+   virtual ~base() { f(); }
+   virtual void f() { std::cout &lt;&lt; "base"; }
+};
+struct derived : base {
+   void f() { std::cout &lt;&lt; "derived"; }
+};
+int main() {
+   base * p = new derived;
+   delete p;
+}</code></pre>
+<p>END</p>

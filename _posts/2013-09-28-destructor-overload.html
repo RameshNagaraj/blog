@@ -1,0 +1,58 @@
+---
+layout: post
+title: Destructor Overload
+date: 2013-09-28 23:30:29.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361179'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<h2>Can I overload the destructor for my class?</h2>
+<p>No. Destructors never have parameters or return values.</p>
+<p>And you're not supposed to call destructors explicitly, so you couldn't use parameters or return values anyway.</p>
+<p>You can't. There is only one destructor per class in C++.</p>
+<p>What you can do is make a private destructor and then have several public methods which call the destructor in new and interesting ways.</p>
+<pre><code>class Foo {
+  ~Foo() { ... }
+public:
+  DestroyFoo(int) { ... };
+  DestroyFoo(std::string) { ... }
+};</code></pre>
+<p>Overloading means having several functions with the same name which take different arguments. Like<code>swap(int &amp;a, int &amp;b)</code> and <code>swap(double &amp;a, double &amp;b)</code>. A destructor takes no arguments. Overloading it would not make sense.</p>
+<p>Constructor<br />
+ Constructors have the same name as the<br />
+class.<br />
+ Constructors do not return a value.<br />
+ The constructor, like all functions, can be<br />
+overloaded with each constructor having a<br />
+different set of parameters.</p>
+<p>Destructor<br />
+ Destructors have the same name as the class<br />
+but preceded with a ~.<br />
+ Destructors do not return a value.<br />
+ Destructors take no arguments and cannot be<br />
+overloaded.<br />
+ Destructors are used for cleaning up object data<br />
+/ state<br />
+ Allocated memory<br />
+ Close files<br />
+ Close network connections, etc.</p>
+<p>&nbsp;</p>
+<p>Constructor Summary<br />
+Date d1(3, 10, 2002); // constructor called<br />
+Date d2, d5; // default constructor called<br />
+Date d3 (d2); // copy constructor called<br />
+Date d4 = d1; // copy constructor called<br />
+d5 = d2; // assignment operator called.</p>
+<p>END</p>

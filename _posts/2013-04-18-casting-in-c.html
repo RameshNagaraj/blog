@@ -1,0 +1,97 @@
+---
+layout: post
+title: Casting in C++
+date: 2013-04-18 20:14:49.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '16454369068'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<h2>static_cast</h2>
+<p><code>static_cast</code> is used for cases where you basically want to reverse an implicit conversion, with a few restrictions and additions. <code>static_cast</code> performs no runtime checks. This should be used if you know that you refer to an object of a specific type, and thus a check would be unnecessary. Example:</p>
+<pre><code>void func(void *data) {
+  // conversion from MyClass* -&gt; void* is implicit
+  MyClass *c = static_cast&lt;MyClass*&gt;(data);
+  ...
+}
+
+int main() {
+  MyClass c;
+  start_thread(&amp;func, &amp;c)  // func(&amp;c) will be called
+      .join();
+}</code></pre>
+<p>In this example, you know that you passed a <code>MyClass</code> object, and thus there is no need for a runtime check to ensure this.</p>
+<h2>dynamic_cast</h2>
+<p><code>dynamic_cast</code> is used for cases where you don't know what the dynamic type of the object is. You cannot use <code>dynamic_cast</code> if you downcast and the argument type is not polymorphic. An example</p>
+<pre><code>if(JumpStm *j = dynamic_cast&lt;JumpStm*&gt;(&amp;stm)) {
+  ...
+} else if(ExprStm *e = dynamic_cast&lt;ExprStm*&gt;(&amp;stm)) { 
+  ...
+}</code></pre>
+<p><code>dynamic_cast</code> returns a null pointer if the object referred to doesn't contain the type casted to as a base class (when you cast to a reference, a <code>bad_cast</code> exception is thrown in that case).</p>
+<p>The following code is not valid, because <code>Base</code> is not polymorphic (doesn't contain a virtual function):</p>
+<pre><code>struct Base { };
+struct Derived : Base { };
+int main() { 
+  Derived d; Base *b = &amp;d;
+  dynamic_cast&lt;Derived*&gt;(b); // invalid
+}</code></pre>
+<p>An "up-cast" is always valid with both <code>static_cast</code> and <code>dynamic_cast</code>, and also without any cast, as an "up-cast" is an implicit conversion.</p>
+<h2>Regular Cast</h2>
+<p>These casts are also called c-style cast. A c-style cast is basically identical to trying out a range of sequences of C++ casts, and taking the first c++ cast that works, without ever considering<code>dynamic_cast</code>. Needless to say that this is much more powerful as it combines all of <code>const_cast</code>,<code>static_cast</code> and <code>reinterpret_cast</code>, but it's also unsafe because it does not use<code>dynamic_cast</code>.</p>
+<p>In addition, C-style casts not only allow you to do this, but also allow you to safely cast to a private base-class, while the "equivalent" <code>static_cast</code> sequence would give you a compile time error for that.</p>
+<p>Some people prefer c-style casts because of their brevity. I use them for numeric casts only, and use the appropriate C++ casts when user defined types are involved, as they provide stricter checking.</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><a title="cpp/language/const cast" href="http://en.cppreference.com/w/cpp/language/const_cast">const_cast conversion</a></td>
+<td>adds or removes const</td>
+</tr>
+<tr>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><a title="cpp/language/static cast" href="http://en.cppreference.com/w/cpp/language/static_cast">static_cast conversion</a></td>
+<td>performs basic conversions</td>
+</tr>
+<tr>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><a title="cpp/language/dynamic cast" href="http://en.cppreference.com/w/cpp/language/dynamic_cast">dynamic_cast conversion</a></td>
+<td>performs checked polymorphic conversions</td>
+</tr>
+<tr>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><a title="cpp/language/reinterpret cast" href="http://en.cppreference.com/w/cpp/language/reinterpret_cast">reinterpret_cast conversion</a></td>
+<td>performs general low-level conversions</td>
+</tr>
+<tr>
+<td colspan="2"></td>
+</tr>
+<tr>
+<td><a title="cpp/language/implicit cast" href="http://en.cppreference.com/w/cpp/language/implicit_cast">standard conversions</a></td>
+<td>implicit conversions from one type to another</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>END</p>

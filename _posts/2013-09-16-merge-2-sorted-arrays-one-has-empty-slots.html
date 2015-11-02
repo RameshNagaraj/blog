@@ -1,0 +1,51 @@
+---
+layout: post
+title: "[ARRAY] Merge 2 Sorted Arrays (one has empty slots)"
+date: 2013-09-16 15:24:52.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454368370'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Question: There are two sorted arrays A1 and A2. Array A1 is full where as array A2 is partially empty and number of empty slots are just enough to accommodate all elements of A1. Write a program to merge the two sorted arrays to fill the array A2. You cannot use any additional memory and expected run time is O(n).</p>
+<p>Solution: The trick to solving this problem is to start filling the destination array from the back with the largest elements. You will end up with a merged and sorted destination array.<br />
+<a href="https://rameshnagaraj.files.wordpress.com/2013/09/192c8-merge-two-sorted-arrays-in-place.png"><img id="BLOGGER_PHOTO_ID_5397090664522374258" alt="" src="{{ site.baseurl }}/assets/192c8-merge-two-sorted-arrays-in-place.png?w=237" border="0" /></a></p>
+<p>Code (C#):</p>
+<pre>// A1 and A2 are two sorted arrays. 
+// A2 is not completely full (has empty slots at the end and are exactly the 
+// size of A1)
+// the goal is to merge the two arrays in a sorted fashion
+
+void Merge(int[] A1, int[] A2)
+{
+   int count = FindCount(A2); // get the count of full slots
+   int i = A1.Length - 1;
+   int j = count - 1;
+   int k = A2.Length - 1;
+
+   for(;k&gt;=0;k--)
+   {
+      if(A1[i] &gt; A2[j] || j &lt; 0)
+      {
+         A2[k] =A1[i];
+         i--;
+      }
+      else
+      {
+         A2[k] = A2[j];
+         j--;
+      }
+   }
+}</pre>
+<p>END</p>

@@ -1,0 +1,62 @@
+---
+layout: post
+title: Reset Sequences in Oracle
+date: 2010-12-21 22:48:47.000000000 +05:30
+type: post
+published: true
+status: publish
+categories: []
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784570293'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p style="text-align:justify;"><span style="color:#0000ff;">CREATE OR REPLACE</span></p>
+<p style="text-align:justify;"><span style="color:#0000ff;">PROCEDURE </span>RESETSEQ</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">AS</span></p>
+<p style="padding-left:30px;text-align:justify;">L_CURSEQVAL <span style="color:#0000ff;">NUMBER </span>;</p>
+<p style="text-align:justify;"><span style="color:#008000;">--- SELECT ALL THE SEQUENCES IN THE DB FOR WHICH THE SEQUENCES HAS TO BE RESET.</span><br />
+<span style="color:#008000;"> --- Ex: HERE THE PRODUCT 'XXX' HAS SEQUENCES STARTING WITH XXX_SEQ_T_***</span></p>
+<p style="text-align:justify;"><span style="color:#0000ff;">CURSOR </span>SEQNAMESCURSR<br />
+<span style="color:#0000ff;">IS</span><br />
+<span style="color:#0000ff;"> SELECT </span>US.SEQUENCE_NAME <span style="color:#0000ff;">AS </span>V_SEQNAME<br />
+<span style="color:#0000ff;"> FROM </span>USER_SEQUENCES US<br />
+<span style="color:#0000ff;"> WHERE </span>( SEQUENCE_NAME LIKE '%XXX_SEQ_T%' ) ;<br />
+CURROW 	SEQNAMESCURSR%<span style="color:#0000ff;">ROWTYPE </span>;</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">BEGIN</span><br />
+<span style="color:#0000ff;">OPEN </span>SEQNAMESCURSR<br />
+<span style="color:#0000ff;">LOOP</span><br />
+<span style="color:#0000ff;"> FETCH </span>SEQNAMESCURSR <span style="color:#0000ff;">INTO</span> CURROW ;<br />
+<span style="color:#0000ff;"> EXIT WHEN </span>SEQNAMESCURSR<span style="color:#0000ff;">%</span>NOTFOUND ;</p>
+<p style="padding-left:30px;text-align:justify;"><span style="color:#008000;">--- GET THE NEXT VALUE OF THE SEQUENCE</span><br />
+<span style="color:#0000ff;">EXECUTE IMMEDIATE</span><br />
+'SELECT' || CURROW.V_SEQNAME || '.NEXTVAL FROM DUAL' <span style="color:#0000ff;">INTO </span>L_CURSEQVAL ;</p>
+<p style="padding-left:30px;text-align:justify;"><span style="color:#008000;">--- ALTER THE SEQUENCE TO RESET THE SEQUENCE TO ZERO BY INCREMENTING WITH THE </span><span style="color:#008000;">NEGATIVE VALUE OF L_CURSEQVAL (QUERIED ABOVE)</span><br />
+<span style="color:#0000ff;">EXECUTE IMMEDIATE</span><br />
+'SELECT' || CURROW.V_SEQNAME || 'INCREMENT BY -' || L_CURSEQVAL || 'MINVALUE 0' ;</p>
+<p style="text-align:justify;padding-left:30px;"><span style="color:#008000;">--- GET THE NEXT VALUE FROM THE SEQUENCE. THIS WILL SET THE SEQUENCE TO ZERO</span></p>
+<p style="text-align:justify;padding-left:30px;"><span style="color:#0000ff;">EXECUTE IMMEDIATE</span><br />
+'SELECT' || CURROW.V_SEQNAME || '.NEXTVAL FROM DUAL' <span style="color:#0000ff;">INTO </span>L_CURSEQVAL ;</p>
+<p style="text-align:justify;padding-left:30px;"><span style="color:#008000;">--- RESET THE INCREMENT VALUE TO 1 BY ALTERING THE SEQUNCE</span><br />
+<span style="color:#0000ff;">EXECUTE IMMEDIATE</span><br />
+'SELECT' || CURROW.V_SEQNAME || 'INCREMENT BY 1 MINVALUE 0' ;<br />
+<span style="color:#0000ff;">COMMIT </span>;</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">END LOOP </span>;<br />
+<span style="color:#0000ff;">CLOSE </span>SEQNAMESCURSR ;</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">COMMIT </span>;</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">EXCEPTION</span></p>
+<p style="text-align:justify;padding-left:30px;"><span style="color:#0000ff;">WHEN </span>OTHERS <span style="color:#0000ff;">THEN</span><br />
+<span style="color:#0000ff;">IF </span>SEQNAMESCURSR<span style="color:#0000ff;">%</span>ISOPEN <span style="color:#0000ff;">THEN</span><br />
+<span style="color:#0000ff;">CLOSE </span>SEQNAMESCURSR ;<br />
+<span style="color:#0000ff;">END IF</span> ;<br />
+<span style="color:#0000ff;">RAISE </span>;<br />
+<span style="color:#0000ff;">ROLLBACK </span>;</p>
+<p style="text-align:justify;"><span style="color:#0000ff;">END </span>RESETSEQ ;</p>

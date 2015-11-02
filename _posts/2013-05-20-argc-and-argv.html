@@ -1,0 +1,61 @@
+---
+layout: post
+title: ArgC and ArgV
+date: 2013-05-20 12:15:57.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454368841'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>First, K&amp;R have an errata on this particular snippet:</p>
+<blockquote><p>117(§5.10): In the <em>find</em> example, the program increments <code>argv[0]</code>. This is not specifically forbidden, but not specifically allowed either.</p></blockquote>
+<p>Now for the explanation.</p>
+<p>Let's say your program is named <code>prog</code>, and you execute it with: <code>prog -ab -c Hello World</code>. You want to be able to parse the arguments to say that options <code>a</code>, <code>b</code> and <code>c</code> were specified, and <code>Hello</code>and <code>World</code> are the non-option arguments.</p>
+<p><code>argv</code> is of type <code>char **</code>—remember that an array parameter in a function is the same as a pointer. At program invocation, things look like this:</p>
+<pre><code>                 +---+         +---+---+---+---+---+
+ argv ----------&gt;| 0 |--------&gt;| p | r | o | g | 0 |
+                 +---+         +---+---+---+---+---+
+                 | 1 |--------&gt;| - | a | b | 0 |
+                 +---+         +---+---+---+---+
+                 | 2 |--------&gt;| - | c | 0 |
+                 +---+         +---+---+---+---+---+---+
+                 | 3 |--------&gt;| H | e | l | l | o | 0 |
+                 +---+         +---+---+---+---+---+---+
+                 | 4 |--------&gt;| W | o | r | l | d | 0 |
+                 +---+         +---+---+---+---+---+---+
+                 | 5 |--------&gt;NULL
+                 +---+</code></pre>
+<p>Here, <code>argc</code> is 5, and <code>argv[argc]</code> is <code>NULL</code>. At the beginning, <code>argv[0]</code> is a <code>char *</code> containing the string <code>"prog"</code>.</p>
+<p>In <code>(*++argv)[0]</code>, because of the parentheses, <code>argv</code> is incremented first, and then dereferenced. The effect of the increment is to move that <code>argv ----------&gt;</code> arrow "one block down", to point to the<code>1</code>. The effect of dereferencing is to get a pointer to the first commandline argument, <code>-ab</code>. Finally, we take the first character (<code>[0]</code> in <code>(*++argv)[0]</code>) of this string, and test it to see if it is <code>'-'</code>, because that denotes the start of an option.</p>
+<p>For the second construct, we actually want to walk down the string pointed to by the current <code>argv[0]</code>pointer. So, we need to treat <code>argv[0]</code> as a pointer, ignore its first character (that is <code>'-'</code> as we just tested), and look at the other characters:</p>
+<p><code>++(argv[0])</code> will increment <code>argv[0]</code>, to get a pointer to the first non- <code>-</code> character, and dereferencing it will give us the value of that character. So we get <code>*++(argv[0])</code>. But since in C, <code>[]</code>binds more tightly than <code>++</code>, we can actually get rid of the parentheses and get our expression as<code>*++argv[0]</code>. We want to continue processing this character until it's <code>0</code> (the last character box in each of the rows in the above picture).</p>
+<p>The expression</p>
+<pre><code>c = *++argv[0]</code></pre>
+<p>assigns to <code>c</code> the value of the current option, and <em>has the value <code>c</code></em>. <code>while(c)</code> is a shorthand for<code>while(c != 0)</code>, so the <code>while(c = *++argv[0])</code> line is basically assigning the value of the current option to <code>c</code> and testing it to see if we have reached the end of the current command-line argument.</p>
+<p>At the end of this loop, argv will point to the first non-option argument:</p>
+<pre><code>                 +---+         +---+---+---+---+---+
+                 | 0 |--------&gt;| p | r | o | g | 0 |
+                 +---+         +---+---+---+---+---+
+                 | 1 |--------&gt;| - | a | b | 0 |
+                 +---+         +---+---+---+---+
+                 | 2 |--------&gt;| - | c | 0 |
+                 +---+         +---+---+---+---+---+---+
+ argv ----------&gt;| 3 |--------&gt;| H | e | l | l | o | 0 |
+                 +---+         +---+---+---+---+---+---+
+                 | 4 |--------&gt;| W | o | r | l | d | 0 |
+                 +---+         +---+---+---+---+---+---+
+                 | 5 |--------&gt;NULL
+                 +---+</code></pre>
+<p>&nbsp;</p>
+<p>END</p>

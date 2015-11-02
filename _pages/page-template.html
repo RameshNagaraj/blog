@@ -1,0 +1,38 @@
+---
+layout: page
+title: Page Template
+date: 
+type: page
+published: false
+status: private
+categories: []
+tags: []
+meta:
+  _edit_last: '18160588'
+  _wp_page_template: default
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<pre>&lt;?php
+/*
+Template Name: All posts
+*/
+?&gt;
+&lt;?php
+$debut = 0; //The first article to be displayed
+?&gt;
+&lt;?php while(have_posts()) : the_post(); ?&gt;
+&lt;h2&gt;&lt;?php the_title(); ?&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;?php
+$myposts = get_posts('numberposts=-1&amp;offset=$debut');
+foreach($myposts as $post) :
+?&gt;
+&lt;li&gt;&lt;?php the_time('d/m/y') ?&gt;: &lt;a href="&lt;?php the_permalink(); ?&gt;"&gt;&lt;?php the_title(); ?&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;?php endforeach; ?&gt;
+&lt;/ul&gt;
+&lt;?php endwhile; ?&gt;</pre>

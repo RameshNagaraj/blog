@@ -1,0 +1,210 @@
+---
+layout: post
+title: Variables and Memory
+date: 2013-02-02 06:24:49.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784541587'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>When a C++ program starts, 5 distinct areas of memory are created. These are:</p>
+<ul>
+<li><i>Code Space</i>: This is where the executable instructions of the program are kept.</li>
+<li><i>Registers</i>: are part of the CPU that take care of internal housekeeping. Among other things, they contain an identifier that points to the next line of code that is to be executed, and the stack pointer.</li>
+<li><i>Global Name Space</i>: contains objects allocated by the linker which will persist for the duration of the program.</li>
+<li><i>Stack</i>: contains local variables, whose persistency is defined by their scope.</li>
+<li><i>Free Store, or Heap</i> is explicitly created and destroyed by issuing <code>new</code> and <code>delete</code> commands.</li>
+</ul>
+<p>This lesson will concentrate on the differences between the last three.</p>
+<h4>The Stack</h4>
+<p>The stack is where local variables and function parameters reside. It is called a stack because it follows the last-in, first-out principle. As data is added or <i>pushed</i> to the stack, it grows, and when data is removed or <i>popped</i> it shrinks. In reality, memory addresses are not physically moved around every time data is pushed or popped from the stack, instead the <i>stack pointer</i>, which as the name implies points to the memory address at the top of the stack, moves up and down. Everything below this address is considered to be on the stack and usable, whereas everything above it is off the stack, and invalid. This is all accomplished automatically by the operating system, and as a result it is sometimes also called <i>automatic</i> memory. On the extremely rare occasions that one needs to be able to explicitly invoke this type of memory, the C++ key word <code>auto</code> can be used. Normally, one declares variables on the stack like this:</p>
+<pre><code> 
+void func () { 
+int i; float x[100];
+
+...
+
+}
+</code></pre>
+<p>Variables that are declared on the stack are only valid within the scope of their declaration. That means when the function <code>func()</code> listed above returns, <code>i</code> and <code>x</code> will no longer be accessible or valid.</p>
+<p>There is another limitation to variables that are placed on the stack: the operating system only allocates a certain amount of space to the stack. As each part of a program that is being executed comes into scope, the operating system allocates the appropriate amount of memory that is required to hold all the local variables on the stack. If this is greater than the amount of memory that the OS has allowed for the total size of the stack, then the program will crash. While the maximum size of the stack can sometimes be changed by compile time parameters, it is usually fairly small, and nowhere near the total amount of RAM available on a machine.</p>
+<h4>The Global Namespace</h4>
+<p>The fact that variables on the stack disappear as soon as they go out of scope limits their usefulness. Another class of variables exist that do not have this limitation. These are global and namespace variables, static class members, and static variables in functions. Global variables are accessible throughout the program, and are declared in this manner:</p>
+<pre><code>
+#include &lt; iostream &gt;
+void func();
+
+int i = 5;
+int j = 3;
+float f = 10.0;
+
+int main() {
+   int j = 7;
+
+   cout &lt;&lt; "i in main: " &lt;&lt; i &lt;&lt; endl;
+   cout &lt;&lt; "j in main: " &lt;&lt; j &lt;&lt; endl;
+   cout &lt;&lt; "global j:  " &lt;&lt; ::j &lt;&lt; endl;
+
+   func();
+
+   return 0;
+
+}
+
+void func() {
+   float f = 20.0;
+
+   cout &lt;&lt; "f in func: " &lt;&lt; f &lt;&lt; endl;
+   cout &lt;&lt; "global f:  " &lt;&lt; ::f &lt;&lt; endl;
+}
+</code></pre>
+<p>The output of this program will be:</p>
+<pre>i in main: 5
+j in main: 7
+global j:  3
+f in func: 20.0
+global f:  10.0</pre>
+<p>Local variables take precedence over global variables of the same name. If both are defined as shown above for the variable <code>int j</code>, then <code>j</code> refers to the local copy, whereas <code>::j</code> refers to the global copy.</p>
+<p>Despite their attraction, <b>global variables are very dangerous, and should be avoided</b>. The permit uncontrolled access to data, which runs counter to the object nature of C++ programming.</p>
+<p>When data is common to, or must be shared amongst all instances of a class, one can use <code>static</code> variables:</p>
+<pre><code>
+class Muon {
+ public:
+   Muon(float E):Energy(E) { MuonsInEvent++; }
+   ~Muon() {MuonsInEvent--; }
+
+   static int MuonsInEvent;
+
+ private:
+   float Energy;
+
+};
+
+int Muon::MuonsInEvent = 0;
+
+int main() {
+
+   Muon *muons[10];
+   int nummuons;
+
+   for (int i=0; i&lt;10; i++) {
+       muons[i] = new Muon(0.);
+   }
+
+   nummuons = Muon::MuonsInEvent;   
+
+....
+
+}
+
+</code></pre>
+<p>Here the integer <code>MuonsInEvent</code> is static, and common to all instances of the <code>Muon</code> class. The declaration of <code>MuonsInEvent</code> does not define an integer, and no storage space is set aside. So the variable must be defined and initialized, as it is on the 13th line. Since it was declared <code>public</code>, it can then be accessed directly in <code>main()</code> by its class reference, and not by a reference to a specific instance of the class. If one wishes to restrict access to the static variable, as is often wise, it can be declared <code>private</code>, and then only member functions of the class can access it, just like a normal private variable.</p>
+<p>Member functions of a class can also be declared <code>static</code>. They exist not in an object, but in the scope of a class, and can thus be called without having an object of that class:</p>
+<pre><code>
+class Muon {
+ public:
+   Muon(float E):Energy(E) { MuonsInEvent++; }
+   ~Muon() {MuonsInEvent--; }
+
+   static int GetNumMuons() { return MuonsInEvent; }
+
+ private:
+   float Energy;
+   static int MuonsInEvent;
+
+};
+
+int Muon::MuonsInEvent = 0;
+
+int main() {
+
+   Muon *muons[10];
+   int nummuons;
+
+   for (int i=0; i&lt;10; i++) {
+       muons[i] = new Muon(0.);
+   }
+
+   nummuons = Muon::GetNumMuons();   
+
+....
+
+}
+
+</code></pre>
+<p>Note that static member functions do not have a <code>this</code> pointer, and therefore cannot be declared <code>const</code>. And since member data variables are accessed in member functions using the<code>this</code> pointer, <b>static member functions cannot access any non-static member variables</b>.</p>
+<p>Furthermore, static variables should not be used as a pseudo-global variable. While there are certain distinct implementations where they are mandated, <b>static variables and functions should be used with caution</b>. If you find yourself using them frequently, there is a significant chance that your design is at fault. This is especially true for Level 3 code, as tools are instantiated at the beginning of the run, and thus their members are easily accessible at any time thereafter.</p>
+<h4>The Free Store</h4>
+<p>The main problem with local variables, is that they don't persist. As soon as a function returns, all the local variables declared within it vanish. While it is possible to get around this with global variables, this is not wise. Instead, one can make use of the <i>free store</i>, or <i>heap</i> as it is often called.</p>
+<p>Variables and objects are declared on the heap using the keyword <code>new</code>, and are referenced using pointers. <code>new</code> will attempt to allocate the requested memory on the heap, and will throw a <code>bad_alloc</code> exception if it can not. While running out of memory is not usually a problem, when dealing with large programs it is often wise to check:</p>
+<pre><code>
+int *pI;
+
+try { pI = new int; }
+catch(std::bad_alloc) {
+    cout &lt;&lt; "ERROR: no more memory\n";
+    return(1);
+}
+
+.....
+
+delete pI;
+</code></pre>
+<p>Once you're done with something declared on the heap, it must be explicitly freed using the keyword <code>delete</code>. If this is not done, and the pointer is reassigned, a memory leak occurs. The original memory becomes unavailable, and cannot be accessed. If this is done many times, then eventually all the available memory will be gobbled up, and your program will crash.</p>
+<p>The heap is where the vast majority of your variables should be declared. This is because the heap is far larger than the stack, and once something is placed there, it won't disappear until you tell it to, avoiding the use of those nasty global variables.</p>
+<p>Note that most memory managers are greedy: even when memory is properly freed with <code>delete</code>, it is not really returned to the OS. That is, if your program allocates 1000 bytes, the size of the program in memory will grow to about that size. If you then free 1000 bytes, the program will not release the memory back to the OS - it will still look like it owns 1000 bytes of system memory. However you will have to then reallocate 1001 bytes of memory before the program size will grow again. Only when the program ends will this memory be returned to the system.</p>
+<p>An interesting note: on the SGI, the preceding paragraph is correct. However, it seems that the memory manager in Linux is more intelligent. When space on the heap is deleted in Linux, the allocated memory is returned to the operating system. Depending on the application, this can be a good or a bad thing.</p>
+<p>When checking for an out of memory condition, one can get a little fancier, and make use of the <code>new</code> function <code>set_new_handler()</code> which specifies what <code>new</code> will do when it fails. You still need to <code>try/catch</code> the exception though:</p>
+<pre><code>
+void out_of_store() {
+   cerr &lt;&lt; "ERROR: operator new failed: out of store\n";
+   throw std::bad_alloc();
+}
+
+int main() {
+
+   ....
+
+   int *pI;
+   set_new_handler(out_of_store);
+
+   try { pI = new int; }
+   catch(std::bad_alloc) {
+      return(1);
+   }
+
+   ....
+
+}
+
+</code></pre>
+<p>If you want your code to follow the standard C syntax and return a null pointer when <code>new</code> fails, then the form <code>new(nothrow)</code> must be used:</p>
+<pre><code>
+int *pI;
+
+pI = new(nothrow) int;
+if (pI == NULL) {
+   cout &lt;&lt; "ERROR: no more memory\n";
+   return(1);
+}</code></pre>
+<p>Note:<br />
+Variables are usually stored in RAM. This is either on the heap (e.g. all global variables will usually go there) or on the stack (all variables declared within a method/function usually go there). Stack and Heap are both RAM, just different locations. Pointers have different rules. The pointer to something (a memory block, an object, etc.) itself usually follows the rules of above (a pointer declared within a function is stored on the stack), but the data it points to (the memory block itself or the object you created with new) is stored on the heap. You can create pointers pointing to the stack (e.g. "int a = 10; int * b = &amp;a;", b points to a and a is stored on the stack), but memory allocation using malloc or new counts towards heap memory.</p>
+<p><img alt="Flexible Process Address Space Layout In Linux" src="{{ site.baseurl }}/assets/linuxFlexibleAddressSpaceLayout.png" /></p>
+<pre><img alt="Classic Process Address Space Layout In Linux" src="{{ site.baseurl }}/assets/linuxClassicAddressSpaceLayout.png" />
+
+<a href="http://www.pmzone.org/chapter04.html#top">http://www.pmzone.org/chapter04.html#top
+</a><a href="http://www.inf.udec.cl/~leo/teoX.pdf">http://www.inf.udec.cl/~leo/teoX.pdf</a>
+</pre>

@@ -1,0 +1,37 @@
+---
+layout: post
+title: The Nuts n Bolts Problem
+date: 2014-01-20 22:47:09.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784354486'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>There are n nuts and corresponding bolts. However, all nuts and bolts are shuffled and we have to device a technique to pair them.</p>
+<ul>
+<li>No two pairs are of same size.</li>
+<li>Each nut has exactly one bolt for it.</li>
+<li>You can’t compare nut with a nut and same with bolt.</li>
+<li>You can determine by a comparison if a nut is greater or a bolt is greater.</li>
+</ul>
+<p><span style="text-decoration:underline;"><b>Strategy:</b></span></p>
+<p>This problem can also be solved in a quick sort kind of technique.</p>
+<ul>
+<li>Pick up nut n1 with all bolts. Divide all bigger bolts on one side and smaller bolt on other side. One bolt say b1 matches n1 to make the pair.</li>
+<li>Take nut n2 and compare with bolt b1. If bigger bolt is required look in greater set otherwise in the smaller set.</li>
+<li>Do the same with rest of the nuts. This way we are saving the number of comparisons by categorizing.</li>
+</ul>
+<p>Time complexity is approximately O(nlogn)</p>

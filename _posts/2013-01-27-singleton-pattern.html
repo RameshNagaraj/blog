@@ -1,0 +1,387 @@
+---
+layout: post
+title: Singleton Pattern
+date: 2013-01-27 01:32:15.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Design Pattern
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454374656'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>Singleton Pattern<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Well, to begin with, <strong>Singleton</strong> is one of the most commonly used - as well as misused - design patterns. Why did I say misused? You will get the answer as you read on.<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;"><strong>Singleton</strong> Pattern is usually used to restrict the instances of a class, that is the objects within the life cycle of the software program to one. But why do we need to use <strong>Singleton</strong>s? We use them:<br />
+</span></p>
+<ul>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">to coordinate actions across the system<br />
+</span></div>
+</li>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">to improve upon the efficiency of the system<br />
+</span></div>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Care should be taken to identify the need &amp; benefits of using a <strong>singleton</strong>. Often, we tend to use <strong>singleton</strong>s to hide a global object.<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>How to Create a Singleton?<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Most of us know how to create a <strong>singleton</strong>. We have done it so many times by now, isn't it? But let us just do a quick recap.<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">The thumb rule for <strong>singleton</strong>s is that the direct instantiation through the constructor should be prevented. Then how do we instantiate or access the object? The solution is to provide a method that creates a new instance of the object if one does not exist. If an instance already exists, it simply returns a reference to that object.<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    <strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Remember the default access in a C++ class is </span><span style="color:#990000;font-family:Consolas;">private</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">. </span><span style="color:black;font-family:Consolas;font-size:9pt;"><br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Now that we have prevented the direct instantiation of the class, we need to provide a mechanism to access the object. Here is how we do this:<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* getInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> (NULL == _instance) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            _instance = </span><span style="color:blue;">new</span><span style="color:black;"><br />
+<strong>Singleton</strong>();<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">private</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    <strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// the single instance of the object<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;"><strong>Singleton</strong>* <strong>Singleton</strong>::_instance = NULL;<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Now we have ensured that only one instance exists and gives access to the same. Now other required functionality can be added to the <strong>Singleton</strong> class.<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>Is That All?<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Are we done? No, not quite exactly. Remember I had said that this is an attempt to create a perfect <strong>Singleton</strong>. So what is wrong with the above? Have we missed something? Yes, we did. Though we have prevented the direct instantiation, an object can still be created. If you recollect the basics, all C++ classes, apart from having their default constructors also have:<br />
+</span></p>
+</li>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">copy constructor<br />
+</span></div>
+</li>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">assignment operator<br />
+</span></div>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">We need to declare these also as </span><span style="color:#990000;font-family:Consolas;">private </span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">so as to prevent the access. You may ask why. We do so because:<br />
+</span></p>
+</li>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">a copy constructor will create a new object from the existing one. But we are interested in limiting the instance to only one.<br />
+</span></div>
+</li>
+<li>
+<div style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">an assignment operator is not required for a <strong>Singleton</strong>; '_instance' is the only data member &amp; has to point to the same object across all instances.<br />
+</span></div>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* getInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> (NULL == _instance) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            _instance = </span><span style="color:blue;">new</span><span style="color:black;"><br />
+<strong>Singleton</strong>();<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">private</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    <strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// copy constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// assignment operator<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>&amp; operator=(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> *</span><span style="color:blue;">this</span><span style="color:black;">;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// the single instance of the object<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;"><strong>Singleton</strong>* <strong>Singleton</strong>::_instance = NULL;<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>How Do We Release the Singleton?<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Now we have prevented alternatives to create another instance of the class. But what about the destruction of the instance? Can we define a destructor &amp; delete </span><span style="color:#990000;font-family:Consolas;">_instance </span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">in it? This though looks very simple enough, it isn't. If you do the above, you will have your code as:<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">. . .<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">. . .<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    ~<strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">delete</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">What actually happens in that destructor, is that delete </span><span style="color:#990000;font-family:Consolas;">_instance </span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">invokes the destructor again &amp; puts it into an infinite loop. So the easy way out seems to be to depend on the post program termination clean-up to release the memory. But then it is not a good practice to depend on the post program termination clean up for the new that we had done. Hence I recommend to have a </span><span style="color:#990000;font-family:Consolas;">releaseInstance()</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;"> and to prevent access to the default destructor by making it </span><span style="color:#990000;font-family:Consolas;">private</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">.<br />
+</span></p>
+<p style="text-align:right;background:white;"><img alt="" src="{{ site.baseurl }}/assets/012613_2002_singletonpa1.gif" /><span style="color:#005782;font-family:Segoe UI;font-size:8pt;"><br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* getInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> (NULL == _instance) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            _instance = </span><span style="color:blue;">new</span><span style="color:black;"><br />
+<strong>Singleton</strong>();<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+</span><span style="color:blue;">void</span><span style="color:black;"> releaseInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> (NULL != _instance) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            </span><span style="color:blue;">delete</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">            _instance = NULL;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">private</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    <strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default destructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    ~<strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// copy constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// assignment operator<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>&amp; operator=(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> *</span><span style="color:blue;">this</span><span style="color:black;">;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// the single instance of the object<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;"><strong>Singleton</strong>* <strong>Singleton</strong>::_instance = NULL;<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>Tune the Release of Singleton<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">Now that looks perfect. All said &amp; done, there still is a catch. When should </span><span style="color:#990000;font-family:Consolas;">releaseInstance()</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;"> be called? Ideally, this should be called when the application exits. But in a real time situation when there are multiple developers working on the application code, it just remains a mirage. So what do we do? We will use a reference count to ensure that the actual destruction of the <strong>Singleton</strong> happens only when it is not being referenced anymore. So we add a </span><span style="color:#990000;font-family:Consolas;">static </span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">reference count to the <strong>Singleton</strong>.<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* getInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> (NULL == _instance) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            _instance = </span><span style="color:blue;">new</span><span style="color:black;"><br />
+<strong>Singleton</strong>();<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        _referenceCount++;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+</span><span style="color:blue;">void</span><span style="color:black;"> releaseInstance() {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        _referenceCount--;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">if</span><span style="color:black;"> ((</span><span style="color:navy;">0</span><span style="color:black;"> == _referenceCount) &amp;&amp; (NULL != _instance)) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            </span><span style="color:blue;">delete</span><span style="color:black;"> _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">            _instance = NULL;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">private</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    <strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// default destructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    ~<strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// copy constructor<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// assignment operator<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    <strong>Singleton</strong>&amp; operator=(</span><span style="color:blue;">const</span><span style="color:black;"><br />
+<strong>Singleton</strong>&amp;) {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">        </span><span style="color:blue;">return</span><span style="color:black;"> *</span><span style="color:blue;">this</span><span style="color:black;">;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// the single instance of the object<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+<strong>Singleton</strong>* _instance;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:green;"><em>// the count of references<br />
+</em></span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">    </span><span style="color:blue;">static</span><span style="color:black;"><br />
+</span><span style="color:blue;">int</span><span style="color:black;"> _referenceCount;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">int</span><span style="color:black;"><br />
+<strong>Singleton</strong>::_referenceCount = </span><span style="color:navy;">0</span><span style="color:black;">;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;"><strong>Singleton</strong>* <strong>Singleton</strong>::_instance = NULL;<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">This is much better, but still not completely foolproof. If the </span><span style="color:#990000;font-family:Consolas;">releaseInstance()</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;"> is called more than required by one particular user, it will lead to a situation where an instance is deleted even though it is actually still very much in use. On the contrary, if the </span><span style="color:#990000;font-family:Consolas;">releaseInstance()</span><span style="color:#111111;font-family:Segoe UI;font-size:10pt;"> is not called by a user, then the <strong>Singleton</strong> will never be deleted &amp; we are back to depending on the post program termination clean up.<br />
+</span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">In case of Java, as far as my knowledge goes, garbage collection takes care of releasing the instance when it is not referenced anymore. So not much problem as envisaged above for C++.<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>Finale<br />
+</strong></span></p>
+<p style="background:white;"><span style="color:#111111;font-family:Segoe UI;font-size:10pt;">A simple way to handle the limitations in C++ is through effective code review. But the risk still remains as it is directly proportionate to the effectiveness of the code review. Though there is another workaround to minimize this risk, there always seems to be a way to hack through.<br />
+</span></p>
+<p style="background:white;"><span style="color:#ff9900;font-family:Segoe UI;font-size:15pt;"><strong>Destruction:<br />
+</strong></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">class</span><span style="color:black;"><br />
+<strong>Singleton</strong> {<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:blue;">public</span><span style="color:black;">:<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">. . .<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">. . .<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    ~<strong>Singleton</strong>() {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        if ( _instance != NULL ) {<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">            Singleton* tmpPtr = _instance ;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">            _instance = NULL ;<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="font-family:Consolas;font-size:9pt;"><span style="color:black;">            </span><span style="color:blue;">delete</span><span style="color:black;"> tmpPtr ;<br />
+</span></span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">        }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">    }<br />
+</span></p>
+<p style="background:#fbedbb;"><span style="color:black;font-family:Consolas;font-size:9pt;">};<br />
+</span></p>
+<p><span style="color:#111111;font-family:Segoe UI;font-size:10pt;background-color:white;">On the 2nd call to ~Singleton, _instance will be null, so it won't get stuck in the infinite loop. Then, you don't need the ReleaseInstance function</span></li>
+</ul>

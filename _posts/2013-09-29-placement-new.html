@@ -1,0 +1,96 @@
+---
+layout: post
+title: Placement new
+date: 2013-09-29 00:15:08.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784488787'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>There are many uses of placement <tt>new</tt>. The simplest use is to place an object at a particular location in memory. This is done by supplying the place as a pointer parameter to the <tt>new</tt> part of a <tt>new</tt> expression:</p>
+<pre>#include &lt;new&gt;        // <em>Must <tt>#include</tt> this to use "placement <tt>new</tt>"</em>
+#include "Fred.h"     // <em>Declaration of <tt>class</tt> <tt>Fred</tt></em>
+
+void someCode()
+{
+  char memory[sizeof(Fred)];     // <em>Line #1</em>
+  void* place = memory;          // <em>Line #2</em>
+
+  Fred* f = new(place) Fred();   // <em>Line #3 (see "DANGER" below)</em>
+  // <em>The pointers <tt>f</tt> and <tt>place</tt> will be equal</em>
+
+  <em>...</em>
+}</pre>
+<p>Line #1 creates an array of <tt>sizeof(Fred)</tt> bytes of memory, which is big enough to hold a <tt>Fred</tt> object. Line #2 creates a pointer <tt>place</tt> that points to the first byte of this memory (experienced C programmers will note that this step was unnecessary; it's there only to make the code more obvious). Line #3 essentially just calls the constructor <tt>Fred::Fred()</tt>. The <tt>this</tt> pointer in the <tt>Fred</tt> constructor will be equal to <tt>place</tt>. The returned pointer <tt>f</tt> will therefore be equal to <tt>place</tt>.</p>
+<p><em>ADVICE:</em> Don't use this "placement <tt>new</tt>" syntax unless you have to. Use it only when you really care that an object is placed at a particular location in memory. For example, when your hardware has a memory-mapped I/O timer device, and you want to place a <tt>Clock</tt> object at that memory location.</p>
+<p><em>DANGER:</em> You are taking <em>sole</em> responsibility that the pointer you pass to the "placement <tt>new</tt>" <tt>operator</tt> points to a region of memory that is big enough and is properly aligned for the object type that you're creating. Neither the compiler nor the run-time system make any attempt to check whether you did this right. If your <tt>Fred</tt> class needs to be aligned on a 4 byte boundary but you supplied a location that isn't properly aligned, you can have a serious disaster on your hands (if you don't know what "alignment" means, <em>please</em> don't use the placement <tt>new</tt> syntax). You have been warned.</p>
+<p>You are also solely responsible for destructing the placed object. This is done by explicitly calling the destructor:</p>
+<pre>void someCode()
+{
+  char memory[sizeof(Fred)];
+  void* p = memory;
+  Fred* f = new(p) Fred();
+  <em>...</em>
+  f-&gt;~Fred();   // <em>Explicitly call the destructor for the placed object</em>
+}</pre>
+<p>This is about the only time you ever explicitly call a destructor.</p>
+<p><strong>What is <em>placement new</em> in C++?</strong></p>
+<ul>
+<li>In some scenarios it becomes necessary to place objects at specified locations in memory. Placement new solves this problem.</li>
+<li>For example, there could be predefined memory pools in which certain objects need to be placed on creation.</li>
+<li>Placement new is achieved by overloading the new operator which takes more than one argument apart from the default size_t argument.</li>
+</ul>
+<p>EXAMPLE: Demonstrate the usage of placement new</p>
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class MyClass {
+
+   public:
+
+    // Placement new operator
+    void* operator new (size_t sz, void* v) {
+        cout &lt;&lt; "Placement new invoked" &lt;&lt; endl;
+        return v;
+    }
+
+    ~MyClass() {
+        // Cleanup
+    }
+};
+
+int main()
+{
+    // Create a buffer to store the object
+    int buffer[16];
+    cout &lt;&lt; "Starting address of my buffer = " &lt;&lt; &amp;buffer &lt;&lt; endl;
+
+    // Create the object. Use placement new
+    MyClass* obj = new (buffer) MyClass();
+    cout &lt;&lt; "Location of my object = " &lt;&lt; obj &lt;&lt; endl;
+
+    // Don't delete object created with placement delete
+    // Call the destructor explicitly
+    obj-&gt;~MyClass();
+}
+
+OUTPUT:
+Starting address of my buffer = 0012FF4C
+Placement new invoked
+Location of my object = 0012FF4C</code></pre>
+<p>&nbsp;</p>
+<p><a href="http://blog.aaronballman.com/2011/08/the-placement-new-operator/">http://blog.aaronballman.com/2011/08/the-placement-new-operator/</a></p>
+<p>END</p>

@@ -1,0 +1,66 @@
+---
+layout: post
+title: "[ARRAY] Find an Item in a Sorted Array with Shifted Elements or Find Rotation
+  of Array"
+date: 2013-09-16 15:32:09.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850536421'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: You are given a sorted array with shifted elements. Elements can be shifted to the left or right by 'i' number of places. The sign of 'i' denotes the direction of the shift. For positive 'i' direction of shift is right and left for negative 'i'.</p>
+<p>For example, consider the sorted array 2, 3, 4, 8, 10, 11. A shift of 3 places to the right would be denoted by i=2 and the shifted array would look like this: 10, 11, 2, 3, 4, 8,</p>
+<p>For i=-2, the shifted array would look like: 4, 8, 10, 11, 2, 3.</p>
+<p><a href="https://rameshnagaraj.files.wordpress.com/2013/09/23d47-sorted-array-shifted-elements.png"><img id="BLOGGER_PHOTO_ID_5301339719067022146" alt="" src="{{ site.baseurl }}/assets/23d47-sorted-array-shifted-elements.png?w=300" border="0" /></a></p>
+<p>Write code to find if a given number is present in this array.</p>
+<p>Solution: The brute force method to search all elements in the array would yield an O(n) solution, so obviously that's not the best approach. We are not leveraging the sorted nature of the array in this case.</p>
+<p>Now, how can we leverage the sorted nature of the array? Let assume that 'i' was 0. In that case the array would be sorted and not shifted at all (0 shift). Whats the fastest way to search in a sorted array? Binary Search! We can split the array in 2 halves and do a recursive search in one of the halves until we find the number we are looking for ( or not, if its not in the array ). This approach has a running time of O(log n), which is obviously better than n.</p>
+<p>But, the fact that the array is shifted by 'i' number of elements complicates things a little bit. Now, instead of splitting the array in equal halves, we split the array at the shift index and do a recursive binary search. There are issues we need to tackle when the shift is greater than the length of the array or if the shift is negative. I guess the code below will make much more sense than my description of the solution.</p>
+<p>Code: We will assume that we are provided with a method below that does <a href="http://dev-interview-questions.blogspot.com/2008/12/binary-search-sorted-array.html">binary search</a> for us and won't bother implementing it here.</p>
+<pre>// myArray is the input array
+// startIndex and endIndex are the indexes in the 
+// array where the binary search starts and ends
+// The method returns the index of the searchVal 
+// if found in the array, else it returns -1
+
+int BinarySearch(int[] myArray, int startIndex, int endIndex, int searchVal);
+
+// this method will return the index of the searchVal 
+// if found, else it return -1
+int SearchElement(int[] myArray, int shift, int searchVal)
+{
+   // to take care of scenarios where the shift is more 
+   // than the length of the array
+   shift = shift % myArray.Length; 
+
+   // -ve shift can be seen as positive shift equal to 
+   // the length of the array - ( -ve shift) 
+   if (shift &lt; 0)
+       shift = myArray.Length + shift;
+
+   if(myArray[shift] &lt;= searchVal &amp;&amp;  
+      myArray[myArray.Length - 1] &gt;= searchVal)
+   {
+      return BinarySearch(myArray, shift, myArray.Length - 1, searchVal);
+   }
+   else if(myArray[0] &lt;= searchVal &amp;&amp; 
+           myArray[shift - 1] &gt;= searchVal)
+   {
+      return BinarySearch(myArray, 0, shift-1, searchVal);
+   }
+   return -1;
+}</pre>
+<p>&nbsp;</p>
+<p>END</p>

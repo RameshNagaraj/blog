@@ -1,0 +1,36 @@
+---
+layout: post
+title: Limit the creation of object Dynamically
+date: 2013-01-27 00:22:44.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784563861'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>You <em>could</em> try to prevent an object being allocated dynamically ("on the heap") by making its <code>operator new</code> private.</p>
+<p>To prevent accidental creation of an object on the heap, give it private operators new. For example:</p>
+<pre><code>class X {
+private:
+    void *operator new(size_t);
+    void *operator new[](size_t);
+};</code></pre>
+<p>However for preventing someone from creating an instance of your class using placement <code style="font-style:inherit;">new</code>.</p>
+<pre><code>private:
+    void* operator new(size_t);          // standard new
+    void* operator new(size_t, void*);   // placement new
+    void* operator new[](size_t);        // array new
+    void* operator new[](size_t, void*); // placement array new</code>
+<code>};</code></pre>

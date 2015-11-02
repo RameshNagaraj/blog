@@ -1,0 +1,150 @@
+---
+layout: post
+title: Empty Class Size
+date: 2013-09-29 00:23:05.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784487473'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<h2><a name="sizeof-empty"></a>Why is the size of an empty class not zero?</h2>
+<p>To ensure that the addresses of two different objects will be different. For the same reason, "new" always returns pointers to distinct objects. Consider:</p>
+<pre>	class Empty { };
+
+	void f()
+	{
+		Empty a, b;
+		if (&amp;a == &amp;b) cout &lt;&lt; "impossible: report error to compiler supplier";
+
+		Empty* p1 = new Empty;
+		Empty* p2 = new Empty;
+		if (p1 == p2) cout &lt;&lt; "impossible: report error to compiler supplier";
+	}</pre>
+<p>There is an interesting rule that says that an empty base class need not be represented by a separate byte:</p>
+<pre>	struct X : Empty {
+		int a;
+		// ...
+	};
+
+	void f(X* p)
+	{
+		void* p1 = p;
+		void* p2 = &amp;p-&gt;a;
+		if (p1 == p2) cout &lt;&lt; "nice: good optimizer";
+	}</pre>
+<p>This optimization is safe and can be most useful. It allows a programmer to use empty classes to represent very simple concepts without overhead. Some current compilers provide this "empty base class optimization".</p>
+<p>Size of an empty class is not zero. It is 1 byte generally. It is nonzero to ensure that the two different objects will have different addresses.</p>
+<div>
+<div id="highlighter_581795">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Empty { };</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>Empty a, b;</code></div>
+<div></div>
+<div><code>    </code><code>if</code> <code>(&amp;a == &amp;b)</code></div>
+<div><code>      </code><code>cout &lt;&lt; </code><code>"impossible "</code> <code>&lt;&lt; endl;</code></div>
+<div><code>    </code><code>else</code></div>
+<div><code>      </code><code>cout &lt;&lt; </code><code>"Fine "</code> <code>&lt;&lt; endl;</code></div>
+<div></div>
+<div><code>   </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Output:</p>
+<pre>Fine</pre>
+<p>For the same reason (different objects should have different addresses), “new” always returns pointers to distinct objects. See the following example.</p>
+<div>
+<div id="highlighter_579980">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Empty { };</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>Empty* p1 = </code><code>new</code> <code>Empty;</code></div>
+<div><code>    </code><code>Empty* p2 = </code><code>new</code> <code>Empty;</code></div>
+<div></div>
+<div><code>    </code><code>if</code> <code>(p1 == p2)</code></div>
+<div><code>        </code><code>cout &lt;&lt; </code><code>"impossible "</code> <code>&lt;&lt; endl;</code></div>
+<div><code>    </code><code>else</code></div>
+<div><code>        </code><code>cout &lt;&lt; </code><code>"Fine "</code> <code>&lt;&lt; endl;</code></div>
+<div></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Output:</p>
+<pre>Fine</pre>
+<p>Now guess the output of following program (This is tricky)</p>
+<div>
+<div id="highlighter_990124">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Empty { };</code></div>
+<div></div>
+<div><code>class</code> <code>Derived: Empty { </code><code>int</code> <code>a; };</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>cout &lt;&lt; </code><code>sizeof</code><code>(Derived);</code></div>
+<div><code>    </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Output (with GCC compiler. See <a href="http://ideone.com/JFoX8">this</a>):</p>
+<pre>4</pre>
+<p>Note that the output is not greater than 4. There is an interesting rule that says that an empty base class need not be represented by a separate byte. So compilers are free to make optimization in case of empty base classes.</p>
+<p>&nbsp;</p>
+<p>The size of the empty class is always ONE and not ZERO. This is because of below reasons</p>
+<p>1. Every object should have some address location to identify, independent of the no.of member variables in the class. Generally the size of the object is the sum of the member variables in the class. if no data is there, one byte of memory allocated to the object to identify. this will help to not conflicting with other empty objects.</p>
+<p>2. One more <b>logical</b> reason is that Some times we will use the sizeof() operator in division operation like X%<i>sizeof</i>(emptyclass) and if the value of empty class is zero , application/program will crash.</p>
+<p>END</p>

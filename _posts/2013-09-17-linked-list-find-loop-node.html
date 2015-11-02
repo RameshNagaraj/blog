@@ -1,0 +1,178 @@
+---
+layout: post
+title: "[Linked List] Find Loop Node"
+date: 2013-09-17 13:51:23.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361462'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>In this post we will discuss how to find the node that causes loop in linked list.</p>
+<p>Following procedure explains on how to detect node that caused loop:</p>
+<ul>
+<li>By following the procedure described in <a href="http://crackinterviewtoday.wordpress.com/2010/03/16/loop-in-a-linked-list/" target="_blank">previous post</a> (Slow pointer and fast pointer approach),  we found the loop detection node</li>
+<li>Now take pointers P1 and P2, P1 at the loop detection node and P2 starting from head of the linked list</li>
+<li>Traverse both the pointers one at a time</li>
+<li>Both the pointers meet at the node because of which there is a loop in the linked list</li>
+</ul>
+<p>For example consider the following linked list where the loop is detected at node 5:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist6.jpeg"><img title="LoopList6" alt="" src="{{ site.baseurl }}/assets/looplist6.jpeg?w=675&amp;h=285" width="450" height="190" /></a></p>
+<p>Dry run for the above example:</p>
+<p>Take two pointers P1 and P2 pointing to node 1(head of the linked list) and node 5(loop detection point) respectively.</p>
+<p><strong>Iteration 1:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist7.jpeg"><img title="LoopList7" alt="" src="{{ site.baseurl }}/assets/looplist7.jpeg?w=675&amp;h=315" width="450" height="210" /></a></strong></p>
+<p><strong>Iteration 2:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist8.jpeg"><img title="LoopList8" alt="" src="{{ site.baseurl }}/assets/looplist8.jpeg?w=675&amp;h=312" width="450" height="208" /></a></strong></p>
+<p><strong>Iteration 3:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist9.jpeg"><img title="LoopList9" alt="" src="{{ site.baseurl }}/assets/looplist9.jpeg?w=675&amp;h=312" width="450" height="208" /></a></strong></p>
+<p>Here both of them meet at node that contains data as 3. Hence the node that causes loop in a linked list is node 3.</p>
+<p>The following program finds out the node that causes loop:</p>
+<div>
+<div id="highlighter_324851">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+<div>12</div>
+<div>13</div>
+<div>14</div>
+<div>15</div>
+<div>16</div>
+<div>17</div>
+<div>18</div>
+<div>19</div>
+<div>20</div>
+<div>21</div>
+<div>22</div>
+<div>23</div>
+<div>24</div>
+<div>25</div>
+<div>26</div>
+<div>27</div>
+<div>28</div>
+<div>29</div>
+<div>30</div>
+<div>31</div>
+<div>32</div>
+<div>33</div>
+<div>34</div>
+<div>35</div>
+<div>36</div>
+<div>37</div>
+<div>38</div>
+<div>39</div>
+<div>40</div>
+<div>41</div>
+<div>42</div>
+<div>43</div>
+<div>44</div>
+<div>45</div>
+<div>46</div>
+<div>47</div>
+<div>48</div>
+<div>49</div>
+<div>50</div>
+<div>51</div>
+<div>52</div>
+<div>53</div>
+<div>54</div>
+<div>55</div>
+<div>56</div>
+<div>57</div>
+<div>58</div>
+<div>59</div>
+<div>60</div>
+</td>
+<td>
+<div>
+<div><code>package</code> <code>ds;</code></div>
+<div></div>
+<div><code>public</code> <code>class</code> <code>MergePointInLoopedList </code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>public</code> <code>MergePointInLoopedList()</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>    </code></div>
+<div><code>    </code><code>public</code> <code>ListNode returnLoopDetectionNode(ListNode loopedList)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode fastNode = loopedList;</code></div>
+<div><code>        </code><code>ListNode slowNode = loopedList;</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>while</code><code>(fastNode.next.next != </code><code>null</code><code>)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>slowNode = slowNode.next;</code></div>
+<div><code>            </code><code>fastNode = fastNode.next.next;</code></div>
+<div><code>            </code></div>
+<div><code>            </code><code>if</code><code>(slowNode == fastNode)</code></div>
+<div><code>            </code><code>{</code></div>
+<div><code>                </code><code>break</code><code>;</code></div>
+<div><code>            </code><code>}</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>return</code> <code>slowNode;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>    </code></div>
+<div><code>    </code><code>public</code> <code>static</code> <code>void</code> <code>main(String[] args)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>SingleLinkedList newList = </code><code>new</code> <code>SingleLinkedList();</code></div>
+<div><code>        </code><code>newList.add(</code><code>1</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>2</code><code>);</code></div>
+<div><code>        </code><code>ListNode loopNode = newList.add(</code><code>3</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>4</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>5</code><code>);</code></div>
+<div><code>        </code><code>ListNode endNode = newList.add(</code><code>6</code><code>);</code></div>
+<div><code>        </code><code>//  Creating a loop</code></div>
+<div><code>        </code><code>endNode.next = loopNode;</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>ListNode loopedList = newList.getList();</code></div>
+<div><code>        </code><code>MergePointInLoopedList mergePointLoopedList = </code><code>new</code> <code>MergePointInLoopedList();</code></div>
+<div><code>        </code><code>//  Assuming there is a loop in linked list and finding loop detection node</code></div>
+<div><code>        </code><code>//  Loop detection node is the one where slow pointer and fast pointer meet</code></div>
+<div><code>        </code><code>ListNode loopDetectionNode = mergePointLoopedList.returnLoopDetectionNode(loopedList);</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>//  Now take pointers P1 and P2. Let P2 be at loop detection node and P1 be at the head</code></div>
+<div><code>        </code><code>// of the looped linked list</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>ListNode P1 = loopedList;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>while</code><code>(P1 != P2)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>P1 = P1.next;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>        </code><code>}</code></div>
+<div><code>        </code></div>
+<div><code>        </code><code>System.out.println(</code><code>"Merging point in linked list that has a loop is ... "</code><code>+ P1.data);</code></div>
+<div><code>   </code><code>}</code></div>
+<div><code>}</code></div>
+<div></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>END</p>

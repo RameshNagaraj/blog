@@ -1,0 +1,79 @@
+---
+layout: post
+title: Delete An Entry in STL containers
+date: 2013-05-02 12:43:26.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- STL
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850493374'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>For Sequence Containers:</p>
+<pre><code>for(MyMap::iterator it = mymap.begin(); it!=mymap.end(); ) {
+  if(mycondition(it))
+    it = mymap.erase(it);
+  else
+    it++;
+}</code></pre>
+<p>This will work for sequence containers like std::vector, but not for associative containers like std::map. The difference is that in sequence containers erase() returns an iterator to the next element, whereas in associative containers it returns void.</p>
+<p>For Associative Containers:</p>
+<p>one approach:</p>
+<pre><code>std::map&lt;K, V&gt;::iterator itr = myMap.begin();
+while (itr != myMap.end()) {
+    if (ShouldDelete(*itr)) {
+       std::map&lt;K, V&gt;::iterator toErase = itr;
+       ++itr;
+       myMap.erase(toErase);
+    } else {
+       ++itr;
+    }
+}</code></pre>
+<p>The idea is to walk the iterator forward from the start of the container to the end, checking at each step whether the current key/value pair should be deleted. If so, a copy of the iterator is made and the iterator is advanced to the next step (to avoid iterator invalidation), then the copied iterator is removed from the container. Otherwise, the iterator is advanced as usual.</p>
+<p>Another common approach is seen here:</p>
+<pre><code>std::map&lt;K, V&gt;::iterator itr = myMap.begin();
+while (itr != myMap.end()) {
+    if (ShouldDelete(*itr)) {
+       myMap.erase(itr++); //Advance before Itr becomes Invalid
+    } else {
+       ++itr;
+    }
+}</code></pre>
+<p>This uses the fact that <code>itr++</code> returns the value that the old iterator used to have as a side-effect of advancing it forward a step.</p>
+<p>A variation of Mark Ransom algorithm but without the need for a temporary.</p>
+<pre><code>for(Actions::iterator it = _actions.begin();it != _actions.end();)
+{
+    if (expired(*it))
+    {
+        bar(*it);
+        _actions.erase(it++);  // Note the post increment here.
+                               // This increments 'it' and returns a copy of
+                               // the original 'it' to be used by erase()
+    }
+    else
+    {
+        ++it;  // Use Pre-Increment here as it is more effecient
+               // Because no copy of it is required.
+    }
+}</code></pre>
+<p>You can post-increment the iterator while passing it as argument to erase:</p>
+<pre><code>myMap.erase(itr++)</code></pre>
+<p>This way, the element that was pointed by <code>itr</code> before the erase is deleted, and the iterator is incremented to point to the next element in the map. If you're doing this in a loop, beware not to increment the iterator twice.</p>
+<p>B<a href="http://stackoverflow.com/questions/5460678/whats-the-best-way-to-delete-an-entry-mapint-a">est way to delete an entry map&lt;int, A*&gt;</a></p>
+<p>Delete object first, then remove from map. Otherwise you're just introducing a pointless intermediate variable for storing the pointer. As long as you're singlethreaded, or have proper locking in a multithreaded scenario, the two methods are for all practical purposes equivalent.</p>
+<pre><code>map&lt;int, A *&gt;::iterator it = mymap.find(1);
+if (it != mymap.end()) {
+  delete it-&gt;second;
+  mymap.erase(it);
+} </code></pre>
+<p>End</p>

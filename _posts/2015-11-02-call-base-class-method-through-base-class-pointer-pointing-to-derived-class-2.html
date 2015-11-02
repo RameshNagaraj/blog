@@ -1,0 +1,48 @@
+---
+layout: post
+title: Call Base class method through base class pointer pointing to derived class
+date: 2015-11-02 16:03:14.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '16454401900'
+  _oembed_c15633018b200a589211d075b423f81b: "{{unknown}}"
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>class Base<br />
+{<br />
+  public:<br />
+    virtual void foo()<br />
+    {}<br />
+};</p>
+<p>class Derived: public Base<br />
+{<br />
+  public:<br />
+    virtual void foo()<br />
+    {}<br />
+};</p>
+<p>int main()<br />
+{<br />
+    Base *pBase = NULL;<br />
+    Base objBase;<br />
+    Derived objDerived;</p>
+<p>    pBase = &amp;objDerived;<br />
+    pBase-&gt;foo();</p>
+<p>    /*Here Derived class foo will be called, but i want this to call<br />
+    a base class foo. Is there any way for this to happen? i.e. through<br />
+    casting or something? */<br />
+}</p>
+<p>You can do it through scope resolution operator ::</p>
+<p>Something like this:</p>
+<p>pBase-&gt;Base::foo()</p>

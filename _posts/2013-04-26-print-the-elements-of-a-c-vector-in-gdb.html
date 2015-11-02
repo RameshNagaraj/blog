@@ -1,0 +1,70 @@
+---
+layout: post
+title: Print the elements of a C++ vector in GDB?
+date: 2013-04-26 22:14:37.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- GDB
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850454528'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>With GCC 4.1.2, to print the whole of a std::vector&lt;int&gt; called myVector, do the following:</p>
+<pre><code>print *(myVector._M_impl._M_start)@myVector.size()</code></pre>
+<p>To print only the first N elements, do:</p>
+<pre><code>print *(myVector._M_impl._M_start)@N</code></pre>
+<p><strong>Explanation</strong></p>
+<p>This is probably heavily dependent on your compiler version, but for GCC 4.1.2, the pointer to the internal array is:</p>
+<pre><code>myVector._M_impl._M_start </code></pre>
+<p>And the GDB command to print N elements of an array starting at pointer P is:</p>
+<pre><code>print P@N</code></pre>
+<p>Or, in a short form (for a standard .gdbinit):</p>
+<pre><code>p P@N</code></pre>
+<p>(gdb) what vIPIFMOC<br />
+type = std::vector&lt;SManagedObj,std::allocator&lt;SManagedObj&gt; &gt;<br />
+(gdb) p vIPIFMOC<br />
+$2 = {<br />
+&lt;std::_Vector_base&lt;SManagedObj,std::allocator&lt;SManagedObj&gt; &gt;&gt; = {<br />
+<strong>_M_impl</strong> = {<br />
+&lt;std::allocator&lt;SManagedObj&gt;&gt; = {<br />
+&lt;__gnu_cxx::new_allocator&lt;SManagedObj&gt;&gt; = {&lt;No data fields&gt;}, &lt;No data fields&gt;},<br />
+members of std::_Vector_base&lt;SManagedObj,std::allocator&lt;SManagedObj&gt; &gt;::_Vector_impl:<br />
+<strong>_M_start</strong> = 0x556802cb70,<br />
+_M_finish = 0x556802cc30,<br />
+_M_end_of_storage = 0x556802cc30<br />
+}<br />
+}, &lt;No data fields&gt;}<br />
+(gdb) p *(<strong>vIPIFMOC._M_impl._M_start</strong>)@1</p>
+<p>Options-2:</p>
+<p>In the gdb:</p>
+<pre><code>source {full_path}stl-views.gdb
+</code></pre>
+<p>now you'll have new commands, such as <code>pvector, plist, pmap</code> and more (replace <strong>{full_path}</strong> with the full path to the file.</p>
+<p>You can also put the command <code>source stl-views.gdb</code> in <code>~/.gdbinit</code> - and then you'll have it automatically every time you launch gdb.</p>
+<p><a href="http://rameshnagaraj.files.wordpress.com/2013/04/stl-views-gdb1.doc">stl-views.gdb</a></p>
+<p>Option-3:</p>
+<p>For performance reasons, <a href="http://www.sgi.com/tech/stl/">SGI's STL implmentation</a> is all inline; a naming convention is generally followed (i.e. double underscore as a prefix for local variables), but tends to create long, cryptic variable names. Unfortunately, raw <a href="http://www.gnu.org/software/gdb/gdb.html">gdb</a> is not a graceful way to debug STL-heavy code, the reasons being -</p>
+<ul>
+<li>First, the 'T' in "STL" stands for "template"; while you as a programmer have full information about what is the argument to the template, gdb does not necessarily have access to this knowledge. As a result, gdb will tend to think that every (templated) pointer is a (void*), and will have no access to its internals should it point to a class.</li>
+<li>The traversal of some containers (hashes, trees) is complicated; obtaining the "first()" and "next()" elements of a container is a tricky task.</li>
+<li>Some data, such as the size of lists, is not stored explicitly - and there is simply no way to find it out in gdb.</li>
+</ul>
+<p><a href="http://rameshnagaraj.files.wordpress.com/2013/04/gdb_stl_utils-gdb.doc">gdb_stl_utils.gdb</a>  is a small utility that may help solving these problems.<br />
+To use it, download and compile <a href="http://rameshnagaraj.files.wordpress.com/2013/04/stlstdcontainers-cc.doc">StlStdContainers.cc</a> (a simple g++ StlStdContainers.cc -o StlStdContainers.o will do); then, load <a href="http://staff.science.uva.nl/~gilad/stl/gdb_stl_utils">g</a>db_stl_utils into gdb by using the command "source gdb_stl_utils" (in gdb) or including in .gdbinit. You will then have access to the following gdb function:</p>
+<p>p_stl_vector, p_stl_vector_size<br />
+p_stl_list, p_stl_list_size<br />
+p_stl_tree, p_stl_tree_size (for maps and sets)<br />
+p_stl_hash, p_stl_hash_size (for hash_maps and sets)</p>
+<p>The names are self-explanatory: the functions print the contents and the sizes of STL containers given to them.</p>
+<p>Good luck and happy debugging!</p>
+<p>Note: From above attachments, remove .doc extensions and use.</p>

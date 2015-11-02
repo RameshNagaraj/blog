@@ -1,0 +1,177 @@
+---
+layout: post
+title: Delete this
+date: 2013-10-02 23:45:47.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361046'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p><code>delete this</code> is legal and does what you would expect: it calls your class's destructor and free the underlying memory. After <code>delete this</code> returns, your <code>this</code> pointer value does <em>not</em> change, so it is now a dangling pointer that should <em>not</em> be dereferenced. That includes implicit dereferencing using the class's member variables.</p>
+<p>It is usually found in reference-counted classes that, when the ref-count is decremented to 0, the<code>DecrementRefCount()</code>/<code>Release()</code>/whatever member function calls <code>delete this</code>.</p>
+<p><code>delete this</code> is typically considered very bad form for many reasons. It is easy to accidentally access member variables after <code>delete this</code>. Caller code might not realize your object has self-destructed.</p>
+<p>Also, <code>delete this</code> is a "code smell" that your code might not have a symmetric strategy for object ownership (who allocates and who deletes).</p>
+<p>&nbsp;</p>
+<p>It is risky for one additional reason that hasn't been mentioned yet - you are assuming that the object has been allocated on the heap. This can be difficult to guarantee, although in the case of reference counting implementations isn't generally a problem.</p>
+<p>&nbsp;</p>
+<p>As long as you're careful, it's OK for an object to commit suicide (<tt>delete</tt> <tt>this</tt>).</p>
+<p>Here's how I define "careful":</p>
+<ol>
+<li>You must be absolutely 100% positively sure that <tt>this</tt> object was allocated via <tt>new</tt> (not by <tt>new[]</tt>, nor by <a title="[11.10] What is &quot;placement new&quot; and why would I use it?" href="http://www.parashift.com/c++-faq-lite/placement-new.html">placement <tt>new</tt></a>, nor a local object on the stack, nor a global, nor a member of another object; but by plain ordinary<tt>new</tt>).</li>
+<li>You must be absolutely 100% positively sure that your member function will be the last member function invoked on <tt>this</tt> object.</li>
+<li>You must be absolutely 100% positively sure that the rest of your member function (after the <tt>delete</tt> <tt>this</tt> line) doesn't touch any piece of <tt>this</tt> object (including calling any other member functions or touching any data members).</li>
+<li>You must be absolutely 100% positively sure that no one even touches the <tt>this</tt> pointer itself after the <tt>delete</tt> <tt>this</tt> line. In other words, you must not examine it, compare it with another pointer, compare it with <tt>NULL</tt>, print it, cast it, do anything with it.</li>
+</ol>
+<p>Naturally the usual caveats apply in cases where your <tt>this</tt> pointer is a pointer to a base class when you don't have a virtual destructor.</p>
+<p>&nbsp;</p>
+<p>Yes, <code>delete this;</code> has defined results, as long as (as you've noted) you assure the object was allocated dynamically, and (of course) never attempt to use the object after it's destroyed.</p>
+<p>&nbsp;</p>
+<p>Well, in Component Object Model (COM) <code>delete this</code> construction can be a part of <code>Release</code>method that is called whenever you want to release aquisited object:</p>
+<pre><code>void IMyInterface::Release()
+{
+    --instanceCount;
+    if(instanceCount == 0)
+        delete this;
+}</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Why would anyone want to do this?", and I thought that I might provide an example usage that I am considering this afternoon.</p>
+<p>Legacy code. Uses naked pointers Obj*obj with a delete obj at the end.</p>
+<p>Unfortunately I need sometimes, not often, to keep the object alive longer.</p>
+<p>I am considering making it a reference counted smart pointer. But there would be <em>lots</em> of code to change, if I was to use <code>ref_cnt_ptr&lt;Obj&gt;</code> everywhere. And if you mix naked Obj* and ref_cnt_ptr, you can get the object implicitly deleted when the last ref_cnt_ptr goes away, even though there are Obj* still alive.</p>
+<p>So I am thinking about creating an explicit_delete_ref_cnt_ptr. I.e. a reference counted pointer where the delete is only done in an explicit delete routine. Using it in the one place where the existing code knows the lifetime of the object, as well as in my new code that keeps the object alive longer.</p>
+<p>Incrementing and decrementing the reference count as explicit_delete_ref_cnt_ptr get manipulated.</p>
+<p>But NOT freeing when the reference count is seen to be zero in the explicit_delete_ref_cnt_ptr destructor.</p>
+<p>Only freeing when the reference count is seen to be zero in an explicit delete-like operation. E.g. in something like:</p>
+<pre><code>template&lt;typename T&gt; class explicit_delete_ref_cnt_ptr { 
+ private: 
+   T* ptr;
+   int rc;
+   ...
+ public: 
+   void delete_if_rc0() {
+      if( this-&gt;ptr ) {
+        this-&gt;rc--;
+        if( this-&gt;rc == 0 ) {
+           delete this-&gt;ptr;
+        }
+        this-&gt;ptr = 0;
+      }
+    }
+ };</code></pre>
+<p>OK, something like that. It's a bit unusual to have a reference counted pointer type not automatically delete the object pointed to in the rc'ed ptr destructor. But it seems like this might make mixing naked pointers and rc'ed pointers a bit safer.</p>
+<p>But so far no need for delete this.</p>
+<p>But then it occurred to me: if the object pointed to, the pointee, knows that it is being reference counted, e.g. if the count is inside the object (or in some other table), then the routine delete_if_rc0 could be a method of the pointee object, not the (smart) pointer.</p>
+<pre><code>class Pointee { 
+ private: 
+   int rc;
+   ...
+ public: 
+   void delete_if_rc0() {
+        this-&gt;rc--;
+        if( this-&gt;rc == 0 ) {
+           delete this;
+        }
+      }
+    }
+ };</code></pre>
+<p>Actually, it doesn't need to be a member method at all, but could be a free function:</p>
+<pre><code>map&lt;void*,int&gt; keepalive_map;
+template&lt;typename T&gt;
+void delete_if_rc0(T*ptr) {
+        void* tptr = (void*)ptr;
+        if( keepalive_map[tptr] == 1 ) {
+           delete ptr;
+        }
+};</code></pre>
+<p>(BTW, I know the code is not quite right - it becomes less readable if I add all the details, so I am leaving it like this.)</p>
+<p>&nbsp;</p>
+<p>Ideally <em>delete </em>operator should not be used for <em>this </em>pointer. However, if used, then following points must be considered.</p>
+<p>1) <em>delete </em>operator works only for objects allocated using operator <em>new</em> (See <a href="http://geeksforgeeks.org/?p=8539">http://geeksforgeeks.org/?p=8539</a>). If the object is created using new, then we can do <em>delete this</em>, otherwise behavior is undefined.</p>
+<div>
+<div id="highlighter_37910">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>class</code> <code>A</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>public</code><code>:</code></div>
+<div><code>    </code><code>void</code> <code>fun()</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>delete</code> <code>this</code><code>;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>/* Following is Valid */</code></div>
+<div><code>  </code><code>A *ptr = </code><code>new</code> <code>A;</code></div>
+<div><code>  </code><code>ptr-&gt;fun();</code></div>
+<div><code>  </code><code>ptr = NULL </code><code>// make ptr NULL to make sure that things are not accessed using ptr. </code></div>
+<div></div>
+<div></div>
+<div><code>  </code><code>/* And following is Invalid: Undefined Behavior */</code></div>
+<div><code>  </code><code>A a;</code></div>
+<div><code>  </code><code>a.fun();</code></div>
+<div></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>2) Once <em>delete this </em>is done, any member of the deleted object should not be accessed after deletion.</p>
+<div>
+<div id="highlighter_11532">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>A</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>int</code> <code>x;</code></div>
+<div><code>  </code><code>public</code><code>:</code></div>
+<div><code>    </code><code>A() { x = 0;}</code></div>
+<div><code>    </code><code>void</code> <code>fun() {</code></div>
+<div><code>      </code><code>delete</code> <code>this</code><code>;</code></div>
+<div></div>
+<div><code>      </code><code>/* Invalid: Undefined Behavior */</code></div>
+<div><code>      </code><code>cout&lt;&lt;x;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>};</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>&nbsp;</p>
+<p><strong>The best thing is to not do <em>delete this </em>at all.</strong></p>
+<p>Thanks to <a href="http://geeksforgeeks.org/forum/topic/can-we-use-delete-operator-in-c-for-this-pointer#post-6353">Shekhu </a>for providing above details.</p>
+<p>References:<br />
+<a href="https://www.securecoding.cert.org/confluence/display/cplusplus/OOP05-CPP.+Avoid+deleting+this">https://www.securecoding.cert.org/confluence/display/cplusplus/OOP05-CPP.+Avoid+deleting+this</a><br />
+<a href="http://en.wikipedia.org/wiki/This_%28computer_science%29">http://en.wikipedia.org/wiki/This_%28computer_science%29</a></p>
+<p>&nbsp;</p>
+<p>END</p>

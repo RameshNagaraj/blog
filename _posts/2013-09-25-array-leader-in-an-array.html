@@ -1,0 +1,151 @@
+---
+layout: post
+title: "[ARRAY] Leader in an Array"
+date: 2013-09-25 11:30:03.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784495777'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>An array element X is one of leaders of the array if the all the elements following that array element is lesser than or equal to the array element X.</p>
+<p>Work from the right hand end of the array, keeping track of the maximum value you have encountered. Every time that maximum increases or is equalled, that element is a leader by your definition. What is more, it stays a leader regardless of what happens further to the left - in other words, every leader you add to your list is a genuine leader, not just a candidate, as you'd have working left to right.</p>
+<p>&nbsp;</p>
+<p>Write a program to print all the LEADERS in the array. An element is leader if it is greater than all the elements to its right side. And the rightmost element is always a leader. For example int the array {16, 17, 4, 3, 5, 2}, leaders are 17, 5 and 2.</p>
+<p>Let the input array be arr[] and size of the array be <em>size</em>.</p>
+<p><strong>Method 1 (Simple)</strong><br />
+Use two loops. The outer loop runs from 0 to size – 1 and one by one picks all elements from left to right. The inner loop compares the picked element to all the elements to its right side. If the picked element is greater than all the elements to its right side, then the picked element is the leader.</p>
+<div>
+<div id="highlighter_683295">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>/*Function to print leaders in an array */</code></div>
+<div><code>void</code> <code>printLeaders(</code><code>int</code> <code>arr[], </code><code>int</code> <code>size)</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>int</code> <code>i, j;</code></div>
+<div></div>
+<div><code>  </code><code>for</code> <code>(i = 0; i &lt; size; i++)</code></div>
+<div><code>  </code><code>{</code></div>
+<div><code>    </code><code>for</code> <code>(j = i+1; j &lt; size; j++)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>if</code><code>(arr[i] &lt;= arr[j])</code></div>
+<div><code>          </code><code>break</code><code>;</code></div>
+<div><code>    </code><code>}    </code></div>
+<div><code>    </code><code>if</code><code>(j == size) </code><code>// the loop didn't break</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>printf</code><code>(</code><code>"%d "</code><code>, arr[i]);</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>  </code><code>}</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>/*Driver program to test above function*/</code></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>int</code> <code>arr[] = {16, 17, 4, 3, 5, 2};</code></div>
+<div><code>  </code><code>printLeaders(arr, 6);</code></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>}</code></div>
+<div><code>// Output:  17 5 2</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Time Complexity:</strong> O(n*n)</p>
+<p><strong>Method 2 (Scan from right)</strong><br />
+Scan all the elements from right to left in array and keep track of maximum till now. When maximum changes it’s value, print it.</p>
+<div>
+<div id="highlighter_258363">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>/*Function to print leaders in an array */</code></div>
+<div><code>void</code> <code>printLeaders(</code><code>int</code> <code>arr[], </code><code>int</code> <code>size)</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>int</code> <code>max_from_right =  arr[size-1];</code></div>
+<div><code>  </code><code>int</code> <code>i;</code></div>
+<div></div>
+<div><code>  </code><code>/* Rightmost element is always leader */</code></div>
+<div><code>  </code><code>printf</code><code>(</code><code>"%d "</code><code>, max_from_right);</code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>for</code><code>(i = size-2; i &gt;= 0; i--)</code></div>
+<div><code>  </code><code>{</code></div>
+<div><code>    </code><code>if</code><code>(max_from_right &lt; arr[i])</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>       </code><code>printf</code><code>(</code><code>"%d "</code><code>, arr[i]);</code></div>
+<div><code>       </code><code>max_from_right = arr[i];</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>  </code><code>}    </code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>/*Driver program to test above function*/</code></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>int</code> <code>arr[] = {16, 17, 4, 3, 5, 2};</code></div>
+<div><code>  </code><code>printLeaders(arr, 6);</code></div>
+<div><code>  </code><code>getchar</code><code>();    </code></div>
+<div><code>}    </code></div>
+<div><code>// Output:  2 5 17</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong><br />
+Time Complexity:</strong> O(n)</p>
+<p>&nbsp;</p>
+<p>void FindLeader ( int Arr[], int ArrSize ) {<br />
+int max = Arr[ArrSize-1] ;<br />
+for ( int i = ArrSize-1; i &gt;= 0; i-- ) {<br />
+if ( Arr[i] &gt;= max ) {<br />
+cout &lt;&lt; Arr[i] &lt;&lt; " " ;<br />
+max = Arr[i] ;<br />
+}<br />
+}<br />
+cout &lt;&lt; endl ;<br />
+}</p>
+<p>&nbsp;</p>
+<p>Method-3:</p>
+<p>We can use stack for left to right pass..</p>
+<p>For each element .. before pushing it pop all the elements that are less than it , so in the end stack has only leaders left in it</p>
+<p>{<br />
+This can be also done will the help of stack.<br />
+push the first element in the stack // s-&gt; 16<br />
+push another element,<br />
+if ( upcoming element is smaller then the element of the top of the stack )<br />
+Push(element);<br />
+else<br />
+pop() till you find element bigger then the upcoming element.<br />
+}<br />
+left over elements in the stack will be leaders !!! :)<br />
+ex:<br />
+s-&gt; 16 //pop 16 push 17<br />
+s-&gt; 17 //push 4<br />
+s-&gt;17 ,4. // push 3<br />
+s-&gt;17 ,4,3, // pop till you element bigger than 5 then push<br />
+s-&gt; 17,5// push 2<br />
+s-&gt;17,5,2<br />
+all elements left in the stack are leaders :)</p>
+<p>&nbsp;</p>
+<p>END</p>

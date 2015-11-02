@@ -1,0 +1,32 @@
+---
+layout: post
+title: Json & XML Formating on Mac CommandLine
+date: 2015-10-14 15:57:01.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Linux
+tags: []
+meta:
+  _publicize_job_id: '15809530681'
+  geo_public: '0'
+  _edit_last: '18160588'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p> print formatted JSON, XML from osx command line<br />
+Working with various interfaces that output json or xml results in lots of situations where you have a single-line, unformatted output. Here's a quick way to format json, xml from the CLI.</p>
+<p>via the command line:</p>
+<p>format json</p>
+<p>cat unformatted.json | python -m json.tool<br />
+format json from clipboard</p>
+<p>pbpaste | python -m json.tool<br />
+format xml from clipboard</p>
+<p>pbpaste | xmllint --format -<br />
+xmllint is part of libxml2 and installed by default on OSX. Be aware that xmllint cleans up XML as well as formatting it, ocassionally modifying the output.<br />
+for all above examples, you can pipe back to the clipboard with | pbcopy at the end of the command, or output to a file with &gt; output.json or &gt; output.xml.</p>

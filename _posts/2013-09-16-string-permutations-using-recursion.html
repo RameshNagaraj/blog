@@ -1,0 +1,199 @@
+---
+layout: post
+title: "[STRING] Permutations Using Recursion"
+date: 2013-09-16 16:37:51.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850562554'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: Write the code for producing/printing permutations of the characters in a string. For example: If "abc" is the input string, output permutations should be "abc", "bac", "bca", "acb", "cab", "cba".<br />
+Solution: There are at least 2 approaches to solving this problem. Even though both approaches use recursion, there is a subtle difference between the two. The second approach uses more number of recursive calls than the first and my rough analysis has shown that run time of both approaches is almost same. The first approach would be preferable given that the there are only n recursive calls compared to n! recursive calls of the second approach. Approach 1:<br />
+Pseudo Code:</p>
+<pre>1. Set index = 0 to point to the 1st character in the input string
+    2. If index = n-1 return last character (n is length of input string)
+    3. Get Permutations of string starting at index + 1 
+    4. For each permutation in the list from step 3
+         a. Insert input[index] character in all possible positions of each
+            permutation.
+
+Example:
+ input = "abc"
+ get permutations for "bc": "bc" and "cb"
+ insert "a" in all positions of both "bc" and "cb": 
+          "a" * "bc": "abc", "bac", "bca"
+          "a" * "cb": "acb", "cab", "cba"</pre>
+<p>Code (C#):</p>
+<pre>List&lt;string&gt; Permute(string, str, int startIndex)
+{
+   if(startIndex == str.Length -1 )
+      return new string[]{str.Substring(startIndex)};
+
+   List&lt;string&gt; permutations = Permute(str, ++startIndex);
+   List&lt;string&gt; newPermutations = new List&lt;string&gt;();
+
+   foreach(string permutation in permutations)
+   {
+      for(int i=0; i&lt;permutation.Length; i++)
+      {
+         newPermutations.Add(permutation.Insert(i, str[startIndex]));
+      }
+   }
+   return newPermutations;
+}</pre>
+<p>Analysis: Number of recursive calls is equal to N (length of the input string). if L is the level of each recursive call, the run time for each recursive call is L!. So at the top most call, since L = N, it is N!. Total: N! + N-1! + N-2! ... + 1<br />
+Approach 2:<br />
+The idea here is to put each character in the string in the 1st position and combine it with the permutation of the characters in the rest of the string. As you can see this is also a recursive definition. Pseudo Code:</p>
+<pre>For i=0 to N
+  1. Swap letters 0 and i.
+  2. Permute letters 1 to N-1, printing or saving the entire string each time.</pre>
+<p>Code (C):</p>
+<pre>Permute(char* inputStart, char* current)
+{
+   char *swap;
+   char temp;
+
+   if(*(current + 1) = '')
+      printf("%s\n", inputStart);
+   else
+   {
+      for(swap = current; *swap != ''; ++swap)
+      {
+         temp = *swap;
+         *swap = *current;
+         *current = temp;
+
+         Permute(inputStart, current + 1);
+
+         //revert the letters
+         *current = *swap;
+         *swap = temp;
+      }
+   }
+}</pre>
+<p>Run time: This solution makes at least N! + N-1! + N-2!+ ... + 1 recursive calls doing 1 unit of work in each call. Compare this to the less number of recursive calls from the approach one, but approach one does increasing more work going back up from each recursive call.</p>
+<div id="navmenu">
+<ul id="menu">
+<li><a title="Questions regarding Arrays" href="http://www.geeksforgeeks.org/category/c-arrays">Arrays</a></li>
+<li><a title="View all posts filed under Bit Magic" href="http://www.geeksforgeeks.org/category/bit-magic">Bit Magic</a></li>
+<li><a title="View all posts filed under C/C++ Puzzles" href="http://www.geeksforgeeks.org/category/c-puzzles">C/C++ Puzzles</a></li>
+<li><a title="View all posts filed under Articles" href="http://www.geeksforgeeks.org/category/articles">Articles</a></li>
+<li><a title="View all posts filed under GFacts" href="http://www.geeksforgeeks.org/category/gfact">GFacts</a></li>
+<li><a title="Linked List problems" href="http://www.geeksforgeeks.org/category/linked-list">Linked Lists</a></li>
+<li><a title="View all posts filed under MCQ" href="http://www.geeksforgeeks.org/category/multiple-choice-question">MCQ</a></li>
+<li><a title="Miscellaneous" href="http://www.geeksforgeeks.org/category/c-programs">Misc</a></li>
+<li><a title="View all posts filed under Output" href="http://www.geeksforgeeks.org/category/program-output">Output</a></li>
+<li><a title="Questions related to strings" href="http://www.geeksforgeeks.org/category/c-strings">Strings</a></li>
+<li><a title="View all posts filed under Trees" href="http://www.geeksforgeeks.org/category/tree">Trees</a></li>
+</ul>
+</div>
+<div id="content">
+<div id="post">
+<div id="post-767">
+<div>
+<div>
+<h2>Write a C program to print all permutations of a given string</h2>
+</div>
+<div>August 2, 2009</div>
+<div></div>
+</div>
+<div id="post-content">
+<p>A permutation, also called an “arrangement number” or “order,” is a rearrangement of the elements of an ordered list S into a one-to-one correspondence with S itself. A string of length n has n! permutation.<br />
+Source: Mathword(<a href="http://mathworld.wolfram.com/Permutation.html">http://mathworld.wolfram.com/Permutation.html</a>)</p>
+<p>Below are the permutations of string ABC.<br />
+ABC, ACB, BAC, BCA, CAB, CBA</p>
+<p>Here is a solution using backtracking.</p>
+<p><a href="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif"><img alt="NewPermutation" src="{{ site.baseurl }}/assets/NewPermutation.gif" width="565" height="231" /></a></p>
+<div>
+<div id="highlighter_521381">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code># include &lt;stdio.h&gt;</code></div>
+<div></div>
+<div><code>/* Function to swap values at two pointers */</code></div>
+<div><code>void</code> <code>swap (</code><code>char</code> <code>*x, </code><code>char</code> <code>*y)</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>char</code> <code>temp;</code></div>
+<div><code>    </code><code>temp = *x;</code></div>
+<div><code>    </code><code>*x = *y;</code></div>
+<div><code>    </code><code>*y = temp;</code></div>
+<div><code>}</code></div>
+<div><code> </code></div>
+<div><code>/* Function to print permutations of string</code></div>
+<div><code>   </code><code>This function takes three parameters:</code></div>
+<div><code>   </code><code>1. String</code></div>
+<div><code>   </code><code>2. Starting index of the string</code></div>
+<div><code>   </code><code>3. Ending index of the string. */</code></div>
+<div><code>void</code> <code>permute(</code><code>char</code> <code>*a, </code><code>int</code> <code>i, </code><code>int</code> <code>n) </code></div>
+<div><code>{</code></div>
+<div><code>   </code><code>int</code> <code>j; </code></div>
+<div><code>   </code><code>if</code> <code>(i == n)</code></div>
+<div><code>     </code><code>printf</code><code>(</code><code>"%s\n"</code><code>, a);</code></div>
+<div><code>   </code><code>else</code></div>
+<div><code>   </code><code>{</code></div>
+<div><code>        </code><code>for</code> <code>(j = i; j &lt;= n; j++)</code></div>
+<div><code>       </code><code>{</code></div>
+<div><code>          </code><code>swap((a+i), (a+j));</code></div>
+<div><code>          </code><code>permute(a, i+1, n);</code></div>
+<div><code>          </code><code>swap((a+i), (a+j)); </code><code>//backtrack</code></div>
+<div><code>       </code><code>}</code></div>
+<div><code>   </code><code>}</code></div>
+<div><code>} </code></div>
+<div></div>
+<div><code>/* Driver program to test above functions */</code></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>   </code><code>char</code> <code>a[] = </code><code>"ABC"</code><code>;  </code></div>
+<div><code>   </code><code>permute(a, 0, 2);</code></div>
+<div><code>   </code><code>getchar</code><code>();</code></div>
+<div><code>   </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Output:</p>
+<pre>ABC
+ACB
+BAC
+BCA
+CBA
+CAB</pre>
+<p><strong><br />
+Algorithm Paradigm: </strong>Backtracking<br />
+<strong>Time Complexity: </strong>O(n*n!)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<p>The algorithm basically works on this logic:</p>
+<p>All permutations of a string X is the same thing as all permutations of each possible character in X, combined with all permutations of the string X without that letter in it.</p>
+<p>That is to say, all permutations of "abcd" are</p>
+<ul>
+<li>"a" concatenated with all permutations of "bcd"</li>
+<li>"b" concatenated with all permutations of "acd"</li>
+<li>"c" concatenated with all permutations of "bad"</li>
+<li>"d" concatenated with all permutations of "bca"</li>
+</ul>
+<p>This algorithm in particular instead of performing recursion on substrings, performs the recursion in place on the input string, using up no additional memory for allocating substrings. The "backtracking" undoes the changes to the string, leaving it in its original state.</p>
+</div>
+<p>END</p>

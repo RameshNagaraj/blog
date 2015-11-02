@@ -1,0 +1,56 @@
+---
+layout: post
+title: How many times a day does a clock’s hands overlap?
+date: 2014-02-03 23:24:16.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Brain Teasers
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454303071'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<div>
+<div><img alt="" src="{{ site.baseurl }}/assets/how-many-times-a-day-does-a-clocks-hands-overlap.jpg" /></div>
+</div>
+<div>
+<p>&nbsp;</p>
+</div>
+<p>22 times a day if you only count the minute and hour hands overlapping. The approximate times are listed below. (For the precise times, see the related question.)</p>
+<p>2 times a day if you only count when all three hands overlap. This occurs at midnight and noon.</p>
+<h3><a name="am"></a>am</h3>
+<p>12:00<br />
+1:05<br />
+2:11<br />
+3:16<br />
+4:22<br />
+5:27<br />
+6:33<br />
+7:38<br />
+8:44<br />
+9:49<br />
+10:55</p>
+<h3><a name="pm"></a>pm</h3>
+<p>12:00<br />
+1:05<br />
+2:11<br />
+3:16<br />
+4:22<br />
+5:27<br />
+6:33<br />
+7:38<br />
+8:44<br />
+9:49<br />
+10:55</p>
+<p>A really simple way to see this is to imagine that the two hands are racing each other around a track. Every time the minute hand 'laps' the hour hand, we have the overlaps we want.</p>
+<p>So, we can say that the number of laps completed by the minute hand every T hours, Lm = T laps. Since there are 12hours in a full rotation of the hour hand, that hand only rotates Lh = T/12 laps.</p>
+<p>In order for the first 'lapping' to occur, the minute hand must do one more lap than the hour hand: Lm = Lh +1, so we get T = T/12 + 1 and that tells us that the first overlap happens after T = (12/11) hours. Similarly, the 2nd lapping will occur when Lm = Lh + 2.</p>
+<p>In general, the 'Nth' lapping will occur when Lm = Lh +N, which means every N*(12/11) hours (for N = 0,1,2,3...). In other words, it will happen approximately every 1hr5mins27secs, starting at 00:00. In 24hours, this occurs a total of 24/(12/11) = 22 times.</p>

@@ -1,0 +1,47 @@
+---
+layout: post
+title: lower_bound ans upper_bound
+date: 2013-04-20 12:34:14.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454369025'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<ul>
+<li>Lower bound: first element that is greater-or-equal.</li>
+<li>Upper bound: first element that is strictly greater.</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code>+- lb(2) == ub(2)           +- lb(6)
+|        == begin()         |   +- ub(6) == end()
+V                           V   V
++---+---+---+---+---+---+---+---+
+| 3 | 4 | 4 | 4 | 4 | 5 | 5 | 6 |
++---+---+---+---+---+---+---+---+
+    ^               ^           ^
+    |               |           |
+    +- lb(4)        +- ub(4)    +- lb(9) = ub(9) == end()
+
+    |- eq-range(4) -|</code></pre>
+<p>As you can see, the half-open equal-range for <em>n</em> is [lb(<em>n</em>), ub(<em>n</em>)).</p>
+<p>Note that both bounds give you meaningful insertion locations for an element of the desired value so that the ordering is maintained, but <code>lower_bound</code> has the distinguishing feature that <em>if</em> the element already exists, then you get an iterator which actually points to that element. Thus you can use <code>lower_bound</code>on an ordered range to implement your own unique-membership <em>or</em> multiple-membership container.</p>
+<pre><code>void insert(Container &amp; c, T const &amp; t)
+{
+    auto it = std::lower_bound(c.begin(), c.end(), t);
+
+    // if unique container:
+    if (it != c.end() &amp;&amp; *it == t) { /* error, element exists! */ return; }
+
+    c.insert(it, t);
+}</code></pre>

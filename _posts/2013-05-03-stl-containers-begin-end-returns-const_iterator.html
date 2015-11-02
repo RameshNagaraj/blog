@@ -1,0 +1,48 @@
+---
+layout: post
+title: STL Containers begin() / end() returns const_iterator ?
+date: 2013-05-03 23:29:46.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- STL
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454368974'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<pre><code>map&lt;string,Shopable*&gt;::iterator it = mymap.begin();</code></pre>
+<p>The iterator appears to be constant, but <code>items.begin()</code> doesn't return a constant iterator. Or, that's what I <strong><em>think</em></strong> because the mouseover error is something like:</p>
+<p>Compiler Error:</p>
+<pre><code>"No conversion from 'std::Tree_const_iterator&lt;...&gt; to std::Tree_iterator&lt;...&gt; exists'".</code></pre>
+<p>Answer:</p>
+<p>Use <code>const_iterator</code> as :</p>
+<pre><code>map&lt;string,Shopable*&gt;::const_iterator it = mymap.begin();</code></pre>
+<p>From the error, its clear that <code>mymap.begin()</code> returns <code>const_iterator</code>. That is because <code>mymap</code> is<code>const</code> in the function where you've written this, something like following:</p>
+<pre><code>void f(const std::map&lt;int,int&gt; &amp; m)
+{    //^^^^^ note this
+
+      std::map&lt;int,int&gt;::const_iterator it = m.begin(); //m is const in f()
+                       //^^^^^ note this
+}
+
+void g(std::map&lt;int,int&gt; &amp; m)
+{
+      std::map&lt;int,int&gt;::iterator it = m.begin(); //m is non-const in g()
+}</code></pre>
+<p>That is, <code>const</code> container (whether its <code>std::map</code>, <code>std::vector</code> etc) returns <code>const_iterator</code> and non-const container returns <code>iterator</code>.</p>
+<p>Every container has overloaded functions of <code>begin()</code> and <code>end()</code>. So <code>const</code> container invokes the overloaded <code>begin()</code> which returns <code>const_iterator</code> and non-const container invokes the other overloaded <code>begin()</code> which returns <code>iterator</code>. And same for <code>end()</code> overloaded functions. Ex:</p>
+<p><span style="color:#000000;font-weight:bold;font-style:inherit;line-height:1.625;">std::</span><a style="font-weight:bold;font-style:inherit;line-height:1.625;" href="http://www.cplusplus.com/reference/map/map/">map</a><span style="color:#000000;font-weight:bold;font-style:inherit;line-height:1.625;">::begin</span></p>
+<pre>iterator begin();
+const_iterator begin() const;</pre>
+<p>The problem is that <code>mymap</code> in the code above is a constant map, not a mutable map (maybe it is a member of a class and that code is inside constant member function?). Thus the call to<code>mymap.begin()</code> will pichup the overload that returns a <code>const_iterator</code> instead of the overload that returns an <code>iterator</code>.</p>
+<p>&nbsp;</p>
+<p>End</p>
+<p>&nbsp;</p>

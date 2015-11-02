@@ -1,0 +1,72 @@
+---
+layout: post
+title: Creating an Array of Objects
+date: 2014-11-19 21:41:12.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Java
+tags: []
+meta:
+  geo_public: '0'
+  _edit_last: '18160588'
+  _publicize_job_id: '16454302399'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>I have a class A for example -</p>
+<p>A[] arr = new A[4];<br />
+But this is only creating pointers (references) to A and not 4 objects. Is this correct? I see that when I try to access functions/variables in the objects created I get a null pointer exception. To be able to manipulate/access the objects I had to do this --</p>
+<p>A[] arr = new A[4];<br />
+for( int i=0; i&lt;4; i++ )<br />
+    arr[i] = new A();</p>
+<p>I find this odd because in C++ you just say new A[4] and it creates the four objects.</p>
+<p>This is correct.</p>
+<p>A[] a = new A[4];<br />
+creates 4 A variables, similar to doing this</p>
+<p>A a1;<br />
+A a2;<br />
+A a3;<br />
+A a4;<br />
+now you couldn&#039;t do a1.someMethod() without allocating a1 as</p>
+<p>a1 = new A();<br />
+similarly, with the array you need to do</p>
+<p>a[0] = new A();<br />
+before using it.</p>
+<p>The reason int works, but MyClass doesn&#039;t:</p>
+<p>From here:</p>
+<p>Data Type               Default Value (for fields)<br />
+byte                    0<br />
+short                   0<br />
+int                     0<br />
+long                    0L<br />
+float                   0.0f<br />
+double                  0.0d<br />
+char                    &#039;\u0000&#039;<br />
+String (or any object)  null<br />
+boolean                 false<br />
+When you initialize an array, all elements take on the default value.</p>
+<p>So, when you initialize an int[], all elements are 0, so no problem using that or assigning a new value to it.</p>
+<p>But, when you initialize an MyClass[], all elements are null, which is a problem when you try to access a member of one of the elements.</p>
+<p>If you don&#039;t know why accessing a null object&#039;s members won&#039;t work, you probably need to take 2 steps back and read a Java book.</p>
+<p>Additional Note:</p>
+<p>Technically, this:</p>
+<p>int[] foo = new int[1];<br />
+foo[0] = 0;<br />
+is actually more like this:</p>
+<p>MyClass[] foo = new MyClass[10];<br />
+foo[0] = new MyClass();<br />
+not:</p>
+<p>MyClass[] foo = new MyClass[10];<br />
+foo[0].bar = 0;<br />
+since you&#039;re assigning a new value to an element, rather than accessing a member of an element.</p>
+<p>No enclosing instance of type Test is accessible:</p>
+<p>The other answers cover that pretty well, and here are 3 related questions:</p>
+<p>No enclosing instance of type is accessible.</p>
+<p>No enclosing instance of type Server is accessible</p>
+<p>&quot;No enclosing instance of type&quot; error while calling method from another class in Android</p>

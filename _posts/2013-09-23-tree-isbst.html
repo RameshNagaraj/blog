@@ -1,0 +1,258 @@
+---
+layout: post
+title: "[TREE] isBST"
+date: 2013-09-23 17:42:02.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784497509'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<div>
+<div>
+<h2>A program to check if a binary tree is BST or not</h2>
+</div>
+<div><span style="font-style:inherit;line-height:1.625;"> </span></div>
+</div>
+<div id="post-content">
+<p>A binary search tree (BST) is a node based binary tree data structure which has the following properties.<br />
+• The left subtree of a node contains only nodes with keys less than the node’s key.<br />
+• The right subtree of a node contains only nodes with keys greater than the node’s key.<br />
+• Both the left and right subtrees must also be binary search trees.</p>
+<p>From the above properties it naturally follows that:<br />
+• Each node (item in the tree) has a distinct key.</p>
+<p><img title="BST" alt="BST" src="{{ site.baseurl }}/assets/BST.gif" width="259" height="156" /></p>
+<p><strong>METHOD 1 (Simple but Wrong)</strong><br />
+Following is a simple program. For each node, check if left node of it is smaller than the node and right node of it is greater than the node.</p>
+<div>
+<div id="highlighter_692511">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>int</code> <code>isBST(</code><code>struct</code> <code>node* node) </code></div>
+<div><code>{ </code></div>
+<div><code>  </code><code>if</code> <code>(node == NULL) </code></div>
+<div><code>    </code><code>return</code> <code>1; </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* false if left is &gt; than node */</code></div>
+<div><code>  </code><code>if</code> <code>(node-&gt;left != NULL &amp;&amp; node-&gt;left-&gt;data &gt; node-&gt;data) </code></div>
+<div><code>    </code><code>return</code> <code>0; </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* false if right is &lt; than node */</code></div>
+<div><code>  </code><code>if</code> <code>(node-&gt;right != NULL &amp;&amp; node-&gt;right-&gt;data &lt; node-&gt;data) </code></div>
+<div><code>    </code><code>return</code> <code>0; </code></div>
+<div><code>  </code></div>
+<div><code>  </code><code>/* false if, recursively, the left or right is not a BST */</code></div>
+<div><code>  </code><code>if</code> <code>(!isBST(node-&gt;left) || !isBST(node-&gt;right)) </code></div>
+<div><code>    </code><code>return</code> <code>0; </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* passing all that, it's a BST */</code></div>
+<div><code>  </code><code>return</code> <code>1; </code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>This approach is wrong as this will return true for below binary tree (and below tree is not a BST because 4 is in left subtree of 3)<br />
+</strong></p>
+<p><img title="tree_bst" alt="tree_bst" src="{{ site.baseurl }}/assets/tree_bst.gif" width="259" height="156" /></p>
+<p><strong>METHOD 2 (Correct but not efficient)</strong><br />
+For each node, check if max value in left subtree is smaller than the node and min value in right subtree greater than the node.</p>
+<div>
+<div id="highlighter_667745">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>/* Returns true if a binary tree is a binary search tree */</code></div>
+<div><code>int</code> <code>isBST(</code><code>struct</code> <code>node* node) </code></div>
+<div><code>{ </code></div>
+<div><code>  </code><code>if</code> <code>(node == NULL) </code></div>
+<div><code>    </code><code>return</code><code>(</code><code>true</code><code>); </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* false if the max of the left is &gt; than us */</code></div>
+<div><code>  </code><code>if</code> <code>(node-&gt;left!=NULL &amp;&amp; maxValue(node-&gt;left) &gt; node-&gt;data) </code></div>
+<div><code>    </code><code>return</code><code>(</code><code>false</code><code>); </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* false if the min of the right is &lt;= than us */</code></div>
+<div><code>  </code><code>if</code> <code>(node-&gt;right!=NULL &amp;&amp; minValue(node-&gt;right) &lt; node-&gt;data) </code></div>
+<div><code>    </code><code>return</code><code>(</code><code>false</code><code>); </code></div>
+<div><code>  </code></div>
+<div><code>  </code><code>/* false if, recursively, the left or right is not a BST */</code></div>
+<div><code>  </code><code>if</code> <code>(!isBST(node-&gt;left) || !isBST(node-&gt;right)) </code></div>
+<div><code>    </code><code>return</code><code>(</code><code>false</code><code>); </code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>/* passing all that, it's a BST */</code></div>
+<div><code>  </code><code>return</code><code>(</code><code>true</code><code>); </code></div>
+<div><code>} </code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>It is assumed that you have helper functions minValue() and maxValue() that return the min or max int value from a non-empty tree</p>
+<p><strong>METHOD 3 (Correct and Efficient)</strong><br />
+Method 2 above runs slowly since it traverses over some parts of the tree many times. A better solution looks at each node only once. The trick is to write a utility helper function isBSTUtil(struct node* node, int min, int max) that traverses down the tree keeping track of the narrowing min and max allowed values as it goes, looking at each node only once. The initial values for min and max should be INT_MIN and INT_MAX — they narrow from there.</p>
+<pre>/* Returns true if the given tree is a binary search tree 
+ (efficient version). */ 
+int isBST(struct node* node) 
+{ 
+  return(isBSTUtil(node, INT_MIN, INT_MAX)); 
+} 
+
+/* Returns true if the given tree is a BST and its 
+ values are &gt;= min and &lt;= max. */ 
+int isBSTUtil(struct node* node, int min, int max)</pre>
+<p><strong>Implementation:</strong></p>
+<div>
+<div id="highlighter_164308">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>#include &lt;stdio.h&gt;</code></div>
+<div><code>#include &lt;stdlib.h&gt;</code></div>
+<div><code>#include &lt;limits.h&gt;</code></div>
+<div></div>
+<div><code>/* A binary tree node has data, pointer to left child</code></div>
+<div><code>   </code><code>and a pointer to right child */</code></div>
+<div><code>struct</code> <code>node</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>int</code> <code>data;</code></div>
+<div><code>    </code><code>struct</code> <code>node* left;</code></div>
+<div><code>    </code><code>struct</code> <code>node* right;</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>isBSTUtil(</code><code>struct</code> <code>node* node, </code><code>int</code> <code>min, </code><code>int</code> <code>max);</code></div>
+<div></div>
+<div><code>/* Returns true if the given tree is a binary search tree </code></div>
+<div><code> </code><code>(efficient version). */</code></div>
+<div><code>int</code> <code>isBST(</code><code>struct</code> <code>node* node) </code></div>
+<div><code>{ </code></div>
+<div><code>  </code><code>return</code><code>(isBSTUtil(node, INT_MIN, INT_MAX)); </code></div>
+<div><code>} </code></div>
+<div></div>
+<div><code>/* Returns true if the given tree is a BST and its </code></div>
+<div><code>   </code><code>values are &gt;= min and &lt;= max. */</code></div>
+<div><code>int</code> <code>isBSTUtil(</code><code>struct</code> <code>node* node, </code><code>int</code> <code>min, </code><code>int</code> <code>max) </code></div>
+<div><code>{ </code></div>
+<div></div>
+<div><code>  </code><code>/* an empty tree is BST */</code></div>
+<div><code>  </code><code>if</code> <code>(node==NULL) </code></div>
+<div><code>     </code><code>return</code> <code>1;</code></div>
+<div><code>      </code></div>
+<div><code>  </code><code>/* false if this node violates the min/max constraint */</code></div>
+<div><code>  </code><code>if</code> <code>(node-&gt;data &lt; min || node-&gt;data &gt; max) </code></div>
+<div><code>     </code><code>return</code> <code>0; </code></div>
+<div></div>
+<div><code>  </code><code>/* otherwise check the subtrees recursively, </code></div>
+<div><code>   </code><code>tightening the min or max constraint */</code></div>
+<div><code>  </code><code>return</code></div>
+<div><code>    </code><code>isBSTUtil(node-&gt;left, min, node-&gt;data-1) &amp;&amp;  </code><code>// Allow only distinct values</code></div>
+<div><code>    </code><code>isBSTUtil(node-&gt;right, node-&gt;data+1, max);  </code><code>// Allow only distinct values</code></div>
+<div><code>} </code></div>
+<div></div>
+<div><code>/* Helper function that allocates a new node with the</code></div>
+<div><code>   </code><code>given data and NULL left and right pointers. */</code></div>
+<div><code>struct</code> <code>node* newNode(</code><code>int</code> <code>data)</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>struct</code> <code>node* node = (</code><code>struct</code> <code>node*)</code></div>
+<div><code>                       </code><code>malloc</code><code>(</code><code>sizeof</code><code>(</code><code>struct</code> <code>node));</code></div>
+<div><code>  </code><code>node-&gt;data = data;</code></div>
+<div><code>  </code><code>node-&gt;left = NULL;</code></div>
+<div><code>  </code><code>node-&gt;right = NULL;</code></div>
+<div></div>
+<div><code>  </code><code>return</code><code>(node);</code></div>
+<div><code>}</code></div>
+<div></div>
+<div><code>/* Driver program to test above functions*/</code></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>struct</code> <code>node *root = newNode(4);</code></div>
+<div><code>  </code><code>root-&gt;left        = newNode(2);</code></div>
+<div><code>  </code><code>root-&gt;right       = newNode(5);</code></div>
+<div><code>  </code><code>root-&gt;left-&gt;left  = newNode(1);</code></div>
+<div><code>  </code><code>root-&gt;left-&gt;right = newNode(3); </code></div>
+<div></div>
+<div><code>  </code><code>if</code><code>(isBST(root))</code></div>
+<div><code>    </code><code>printf</code><code>(</code><code>"Is BST"</code><code>);</code></div>
+<div><code>  </code><code>else</code></div>
+<div><code>    </code><code>printf</code><code>(</code><code>"Not a BST"</code><code>);</code></div>
+<div><code>    </code></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}  </code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Time Complexity: O(n)<br />
+Auxiliary Space : O(1) if Function Call Stack size is not considered, otherwise O(n)</p>
+<p><strong>METHOD 4(Using In-Order Traversal)</strong><br />
+Thanks to <a href="http://www.geeksforgeeks.org/archives/3042/comment-page-1#comment-562">LJW489 </a>for suggesting this method.<br />
+1) Do In-Order Traversal of the given tree and store the result in a temp array.<br />
+3) Check if the temp array is sorted in ascending order, if it is, then the tree is BST.</p>
+<p>Time Complexity: O(n)</p>
+<p>We can avoid the use of Auxiliary Array. While doing In-Order traversal, we can keep track of previously visited node. If the value of the currently visited node is less than the previous value, then tree is not BST. Thanks to <a href="http://www.geeksforgeeks.org/archives/3042/comment-page-1#comment-5805">ygos </a>for this space optimization.</p>
+<div>
+<div id="highlighter_724995">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>bool</code> <code>isBST(</code><code>struct</code> <code>node* root)</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>static</code> <code>struct</code> <code>node *prev = NULL;</code></div>
+<div><code>    </code></div>
+<div><code>    </code><code>// traverse the tree in inorder fashion and keep track of prev node</code></div>
+<div><code>    </code><code>if</code> <code>(root)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>if</code> <code>(!isBST(root-&gt;left))</code></div>
+<div><code>          </code><code>return</code> <code>false</code><code>;</code></div>
+<div></div>
+<div><code>        </code><code>// Allows only distinct valued nodes </code></div>
+<div><code>        </code><code>if</code> <code>(prev != NULL &amp;&amp; root-&gt;data &lt;= prev-&gt;data)</code></div>
+<div><code>          </code><code>return</code> <code>false</code><code>;</code></div>
+<div></div>
+<div><code>        </code><code>prev = root;</code></div>
+<div></div>
+<div><code>        </code><code>return</code> <code>isBST(root-&gt;right);</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>return</code> <code>true</code><code>;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The use of static variable can also be avoided by using reference to prev node as a parameter (Similar to <a href="http://www.geeksforgeeks.org/archives/17358">this </a>post).</p>
+</div>
+<p>END</p>

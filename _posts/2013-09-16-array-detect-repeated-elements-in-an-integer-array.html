@@ -1,0 +1,113 @@
+---
+layout: post
+title: "[ARRAY] Detect Repeated elements in an integer array"
+date: 2013-09-16 15:53:50.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  geo_public: '0'
+  _publicize_job_id: '15850545350'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<div>This is an open ended question so please ask questions about the nature of the data in the array (size of the data, is it sorted or almost sorted, range of the data). Also, ask about any constraints like runtime or memory usage. You selection of the technique will depend on the answers to those questions. I have listed a few techniques below that touch on some of those points. There are more solutions that may be appropriate under different conditions. Feel free to suggest them in the comments.</div>
+<ul>
+<li>Sort the array in-place and loop through to find the duplicate number</li>
+</ul>
+<p>Runtime: O(n log n) for sorting + O(n)<br />
+Pros: no extra memory<br />
+Cons: extra pass over the array is needed to actually find the duplicate<br />
+Code(C#):</p>
+<pre>  using System;
+  using System.Collections.Generic;
+  namespace ArrayQuestions.FindDuplicateNumber
+  {
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] array = new int[]{3, 2, 4, 5, 3, 2, 9, 6, 3, 6, 9, 9, 9};
+            Array.Sort(array); 
+            // note: this is a O(n square) sort but one could use a O(n log n) 
+            // sort easily.
+            // expected output: 2, 2, 3, 3, 3, 4, 5, 6, 6, 9, 9, 9, 9
+
+            for(int i=0; i&lt; array.Length - 1;)
+            {
+               int count = 1;
+               while(i &lt; array.Length - 1 &amp;&amp; array[i] == array[++i])
+               {
+                  count++;   
+               }
+               if(count &gt; 1)
+                  Console.WriteLine("{0} occurs {1} times", array[i-1], count);
+            }
+
+            Console.ReadLine();
+        }
+     }
+  }</pre>
+<ul>
+<li>Perform custom in-place insertion sort and check for duplicates during the inserts</li>
+</ul>
+<p>Runtime: O(n square). This is worst case but in practice it could be much lower (close to O(n)<br />
+for almost sorted input)<br />
+Pros: No extra pass need<br />
+Cons: It has the potential to be really slow for large inputs or sets that are not almost sorted.</p>
+<ul>
+<li>Use a hash table to remember the numbers encountered so far. Collision during insertion signals a duplicate.</li>
+</ul>
+<p>Runtime: O(n) (This is assuming insert and lookup operations on the hashtable are truly O(1))<br />
+Pros: fast<br />
+Cons: potentially high memory usage for hash table<br />
+Code(C#)</p>
+<pre>    using System;
+    using System.Collections.Generic;
+    using System.Collections;
+    namespace ArrayQuestions.FindDuplicateNumber
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                int[] array = new int[]{3, 2, 4, 5, 3, 2, 9, 6, 3, 6, 9, 9, 9};
+                Dictionary&lt;int, int=""&gt; dictionary = new Dictionary&lt;int,int&gt;();
+
+                for (int i = 0; i &lt; array.Length; i++)
+                {
+                    if (dictionary.ContainsKey(array[i]))
+                        dictionary[array[i]]++;
+                    else
+                        dictionary.Add(array[i], 1);
+                }
+
+                foreach (var entry in dictionary)
+                {
+                    Console.WriteLine("{0} occurs {1} times", entry.Key, entry.Value);
+                }
+            }
+        }
+    }</pre>
+<ul>
+<li>Use a <a href="http://en.wikipedia.org/wiki/Bit_array" target="_blank" rel="nofollow">bit-vector</a> to remember the number encountered so far.</li>
+</ul>
+<p>Runtime: O(n)<br />
+Pro: fast, compact bit vector reduces memory usage<br />
+Cons:<br />
+1. Additional memory is needed for the bit vector<br />
+2. Initializing bit vector will add add to the runtime time<br />
+3. Slightly complex implementation if one has to  implement the bit-vector code itself.<br />
+Pseudo Code:<br />
+1. Initialize the bit-vector to all 0s.<br />
+2. Loop through the array and for each number check the corresponding bit in the bit-vector.<br />
+If the bit is already set it signals a duplicate. If bit is not set, set the bit and continue.</p>
+<p>END</p>

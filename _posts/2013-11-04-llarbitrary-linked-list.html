@@ -1,0 +1,55 @@
+---
+layout: post
+title: "[Linked List]Arbitrary Linked List"
+date: 2013-11-04 23:47:51.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454352160'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<h4>Copy a linked list with next and arbit pointer</h4>
+<p>You are given a Double Link List with one pointer of each node pointing to the next node just like in a single link list. The second pointer however CAN point to any node in the list and not just the previous node. Now write a program in<strong> O(n) time </strong>to duplicate this list. That is, write a program which will create a copy of this list.</p>
+<p>Let us call the second pointer as arbit pointer as it can point to any arbitrary node in the linked list.</p>
+<p><img title="ArbitLinked List1" alt="ArbitLinked List1" src="{{ site.baseurl }}/assets/ArbitLinked-List12.gif" width="450" height="160" /></p>
+<p>Arbitrary pointers are shown in red and next pointers in black</p>
+<p>Figure 1</p>
+<p><strong>Method 1 (Uses O(n) extra space)</strong><br />
+This method stores the next and arbitrary mappings (of original list) in an array first, then modifies the original Linked List (to create copy), creates a copy. And finally restores the original list.</p>
+<p>1) Create all nodes in copy linked list using next pointers.<br />
+3) Store the node and its next pointer mappings of original linked list.<br />
+3) Change next pointer of all nodes in original linked list to point to the corresponding node in copy linked list.<br />
+Following diagram shows status of both Linked Lists after above 3 steps. The red arrow shows arbit pointers and black arrow shows next pointers.</p>
+<p><img title="ArbitLinked List2" alt="ArbitLinked List2" src="{{ site.baseurl }}/assets/ArbitLinked-List2.gif" width="450" height="200" /></p>
+<p>Figure 2</p>
+<p>4) Change the arbit pointer of all nodes in copy linked list to point to corresponding node in original linked list.<br />
+5) Now construct the arbit pointer in copy linked list as below and restore the next pointer of nodes in the original linked list.</p>
+<pre>       copy_list_node-&gt;arbit =
+                      copy_list_node-&gt;arbit-&gt;arbit-&gt;next;
+       copy_list_node = copy_list_node-&gt;next;</pre>
+<p>6) Restore the next pointers in original linked list from the stored mappings(in step 2).</p>
+<p>Time Complexity:  O(n)<br />
+Auxiliary Space:  O(n)</p>
+<p><strong>Method 2 (Uses Constant Extra Space)</strong><br />
+Thanks to Saravanan Mani for providing this solution. This solution works using constant space.<br />
+1) Create the copy of node 1 and insert it between node 1 &amp; node 2 in original Linked List, create the copy of 2 and insert it between 2 &amp; 3.. Continue in this fashion, add the copy of N afte the Nth node<br />
+2) Now copy the arbitrary link in this fashion</p>
+<pre>     original-&gt;next-&gt;arbitrary = original-&gt;arbitrary-&gt;next;  /*TRAVERSE 
+TWO NODES*/</pre>
+<p>This works because original-&gt;next is nothing but copy of original and Original-&gt;arbitrary-&gt;next is nothing but copy of arbitrary.<br />
+3) Now restore the original and copy linked lists in this fashion in a single loop.</p>
+<pre>     original-&gt;next = original-&gt;next-&gt;next;
+     copy-&gt;next = copy-&gt;next-&gt;next;</pre>
+<p>4) Make sure that last element of original-&gt;next is NULL.</p>
+<p>Time Complexity: O(n)<br />
+Auxiliary Space: O(1)</p>

@@ -1,0 +1,175 @@
+---
+layout: post
+title: Self Objects
+date: 2013-09-28 23:23:33.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361217'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>A class declaration can contain static object of self type, it can also have pointer to self type, but it cannot have a non-static object of self type.</p>
+<p>For example, following program works fine.</p>
+<div>
+<div id="highlighter_584725">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// A class can have a static member of self type</code></div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Test {</code></div>
+<div><code>  </code><code>static</code> <code>Test self;  </code><code>// works fine</code></div>
+<div></div>
+<div><code>  </code><code>/* other stuff in class*/</code></div>
+<div></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>Test t;</code></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>And following program also works fine.</p>
+<div>
+<div id="highlighter_221553">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// A class can have a pointer to self type</code></div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Test {</code></div>
+<div><code>  </code><code>Test * self; </code><code>//works fine</code></div>
+<div></div>
+<div><code>  </code><code>/* other stuff in class*/</code></div>
+<div></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>Test t;</code></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>But following program generates compilation error “<em>field `self’ has incomplete type</em>”</p>
+<div>
+<div id="highlighter_127721">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>
+<div><code>// A class cannot have non-static object(s) of self type.</code></div>
+<div><code>#include&lt;iostream&gt;</code></div>
+<div></div>
+<div><code>using</code> <code>namespace</code> <code>std;</code></div>
+<div></div>
+<div><code>class</code> <code>Test {</code></div>
+<div><code>  </code><code>Test self; </code><code>// Error</code></div>
+<div></div>
+<div><code>  </code><code>/* other stuff in class*/</code></div>
+<div></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>Test t;</code></div>
+<div><code>  </code><code>getchar</code><code>();</code></div>
+<div><code>  </code><code>return</code> <code>0;</code></div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>If a non-static object is member then declaration of class is incomplete and compiler has no way to find out size of the objects of the class.<br />
+Static variables do not contribute to the size of objects. So no problem in calculating size with static variables of self type.<br />
+For a compiler, all pointers have a fixed size irrespective of the data type they are pointing to, so no problem with this also.</p>
+<p>We use static member of self type for implement "singleton design pattern".</p>
+<p>You <i>can</i> have a <b>pointer</b> or a <b>reference</b> to another instance of the container class.</p>
+<p>It is impossible because at the time when data member b is being declared type Base is not defined yet.</p>
+<p>You can only do this:</p>
+<div>
+<table>
+<tbody>
+<tr>
+<td>
+<pre><code>1
+2
+3
+4
+</code></pre>
+</td>
+<td>
+<pre><code><var>class</var> Base
+{
+    Base* b;
+};</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>But careful, if you do this, you'll have infinite recursion:</p>
+<div>
+<table>
+<tbody>
+<tr>
+<td>
+<pre><code>1
+2
+3
+4
+5
+6
+</code></pre>
+</td>
+<td>
+<pre><code><var>class</var> Base
+{
+    Base* b;
+<var>public</var>:
+    Base() : b(<var>new</var> Base() ) {}
+};</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>END</p>

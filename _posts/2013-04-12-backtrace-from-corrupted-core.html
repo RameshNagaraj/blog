@@ -1,0 +1,32 @@
+---
+layout: post
+title: Backtrace from corrupted core
+date: 2013-04-12 10:22:52.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- GDB
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454369175'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Steps to get the backtrace from the core file with the corrupted stack.</p>
+<p>1. Run the gdb with the core file</p>
+<p>2. execute 'x /512xg $sp'</p>
+<p>3. Capture all the output into 1.txt file.</p>
+<p>4. Copy the scipt.sh  into folder which has 1.txt file.</p>
+<p>5. Run the script. It would generate the 2.txt file</p>
+<p>6. Open the 2.txt.</p>
+<p>7. Copy the 20 lines from the file and execute those in the gdb console.</p>
+<p>8. Repeat the step 7 for all the lines in 2.txt.</p>
+<p>It will give the backtrace from the core.</p>
+<p>script.sh ---&gt;</p>
+<p>cat 1.txt | awk '/:/ {print $2 "\n" $3}' | sort | grep -v "0x00000000000*" | grep -v "0xff*" |awk '/0x/ {print "info line * " $0}' &gt; 2.txt</p>

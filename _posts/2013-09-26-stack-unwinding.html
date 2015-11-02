@@ -1,0 +1,31 @@
+---
+layout: post
+title: Stack Unwinding
+date: 2013-09-26 13:55:05.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784493666'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p><strong>Definition</strong>: As you create objects statically (on the stack as opposed to allocating them in the heap memory) and perform function calls, they are "stacked up".</p>
+<p>When a scope (anything delimited by <code>{</code> and <code>}</code>) is exited (by using <code>return XXX;</code>, reaching the end of the scope or throwing an exception) everything within that scope is destroyed (destructors are called for everything). <strong>This process of destroying local objects and calling destructors is called stack unwinding.</strong> (Exiting a code block using <code>goto</code> will not unwind the stack which is one of the reasons you should never use <code>goto</code> in C++).</p>
+<p>You have the following issues related to stack unwinding:</p>
+<ol>
+<li>avoiding memory leaks (anything dynamically allocated that is not managed by a local object and cleaned up in the destructor will be leaked) - see RAII <a href="http://stackoverflow.com/questions/2331316/what-is-stack-unwinding/2331413#2331413">referred to</a> by Nikolai, and <a href="http://www.boost.org/doc/libs/1_41_0/libs/smart_ptr/scoped_ptr.htm">the documentation for boost::scoped_ptr</a> or this example of using <a href="http://www.google.com/codesearch/p?hl=en#so90T49b54s/przyklady/cpprec.zip%7Cg3JV5CE7tsM/12-02.cpp&amp;q=mutex%3a%3ascoped_lock">boost::mutex::scoped_lock</a>.</li>
+<li>program consistency: the C++ specifications state that you should never throw an exception before any existing exception has been handled. This means that <strong>the stack unwinding process should never throw an exception</strong> (either use only code guaranteed not to throw in destructors, or surround everything in destructors with <code>try {</code> and <code>} catch(...) {}</code>).</li>
+</ol>
+<p>If any destructor throws an exception during stack unwinding you end up in the <em>land of undefined behavior</em> which could cause your program to treminate unexpectedly (most common behavior) or the universe to end (theoretically possible but has not been observed in practice yet).</p>
+<p>END</p>

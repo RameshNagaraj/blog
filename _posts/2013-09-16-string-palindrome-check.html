@@ -1,0 +1,37 @@
+---
+layout: post
+title: "[STRING] Palindrome Check"
+date: 2013-09-16 16:47:41.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361732'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: Find if a given string is a palindrome. Palindrome is a word or a phrase that reads the same in either direction.<br />
+Ex: A man, a plan, a canal, panama!,  Nitin<br />
+Punctuation and spaces can be ignored.</p>
+<p>Solution: The solution is pretty straight forward and involves comparing the characters at both ends, incrementally moving towards the center of the string. This is similar logic we used for <a href="http://dev-interview-questions.blogspot.com/2008/12/string-reverse-in-place.html">reversing a string</a> in place. The IsPalindrome method implemented below assumes that the string has been cleaned off of the punctuation characters and spaces.</p>
+<p>Code:</p>
+<pre>bool IsPalindrome(char str[])
+{
+    int len = strlen(str);
+
+    for(int i=0, j=len-1; i&lt;j; i++, j--)
+    {
+        if(str[i] != str[j])
+            return false;
+    }
+   return true;
+}</pre>
+<p>END</p>

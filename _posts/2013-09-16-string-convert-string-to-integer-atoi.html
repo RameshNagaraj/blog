@@ -1,0 +1,104 @@
+---
+layout: post
+title: "[STRING] Convert String To Integer atoi()"
+date: 2013-09-16 16:41:27.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784511711'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: Implement atoi function in C language and give the test cases. atoi function converts a string to an integer. The function prototype is as follows:</p>
+<pre>         int my_atoi(const char str[]);</pre>
+<p>Solution: The key is to be able to find out the int value of a numeric character.<br />
+ASCII value of a numeric character - ASCII value of the character '0' = int value of numeric character.<br />
+Ex: '8' - '0' = 8</p>
+<p>Code:</p>
+<pre>#define MIN_INT -2147483648
+#define MAX_INT 2147483647
+
+int my_atoi(const char str[])
+{
+    if(str == NULL) return 0;
+
+    int len = strlen(str);
+
+    if(len &lt;= 0) return 0;
+
+    int index = 0;
+
+    //skip leading spaces
+    while(str[index] == ' ') index++;
+
+    bool isNeg = str[index] == '-';
+    int outNum = 0;
+
+    if(isNeg)
+    {
+        index++;
+        // skip white space after the sign
+        while(str[index] == ' ') index++;
+    }
+
+    while(index &lt; len)
+    {
+        char currentChar = str[index++];
+        if(currentChar &gt;= '0' &amp;&amp; currentChar &lt;= '9')
+        {
+            int oldValue = outNum;
+            int charVal = currentChar - '0';
+            outNum *= 10;
+            outNum += charVal;
+
+            //overflow underflow detection
+            if(outNum &lt; oldValue)
+            {
+                if(isNeg)
+                    outNum = MIN_INT;
+                else
+                    outNum = MAX_INT;
+                return outNum;
+            }
+        }
+        else
+            break;
+    }
+    if(isNeg)
+        outNum = outNum * -1;
+    return outNum;
+}</pre>
+<p>atoi Test Cases:</p>
+<pre>Input         : Output
+""            : 0
+"0"           : 0
+"1"           : 1
+"-1"          : -1
+"10"          : 10
+"-10"         : -10
+"1234567890"  : 1234567890
+"23 45"       : 23
+" 99"         : 99
+" -66"        : -66
+"- 77"        : -77
+"55 "         : 55
+"-2147483648" : -2147483648 (MIN)
+"2147483647"  : 2147483647  (MAX)
+"2147483648"  : 2147483647   (overflow)
+"-2147483649" : -2147483648  (underflow)
+"abc*"        : 0
+"23ab"        : 23
+"23ab34"      : 23
+"b31"         : 0</pre>
+<p>END</p>

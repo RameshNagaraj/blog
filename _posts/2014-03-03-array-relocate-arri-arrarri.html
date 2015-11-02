@@ -1,0 +1,52 @@
+---
+layout: post
+title: "[ARRAY] Relocate arr[I] = arr[arr[I]]"
+date: 2014-03-03 16:28:36.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454302568'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>WAP to modify the array such that arr[I] = arr[arr[I]].<br />
+Do this in place i.e. with out using additional memory. </p>
+<p>example : if a = {2,3,1,0}<br />
+o/p = a = {1,0,3,2} </p>
+<p>Note : The array contains 0 to n-1 integers.</p>
+<p>void relocate(int *arr,int size) {<br />
+	for(int i=0;i&lt;size;i++) {<br />
+		arr[i] += (arr[arr[i]]%size)*size;<br />
+	}<br />
+	for(int i=0;i&lt;size;i++) {<br />
+		arr[i] /= size;<br />
+	}<br />
+}</p>
+<p>It is simple maths:</p>
+<p>(x + y*z)/z = y    provided x and y is less than z.<br />
+(x + y*z)%z = x    provided x and y is less than z.<br />
+This is the concept used here.<br />
+Example:<br />
+(3 + 4*5)/5 = 4<br />
+(3 + 4*5)%5 = 3</p>
+<p>arr[i] = arr[i] + arr[arr[i]]*size<br />
+so arr[i]/size = arr[arr[i]]</p>
+<p>In the code you see the author has used % below; this is done just to make sure arr[i] and arr[arr[i]] is less than size as explained earlier.<br />
+arr[i] += (arr[arr[i]]%size)*size;</p>
+<p>When he multiplies the arr[arr[i]] by size and add the current value to it, you get a new value. This new value can use division to get the final result or modulo to obtain the current value.<br />
+When he does the division, the current value(remainder) just falls off and you get the final value.</p>
+<p>In the first loop, I add (size * &quot;OLD arr[arr[i]]&quot;) to arr[i] so that, when doing integer division by size, I get old arr[arr[i]], when doing %size, I get old arr[i]. However I add arr[arr[i]]%size to get old arr[arr[i]], in case it was already modified in the loop. The second loop simply replaces each arr[i] with old arr[arr[i]], as mentioned above.</p>
+<p>FAQ:<br />
+Do we really need (arr[arr[i]] % size) why cant we directly put the arr[arr[i]] which i guess will yield the same result.since the values of array cannot be more than the size...<br />
+--- I think you need the %size because you can potentially retrieve the new final value from arr[arr[i]]. And that would mess up the calculation. You can try it with the input from the question:<br />
+{2,3,1,0} will become:<br />
+{1,0,3,6}</p>

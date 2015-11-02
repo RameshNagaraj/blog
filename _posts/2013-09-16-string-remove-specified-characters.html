@@ -1,0 +1,66 @@
+---
+layout: post
+title: "[STRING] Remove Specified Characters"
+date: 2013-09-16 16:44:10.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361809'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: You are given 2 strings. The first string is the input string that needs to be cleaned (in place) and the second string contains characters that need to be removed from the the first string. For example if string1 = "teetotaller" and removeString= "ae" then the output (cleaned string) will look like "ttotllr".<br />
+Solution:<br />
+The naive approach is as follows:</p>
+<ul>
+<li>Create an output buffer the same size of string1.</li>
+<li>Loop through individual characters of string1 and check if they exist in the removeString.</li>
+<li>Copy a character to the output buffer only if it doesn't exist in removeString.</li>
+<li>Copy the contents of the output buffer to string1.</li>
+</ul>
+<p>This solution can certainly be improved to be faster. There are 2 things we can improve in the proposed solution.</p>
+<p>Improvement 1: The check to see if a character exists in the removeStr is O(m) where m is the size of the remove string. Hence the run time for loop from step 2 above is O(n * m).<br />
+If the check is somehow made to perform in O(1), the run time would be O(n). O(1) lookup can be done using a Hashtable or a flag array. Both techniques are compared in the <a href="http://dev-interview-questions.blogspot.com/2008/12/find-first-nonrepeated-character-string.html">Find First NonRepeated Character</a> post. In this solution we'll use the array approach. We will assume that the character set is 7 bit ASCII, which means that there are 128 possible characters. The array of bools will be used to determine if a character is to be removed or not. The ASCII code value of the character itself will be used as an index in to the array. For example if 'a' is one of the characters in the remove string then removeArray['a'] will be set to true (removeArray['a'] = true;).</p>
+<p>Improvement 2: The above proposed solution uses an output buffer to write the clean output characters to and then copies the output back to the original string. We don't really need the second buffer, if we just copy the characters to the input string instead of the output buffer. We will need to maintain a destination index to mark the spot where the next clean character needs to go. This improvement removes the need for the extra memory needed by the output buffer and also the need to copy it back to the original string.</p>
+<p>With the help of above two improvements the run time is O(n). We now need extra memory for the array but its constant (not tied to n).</p>
+<p>Improved Solution:</p>
+<ul>
+<li>Loop through individual characters of string1 and check if they exist in the removeString.</li>
+<li>Copy a character back to the input string only if it doesn't exist in removeString.</li>
+<li>Terminate the string with a NULLCHAR ('').</li>
+</ul>
+<pre>//Removes the specified characters from an input string
+void RemoveCharacters(char str[], char remove[])
+{
+int strLen = strlen(str);
+int removeStrLen = strlen(remove);
+
+bool removeCharacterFlags[128] = {false}; // assume ASCII character set
+
+// set the flag for characters present in the remove string
+for(int i=0; i&lt;removeStrLen; i++)
+{
+    removeCharacterFlags[remove[i]] = true;
+}
+
+int destIndex = 0;      // index within the input string where the next
+                        // clean character will go.
+for(int i=0; i&lt;strLen; i++)
+{
+    if(!removeCharacterFlags[str[i]])
+    {
+        str[destIndex++] = str[i];
+    }
+}
+str[destIndex] = '';
+}</pre>
+<p>END</p>

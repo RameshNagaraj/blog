@@ -1,0 +1,100 @@
+---
+layout: post
+title: STL maps with user-defined objects
+date: 2013-10-16 00:19:44.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- STL
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454352498'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<pre><code>#include &lt;iostream&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+class A
+{
+public:
+    A(int id): id(id)
+    { };
+
+private:
+    int id;
+};
+
+int main()
+{
+    A a(1) ;
+
+    map&lt; A, int&gt; m ;
+    m[a] = 123 ;
+
+    return 0;
+}</code></pre>
+<p>&nbsp;</p>
+<p>The above code throws the error:</p>
+<p><span style="color:#ff0000;">stl_function.h:237:22: error: no match for 'operator&lt;' in '__x &lt; __y'</span></p>
+<p>&nbsp;</p>
+<p>Method-1: (Overload the <code>operator &lt;</code> )</p>
+<p><span style="font-style:inherit;line-height:1.625;">You need to define </span><code style="font-style:inherit;">operator &lt;</code><span style="font-style:inherit;line-height:1.625;"> for the class A. Because Keys must be comparable.</span></p>
+<p>The only requirement is that <code>Compare</code> (which defaults to <code>less&lt;Key&gt;</code>, which defaults to using <code>operator&lt;</code> to compare keys) must be a "strict weak ordering".</p>
+<p>Map needs to compare the values using operator &lt; and hence you need to provide the same when user defined class are used as key.</p>
+<pre><code>    bool operator &lt;(const A&amp; rhs) 
+    {
+        return id &lt; rhs.id;
+    }</code></pre>
+<p>The above code throws the error:</p>
+<p><span style="color:#ff0000;">stl_function.h:237:22: error: passing 'const A' as 'this' argument of 'bool A::operator&lt;(const A&amp;)' discards qualifiers [-fpermissive]</span></p>
+<p>&nbsp;</p>
+<p>The stl container map is an ordered collection of pairs, and the<br />
+default ordering is done using the function object less(). This<br />
+function object defines operator() by taking two const references and<br />
+compares them using corresponding operator&lt;. Hence, when you invoke<br />
+"find"/insert/[] on m, the less() function eventually calls Point::operator&lt;()<br />
+and the arguments that it passes are const references. Hence<br />
+Point::operator&lt;() must be declared <strong>const</strong>.</p>
+<pre><code>    bool operator &lt;(const A&amp; rhs) <strong>const</strong>
+    {
+        return id &lt; rhs.id;
+    }</code></pre>
+<p>&nbsp;</p>
+<p>Method-2: (Providing a functor)</p>
+<p>You don't <em>have</em> to define <code>operator&lt;</code> for your class, actually. You can also make a comparator function object class for it, and use that to specialize <code>std::map (the third template argument of the map can be changed)</code>. To extend your example:</p>
+<pre><code>struct ClassACompare
+{
+   bool operator() (const A&amp; lhs, const A&amp; rhs)
+   {
+       return lhs.id &lt; rhs.id;
+   }
+};
+
+std::map&lt;Class1, int, ClassACompare&gt; c2int;</code></pre>
+<p>It just so happens that the default for the third template parameter of <code>std::map</code> is <a href="http://en.cppreference.com/w/cpp/utility/functional/less" rel="nofollow"><code>std::less</code></a>, which will delegate to <code>operator&lt;</code> defined for your class (and fail if there is none). But sometimes you want objects to be usable as map keys, but you do not actually have any <em>meaningful</em> comparison semantics, and so you don't want to confuse people by providing <code>operator&lt;</code> on your class just for that. If that's the case, you can use the above trick.</p>
+<p>Method-3: (Specializing <code>std::less for class A)</code></p>
+<p>Yet another way to achieve the same is to specialize <code>std::less</code>:</p>
+<pre><code>namespace std
+{
+    template&lt;&gt; struct less&lt;A&gt;
+    {
+       bool operator() (const A&amp; lhs, const A&amp; rhs) const
+       {
+           return lhs.id &lt; rhs.id;
+       }
+    }
+}</code></pre>
+<p>The advantage of this is that it will be picked by <code>std::map</code> "by default", and yet you do not expose <code>operator&lt;</code>to client code otherwise.</p>
+<p>Note: For Inserting into map use the make_pair:</p>
+<p>m.insert ( make_pair&lt;A,int&gt;(obj1, 1)); OR</p>
+<p>m.insert ( std::map &lt;A,int&gt;::value_type (obj1,1)) ;</p>
+<p>END</p>

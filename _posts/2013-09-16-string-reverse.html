@@ -1,0 +1,62 @@
+---
+layout: post
+title: "[STRING] Reverse"
+date: 2013-09-16 16:50:52.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784507245'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Problem: Given a string of unknown length reverse it in place.</p>
+<p>Solution: Lets take a sample string "hello". When reversed it should read as "olleh". For those who are new to C/C++, a string has null terminator at the end. This null terminator denotes the end of the string. So, when you say declare a string in C language like: char *str = "hello";</p>
+<div>How many bytes of memory does it take to store that string? 5 (for the characters) +1 (for the null). The representation of the string in memory looks like this:<a href="https://rameshnagaraj.files.wordpress.com/2013/09/25649-string-representation-in-memory.png"><img id="BLOGGER_PHOTO_ID_5278560831251389586" alt="" src="{{ site.baseurl }}/assets/25649-string-representation-in-memory.png?w=151" border="0" /></a></div>
+<p>Now, the reverse string should look like as shown below: <a href="https://rameshnagaraj.files.wordpress.com/2013/09/236c8-reversed-string.png"><img id="BLOGGER_PHOTO_ID_5278651670248610850" alt="" src="{{ site.baseurl }}/assets/236c8-reversed-string.png?w=147" border="0" /></a>If you notice, we just need to swap the first and the last characters, the 2nd and the 2nd last, 3rd and 3rd last and so on.</p>
+<p>Code:</p>
+<pre>int main(int argc, char* argv[])
+{
+   char str[7] = "hello"; // create an array of characters of size 7
+                          // and assign the string hello to it.
+                          // Last char will be '' (null terminator)
+   printf("%s", str);       // this will print hello
+   reverse(str);
+   printf("%s", str);     // this will print olleh
+   return 0;
+}
+
+void reverse(char * str)
+{
+   char * begin = str;
+   char * end = str;
+
+   // position the end pointer at the last character
+   while(*(end+1) != NULL)
+   {
+       end++;
+   }
+
+   while(begin &lt; end) // as long as begin pointer is less than end pointer
+ {
+  // swap the characters
+  char temp = *begin; 
+  *begin = *end;
+  *end = temp;
+
+  begin++; //increment the begin ptr
+  end--;  //decrememnt the end pointer
+ }
+}</pre>
+<p>&nbsp;</p>
+<p>END</p>

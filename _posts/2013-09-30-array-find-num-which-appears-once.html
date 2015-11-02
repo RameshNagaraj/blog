@@ -1,0 +1,70 @@
+---
+layout: post
+title: "[ARRAY] Find Num which Appears Once"
+date: 2013-09-30 21:21:54.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361081'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Given an array of numbers, only one number appears once, others twice. Find the number.</p>
+<p>If there's only 1 number appearing once, it's actually easier. just use xor. The duplicate values cancel out since their xor is 0</p>
+<pre><code>int unique_number(const vector&lt;int&gt;&amp; a) {
+	int ans(0);
+	for (size_t i=0; i &lt; a.size(); i++) 
+		ans ^= a[i];
+	return ans;
+}</code></pre>
+<p>&nbsp;</p>
+<p>Let the number which occurs only once in the array be <code>x</code></p>
+<pre><code>x &lt;- a[1]
+for i &lt;- 2 to n
+   x &lt;- x ^ a[i]
+return x
+</code></pre>
+<p>Since <code>a ^ a = 0</code> and <code>a ^ 0 = a</code></p>
+<p>Numbers which occur in pair cancel out and the result gets stored in <code>x</code></p>
+<p>Working code in C++</p>
+<pre><code>#include &lt;iostream&gt;
+
+template&lt;typename T, size_t N&gt;
+size_t size(T(&amp;a)[N])
+{
+    return N;
+}
+int main()
+{
+   int a [] = {1,2,3,4,3,1,2};
+   int x = a[0];
+   for (size_t i = 1; i&lt; size(a) ; ++i)
+   {
+      x = x ^ a[i];
+   }
+   std::cout &lt;&lt; x;
+} </code></pre>
+<p>&nbsp;</p>
+<p>What if two numbers appear once, what if 500 numbers appear once. How to find these numbers.?</p>
+<p>I think hashes are definitely needed. Thus you find all numbers appeared once in O(n) time. Some quick example below (in Ruby):</p>
+<pre><code>def find_single(ar)
+    num_hash = Hash.new(2)
+    ar.each do |n| 
+        num_hash[n] -= 1
+        num_hash.delete(n) if num_hash[n] &lt;= 0
+    end
+
+    return num_hash.keys
+end</code></pre>
+<p>&nbsp;</p>
+<p><a href="http://www.sysexpand.com/?path=exercises/number-appearing-once-in-array">http://www.sysexpand.com/?path=exercises/number-appearing-once-in-array</a></p>
+<p>END</p>

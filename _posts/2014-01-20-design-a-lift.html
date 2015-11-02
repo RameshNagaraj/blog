@@ -1,0 +1,30 @@
+---
+layout: post
+title: Design a Lift
+date: 2014-01-20 22:44:59.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Design Pattern
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454335150'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<h5>How would you design an elevator algorithm ?</h5>
+<h5><span style="text-decoration:underline;">Solution 1:</span></h5>
+<h5><a href="http://en.wikipedia.org/wiki/Elevator_algorithm">http://en.wikipedia.org/wiki/Elevator_algorithm</a></h5>
+<h5><span style="text-decoration:underline;">Solution 2:</span></h5>
+<h5>Elevator class: it has states such as up/down/stand/maintenance, current floor, list of floor requests sorted in the direction.<br />
+Elevator bank class: contains elevators and receives requests from the floors. It has scheduling such as:<br />
+if available pick a standing elevator for this floor.<br />
+else pick an elevator moving to this floor.<br />
+else pick a standing elevator on an other floor.<br />
+else pick the elevator with the lowest load.</h5>

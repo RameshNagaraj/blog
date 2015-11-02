@@ -1,0 +1,129 @@
+---
+layout: post
+title: LRU Cache in C++
+date: 2013-02-22 00:14:48.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '15850435179'
+  _rest_api_client_id: "-1"
+  _rest_api_published: '1'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Design an LRU cache with all the operations including getting the least recently used item to be O(1)</p>
+<p><code>#include &lt;iostream&gt;</code></p>
+<div><code>#include &lt;vector&gt;</code></div>
+<div><code>#include &lt;hash_map&gt;</code></div>
+<div></div>
+<div><code>using namespace std;</code></div>
+<div></div>
+<div><code>template &lt;</code><code>class</code> <code>K, </code><code>class</code> <code>T&gt;</code></div>
+<div><code>struct LRUCacheEntry</code></div>
+<div><code>{</code></div>
+<div><code>   </code><code>K key;</code></div>
+<div><code>   </code><code>T data;</code></div>
+<div><code>   </code><code>LRUCacheEntry * prev;</code></div>
+<div><code>   </code><code>LRUCacheEntry * next;</code></div>
+<div><code>};</code></div>
+<div></div>
+<div><code>template &lt;</code><code>class</code> <code>K, </code><code>class</code> <code>T&gt;</code></div>
+<div><code>class</code> <code>LRUCache</code></div>
+<div><code>{</code></div>
+<div><code>public</code><code>:</code></div>
+<div><code>  </code><code>LRUCache(size_t sz) : head(NULL), tail(NULL){</code></div>
+<div><code>    </code><code>entries = </code><code>new</code> <code>LRUCacheEntry&lt;K, T&gt;[sz];</code></div>
+<div><code>    </code><code>for</code> <code>(</code><code>int</code> <code>i = </code><code>0</code><code>; i &lt; sz; i++)</code></div>
+<div><code>      </code><code>freeEntries.push_back(entries + i);</code></div>
+<div><code>  </code><code>}</code></div>
+<div><code>  </code></div>
+<div><code>  </code><code>~LRUCache(){  delete[] entries; } </code></div>
+<div></div>
+<div><code>  </code><code>bool containsKey(K key) { </code><code>return</code> <code>_m.find(key) != _m.end(); }</code></div>
+<div></div>
+<div><code>  </code><code>void</code> <code>put(K key, T data){</code></div>
+<div><code>    </code><code>LRUCacheEntry&lt;K, T&gt; * entry;</code></div>
+<div><code>    </code></div>
+<div><code>    </code><code>if</code> <code>(_m.find(key) != _m.end()) </code><code>return</code><code>;</code></div>
+<div></div>
+<div><code>    </code><code>if</code> <code>(freeEntries.size() &gt; </code><code>0</code><code>){</code></div>
+<div><code>      </code><code>entry = freeEntries.back();</code></div>
+<div><code>      </code><code>freeEntries.pop_back();</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>    </code><code>else</code><code>{</code></div>
+<div><code>      </code><code>// no free entries</code></div>
+<div><code>      </code><code>entry = tail;</code></div>
+<div><code>      </code><code>if</code> <code>(tail-&gt;prev != NULL) tail-&gt;prev-&gt;next = NULL;</code></div>
+<div><code>      </code><code>_m.erase(entry-&gt;key);</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>     </code></div>
+<div><code>    </code><code>_m[key] = entry;</code></div>
+<div><code>    </code><code>entry-&gt;key = key;</code></div>
+<div><code>    </code><code>entry-&gt;data = data;</code></div>
+<div><code>    </code><code>entry-&gt;next = head; </code></div>
+<div><code>    </code><code>entry-&gt;prev = NULL;</code></div>
+<div><code>    </code><code>if</code> <code>(head != NULL){</code></div>
+<div><code>      </code><code>head-&gt;prev = entry;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>     </code></div>
+<div><code>    </code><code>head = entry;</code></div>
+<div><code>  </code><code>}</code></div>
+<div></div>
+<div><code>  </code><code>// we assumes that containsKey is always called before this method</code></div>
+<div><code>  </code><code>T get(K key) {  </code></div>
+<div><code>    </code><code>LRUCacheEntry&lt;K, T&gt; * entry = _m[key];</code></div>
+<div><code>  </code></div>
+<div><code>   </code><code>if</code> <code>(entry != head){</code></div>
+<div><code>      </code><code>if</code> <code>(entry-&gt;next != NULL)</code></div>
+<div><code>      </code><code>entry-&gt;next-&gt;prev = entry-&gt;prev;</code></div>
+<div></div>
+<div><code>      </code><code>entry-&gt;prev-&gt;next = entry-&gt;next;</code></div>
+<div><code>      </code><code>if</code> <code>(entry == tail) tail = entry-&gt;prev;</code></div>
+<div></div>
+<div><code>      </code><code>entry-&gt;next = head;</code></div>
+<div><code>      </code><code>entry-&gt;prev = NULL;</code></div>
+<div><code>      </code><code>head = entry;</code></div>
+<div><code>    </code><code>}</code></div>
+<div></div>
+<div><code>    </code><code>return</code> <code>entry-&gt;data;</code></div>
+<div><code>  </code><code>}</code></div>
+<div></div>
+<div><code>  </code><code>void</code> <code>print(){</code></div>
+<div><code>    </code><code>LRUCacheEntry&lt;K, T&gt; * entry = head;</code></div>
+<div><code>    </code><code>while</code> <code>(entry != NULL){</code></div>
+<div><code>      </code><code>cout &lt;&lt; entry-&gt;data &lt;&lt; </code><code>" "</code><code>;</code></div>
+<div><code>      </code><code>entry = entry-&gt;next;</code></div>
+<div><code>    </code><code>}</code></div>
+<div><code>    </code><code>cout &lt;&lt; endl;</code></div>
+<div><code>  </code><code>}</code></div>
+<div><code>private</code><code>:</code></div>
+<div><code>  </code><code>hash_map&lt;K, LRUCacheEntry&lt;K, T&gt; *&gt; _m;</code></div>
+<div><code>  </code><code>LRUCacheEntry&lt;K, T&gt; * head, *tail, *entries;</code></div>
+<div><code>  </code><code>vector&lt;LRUCacheEntry&lt;K, T&gt; *&gt; freeEntries;</code></div>
+<div><code>};</code></div>
+<div></div>
+<div></div>
+<div></div>
+<div><code>int</code> <code>main()</code></div>
+<div><code>{</code></div>
+<div><code>  </code><code>LRUCache&lt;</code><code>int</code><code>, </code><code>int</code><code>&gt;  cache(</code><code>3</code><code>);</code></div>
+<div></div>
+<div><code>  </code><code>cache.put(</code><code>3</code><code>, </code><code>3</code><code>);</code></div>
+<div><code>  </code><code>cache.put(</code><code>4</code><code>, </code><code>4</code><code>);</code></div>
+<div><code>  </code><code>cache.put(</code><code>5</code><code>, </code><code>5</code><code>);</code></div>
+<div><code>   </code></div>
+<div><code>  </code><code>cache.print();</code></div>
+<div></div>
+<div><code>  </code><code>cache.get(</code><code>3</code><code>);</code></div>
+<div><code>  </code><code>cache.print();</code></div>
+<div><code>  </code><code>return</code> <code>0</code><code>;</code></div>
+<div><code>}</code></div>

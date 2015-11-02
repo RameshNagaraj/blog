@@ -1,0 +1,32 @@
+---
+layout: post
+title: Design Phone Book Data structure
+date: 2014-01-20 22:44:47.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Design Pattern
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454335242'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>Designa a phone book - basically contact book on phone.<br />
+Give data structures and give time complexity to search a phone number.<br />
+Ex: search - freeninza and if found in your phone book return the mobile number of user.</p>
+<p><span style="text-decoration:underline;"><b>Strategy:</b></span></p>
+<p>Using a Trie can help you on that and the time will be O(L) where L is the string length.<br />
+1) input name and find phone number<br />
+-- Trie structure for name (string), phone number as assocaited value.<br />
+-- Or hashtable (name as hash key), and link list as chaining (for name duplicatiion)<br />
+2) input phone number and find name<br />
+-- hash table<br />
+(phone number is unique, so use as hash key)<br />
+The great thing about a trie is that it would provide functionality to easily facilitate partial searches, you type in the start of the persons name or phone number and you could return all leaf nodes that match that that prefix. Insertion and search will take O(length of phone number). To display the numbers starting with one or more digits, then the complexity will be the O(prefix length)+O(number of children for the immediate prefix node * length of the remaining number from child nodes).</p>

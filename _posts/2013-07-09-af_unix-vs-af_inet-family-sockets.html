@@ -1,0 +1,73 @@
+---
+layout: post
+title: AF_UNIX vs AF_INET Family Sockets
+date: 2013-07-09 16:50:12.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Networking
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454368594'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<pre>socket - create an endpoint for communication
+
+=============================================================
+     cc  [ flag ... ] file ... -lsocket -lnsl [ library ... ]
+     #include &lt;sys/types.h&gt;
+     #include &lt;sys/socket.h&gt;
+
+     int socket(int domain, int type, int protocol);
+============================================================
+
+The domain parameter specifies a communications domain within which 
+communication will take place. Two possible domains are 
+     AF_UNIX - Unix domain
+     AF_INET - Internet domain
+
+The second argument is the type of socket. The socket has the indicated type, 
+which specifies the com-munication semantics. The common choices are:
+     SOCK_STREAM - sequenced, reliable, two-way connection-based byte streams
+     SOCK_DGRAM - datagrams which is connectionless, unreliable messages of a 
+                  fixed (typically small) maximum length
+
+The third argument is the protocol. Protocol specifies a particular protocol 
+to be used with the socket. Use 0 for TCP/IP (stream sockets) and UDP/IP 
+(datagram sockets) 
+
+RETURN VALUES
+     A -1 is returned if an error occurs.  Otherwise  the  return
+     value is a descriptor referencing the socket.</pre>
+<p>The ubiquitous alternative to AF_INET (which, in retrospect, should have been named AF_INET4) is AF_INET6, for the IPv6 address family. IPv4 uses 32-bit addresses; IPv6 uses 128-bit addresses.</p>
+<p>AF_INET uses the TCP/IP protocol.</p>
+<p>AF_UNIX creates filesystem objects and it only works between processes on the same host.</p>
+<p>AF_UNIX is much faster than AF_INET.</p>
+<p>You need arguments like AF_UNIX or AF_INET to specify which type of socket addressing you would be using to implement IPC socket communication. AF stands for Address Family.</p>
+<p>As in BSD standard Socket (adopted in Python socket module) addresses are represented as follows:</p>
+<ol>
+<li>A single string is used for the AF_UNIX/AF_LOCAL address family. This option is used for IPC on local machines where no IP address is required.</li>
+<li>A pair (host, port) is used for the AF_INET address family, where host is a string representing either a hostname in Internet domain notation like 'daring.cwi.nl' or an IPv4 address like '100.50.200.5', and port is an integer. Used to communicated between processes over internet.</li>
+</ol>
+<p><strong>AF_UNIX , AF_INET6 , AF_NETLINK , AF_TIPC , AF_CAN , AF_BLUETOOTH , AF_PACKET , AF_RDS</strong>are other option which could be used instead of <strong>AF_INET</strong>.</p>
+<p>Socket are characterized by their domain, type and transport protocol. Common domains are:</p>
+<ol>
+<li>AF_UNIX: address format is UNIX pathname</li>
+<li>AF_INET: address format is host and port number</li>
+</ol>
+<p>I found in Linux kernel source code that PF_INET and AF_INET are the same. The following code is from file <strong>include/linux/socket.h</strong>, line 204 of Linux kernel 3.2.21 tree.</p>
+<pre><code>/* Protocol families, same as address families. */
+...
+#define PF_INET     AF_INET</code></pre>
+<p>In fact, AF_ and PF is the same thing. There are some words on Wikipedia will clear your confusion</p>
+<blockquote><p>The original design concept of the socket interface distinguished between protocol types (families) and the specific address types that each may use. It was envisioned that a protocol family may have several address types. Address types were defined by additional symbolic constants, using the prefix AF_ instead of PF_. The AF_-identifiers are intended for all data structures that specifically deal with the address type and not the protocol family. However, this concept of separation of protocol and address type has not found implementation support and the AF_-constants were simply defined by the corresponding protocol identifier, rendering the distinction between AF_ versus PF_ constants a technical argument of no significant practical consequence. Indeed, much confusion exists in the proper usage of both forms.</p>
+<p>&nbsp;</p></blockquote>
+<p>&nbsp;</p>
+<p>END</p>

@@ -1,0 +1,42 @@
+---
+layout: post
+title: "[TREE] Diameter"
+date: 2013-09-17 15:00:21.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _oembed_b98ba3945b5ab29749e753b494c4fef8: "{{unknown}}"
+  _edit_last: '18160588'
+  _oembed_efd42fe445e95fe1c50f333d97285b3f: "{{unknown}}"
+  _oembed_492379ae37cee23dab365725f0f5f955: "{{unknown}}"
+  _publicize_job_id: '16454361301'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>The <em>diameter</em> of a Binary tree (sometimes called the width) is the number of nodes on the longest path between two leaves in the tree. The diagram below shows two trees each with diameter nine, the leaves that form the ends of a longest path are shaded (note that there is more than one path in each tree of length nine, but no path longer than nine nodes).</p>
+<p><img alt="" src="{{ site.baseurl }}/assets/diameter.jpg" /></p>
+<p>The diameter of a tree <em>T</em> is the largest of the following quantities:</p>
+<ul>
+<li>the diameter of <em>T</em>'s left subtree</li>
+<li>the diameter of <em>T</em>'s right subtree</li>
+<li>the longest path between leaves that goes through the root of <em>T</em> (this can be computed from the heights of the subtrees of <em>T</em>)</li>
+</ul>
+<p>The function below returns the diameter of a tree. A tree's diameter is defined after the function. Write a recurrence for this function and solve it yielding the running time using big-Oh in terms of the number of nodes in a tree. int diameter(Tree * t) // post: return diameter of t { if (t == 0) return 0; int lheight = height(tree-&gt;left); int rheight = height(tree-&gt;right); int ldiameter = diameter(tree-&gt;left); int rdiameter = diameter(tree-&gt;right); return max(lheight + rheight + 1, max(ldiameter,rdiameter)); } The following function returns the height of a tree (the number of nodes on the longest root-to-leaf path).</p>
+<p>int height(Tree * t) // postcondition: returns height of tree with root t { if (t == 0) { return 0; } else { return 1 + max(height(t-&gt;left),height(t-&gt;right)); } } where the function <tt>max</tt> returns the largest of its two integer parameters.</p>
+<p>http://www.cs.duke.edu/courses/spring00/cps100/assign/trees/diameter.html</p>
+<p>Dry run for the following example:</p>
+<p>Consider following binary tree:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/diagram2.jpeg"><img title="Example Binary Tree" alt="" src="{{ site.baseurl }}/assets/diagram2.jpeg?w=675&amp;h=569" width="450" height="379" /></a></p>
+<p>At every node its left height, right height, left diameter and right diameter are presented:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/diameter1.jpeg"><img title="Example Binary Tree" alt="" src="{{ site.baseurl }}/assets/diameter1.jpeg?w=675&amp;h=494" width="450" height="329" /></a></p>
+<p>&nbsp;</p>
+<p>Therefore for the root node, diameter is maximum of left diameter: 5, right diameter: 3, left height+ right height+1: 4+2+1. Here its 7.</p>
+<p>END</p>

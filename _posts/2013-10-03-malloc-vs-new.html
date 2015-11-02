@@ -1,0 +1,122 @@
+---
+layout: post
+title: malloc vs new
+date: 2013-10-03 00:35:47.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- CPP
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784478908'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>From the <a href="http://yosefk.com/c++fqa/heap.html#fqa-16.4">C++ FQA Lite</a>:</p>
+<blockquote><p>[16.4] Why should I use new instead of trustworthy old malloc()?</p>
+<p>FAQ: new/delete call the constructor/destructor; new is type safe, malloc is not; new can be overridden by a class.</p>
+<p>FQA: The virtues of new mentioned by the FAQ are not virtues, because constructors, destructors, and operator overloading are garbage (see what happens when you have no garbage collection?), and the type safety issue is really tiny here (normally you have to cast the void* returned by malloc to the right pointer type to assign it to a typed pointer variable, which may be annoying, but far from "unsafe").</p>
+<p>Oh, and using trustworthy old malloc makes it possible to use the equally trustworthy &amp; old realloc. Too bad we don't have a shiny new operator renew or something.</p>
+<p>Still, new is not bad enough to justify a deviation from the common style used throughout a language, even when the language is C++. In particular, classes with non-trivial constructors will misbehave in fatal ways if you simply malloc the objects. So why not use new throughout the code? People rarely overload operator new, so it probably won't get in your way too much. And if they do overload new, you can always ask them to stop.</p>
+</blockquote>
+<p>1. Operator new constructs an object (calls constructor of object), malloc does not.</p>
+<p>2. Operator new is an operator, malloc is a function.</p>
+<p>3. Operator new can be overloaded, malloc cannot be overloaded.</p>
+<p>4. Operator new throws an exception if there is not enough memory, malloc returns a NULL.</p>
+<p>5. Operator new[] requires to specify the number of objects to allocate, malloc requires to specify the total number of bytes to allocate.</p>
+<p>6. malloc() returns void *, which has to be explicitly cast to the desired type but new returns the proper type.</p>
+<p>7. Operator new/new[] must be matched with operator delete/delete[] to deallocate memory, malloc() must be matched with free() to deallocate memory.</p>
+<p>8. The new/delete couple does not have a realloc alternative that is available when malloc/free pair is used. realloc is used to resize the length of an array or a memory block dynamically</p>
+<h2>Deficiencies fixed by new for C++ code</h2>
+<ol>
+<li><code>malloc</code> is not typesafe in any meaningful way. In C++ you are required to cast the return from<code>void*</code>. This potentially introduces a lot of problems:
+<pre><code>#include &lt;stdlib.h&gt;
+
+struct foo {
+  double d[5];
+}; 
+
+int main() {
+  foo *f1 = malloc(1); // error, no cast
+  foo *f2 = static_cast&lt;foo*&gt;(malloc(sizeof(foo)));
+  foo *f3 = static_cast&lt;foo*&gt;(malloc(1)); // No error, bad
+}</code></pre>
+</li>
+<li>It's worse than that though. If the type in question is <a href="http://stackoverflow.com/questions/146452/what-are-pod-types-in-c">POD (plain old data)</a> then you can semi-sensibly use <code>malloc</code> to allocate memory for it, as <code>f2</code> does in the first example.
+<p>It's not so obvious though if a type is POD. The fact that it's possible for a given type to change from POD to non-POD with no resulting compiler error and potentially very hard to debug problems is a significant factor. For example if someone (possibly another programmer, during maintenance, much later on were to make a change that caused <code>foo</code> to no longer be POD then no obvious error would appear at compile time as you'd hope, e.g.:</p>
+<pre><code>struct foo {
+  double d[5];
+  virtual ~foo() { }
+};</code></pre>
+<p>would make the <code>malloc</code> of <code>f2</code> also become bad, without any obvious diagnostics. The example here is trivial, but it's possible to accidentally introduce non-PODness much further away (e.g. in a base class, by adding a non-POD member). If you have C++11/boost you can use <code>is_pod</code> to check that this assumption is correct and produce an error if it's not:</p>
+<pre><code>#include &lt;type_traits&gt;
+#include &lt;stdlib.h&gt;
+
+foo *safe_foo_malloc() {
+  static_assert(std::is_pod&lt;foo&gt;::value, "foo must be POD");
+  return static_cast&lt;foo*&gt;(malloc(sizeof(foo)));
+}</code></pre>
+<p>Although boost is <a href="http://www.boost.org/doc/libs/1_47_0/libs/type_traits/doc/html/boost_typetraits/reference/is_pod.html">unable to determine if a type is POD</a> without C++11 or some other compiler extensions.</p>
+</li>
+<li><code>malloc</code> returns <code>NULL</code> if allocation fails. <code>new</code> will throw <code>std::bad_alloc</code>. The behaviour of later using a <code>NULL</code> pointer is undefined. An exception has clean semantics when it is thrown and it is thrown from the source of the error. Wrapping <code>malloc</code> with an appropriate test at every call seems tedious and error prone. (You only have to forget once to undo all that good work). An exception can be allowed to propagate to a level where a caller is able to sensibly process it, where as <code>NULL</code> is much harder to pass back meaningfully. We could extend our <code>safe_foo_malloc</code>function to throw an exception or exit the program or call some handler:
+<pre><code>#include &lt;type_traits&gt;
+#include &lt;stdlib.h&gt;
+
+void my_malloc_failed_handler();
+
+foo *safe_foo_malloc() {
+  static_assert(std::is_pod&lt;foo&gt;::value, "foo must be POD");
+  foo *mem = static_cast&lt;foo*&gt;(malloc(sizeof(foo)));
+  if (!mem) {
+     my_malloc_failed_handler();
+     // or throw ...
+  }
+  return mem;
+}</code></pre>
+</li>
+<li>Fundamentally <code>malloc</code> is a C feature and <code>new</code> is a C++ feature. As a result <code>malloc</code> does not play nicely with constructors, it only looks at allocating a chunk of bytes. We could extend our<code>safe_foo_malloc</code> further to use placement <code>new</code>:
+<pre><code>#include &lt;stdlib.h&gt;
+#include &lt;new&gt;
+
+void my_malloc_failed_handler();
+
+foo *safe_foo_malloc() {
+  void *mem = malloc(sizeof(foo));
+  if (!mem) {
+     my_malloc_failed_handler();
+     // or throw ...
+  }
+  return new (mem)foo();
+}</code></pre>
+</li>
+<li>Our <code>safe_foo_malloc</code> function isn't very generic - ideally we'd want something that can handle any type, not just <code>foo</code>. We can achieve this with templates and variadic templates for non-default constructors:
+<pre><code>#include &lt;functional&gt;
+#include &lt;new&gt;
+#include &lt;stdlib.h&gt;
+
+void my_malloc_failed_handler();
+
+template &lt;typename T&gt;
+struct alloc {
+  template &lt;typename ...Args&gt;
+  static T *safe_malloc(Args&amp;&amp;... args) {
+    void *mem = malloc(sizeof(T));
+    if (!mem) {
+       my_malloc_failed_handler();
+       // or throw ...
+    }
+    return new (mem)T(std::forward(args)...);
+  }
+};</code></pre>
+<p>Now though in fixing all the issues we identified so far we've practically reinvented the default <code>new</code>operator. If you're going to use <code>malloc</code> and placement <code>new</code> then you might as well just use <code>new</code>to begin with!</p>
+</li>
+</ol>
+<p><span style="font-style:inherit;line-height:1.625;">END</span></p>

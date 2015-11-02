@@ -1,0 +1,36 @@
+---
+layout: post
+title: "[HEAP]Find Largest 20 Elements From Billions Of Numbers"
+date: 2014-01-06 12:17:15.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454351820'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p><b>Question: </b>There is a huge file containing billions of integers. Find maximum 20 integers form that file.</p>
+<p>Always remember that when you are asked about these types of question where you have to find max N elements or so, best DS to use id HEAP. Here also, I took some time in thinking but finally decide to use heap.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>A solution for this problem may be to divide the data in some sets of 1000 elements (let’s say 1000), make a heap of them, and take 20 elements from each heap one by one. Finally heap sort all the sets of 20 elements and take top 20 among those. But the problem in this approach is where to store 20 elements from each heap. That may require a large amount of memory as we have billions of numbers.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Reuse top 20 elements from earlier heap in subsequent elements can solve this problem. I meant to take first block of 1000 elements and subsequent blocks of 980 elements each. Initially heapsort first set of 1000 numbers, took max 20 elements and mix them with 980 elements of 2<sup>nd</sup>set. Again heapsort these 1000 numbers (20 from first set and 980 from 2<sup>nd</sup> set), take 20 max element and mix those with 980 elements of 3<sup>rd</sup> set. Repeat the same exercise till last set of 980 (or less) elements and take max 20 elements from final heap. Those 20 elements will be your answer.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><b>Complexity:</b> O(n) = n/1000*(complexity of heapsort 1000 elements)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Since complexity of heap sorting 1000 elements will be a constant so the <b>O(n) = N i.e. linear complexity </b>:)</p>
+<p>&nbsp;</p>
+<p><b>PS:</b> Meanwhile this problem, interviewer asked me to give him an algorithm to create a heap, removing and element from heap and heapify procedure. So, I again insist to have sound knowledge of any data structure you use.</p>

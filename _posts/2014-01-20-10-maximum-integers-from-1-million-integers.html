@@ -1,0 +1,35 @@
+---
+layout: post
+title: 10 maximum integers from 1 million integers
+date: 2014-01-20 22:46:44.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15784376649'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>You Have File of Containing 1 Million Integers You need To Find 10<br />
+Maximum Integer Out of Them.How You Will Do That. What is Time &amp;<br />
+space Complexity of Algorithm that you will use then optimize the<br />
+solution..<br />
+Constraints- U can't Store Whole File in memory at one time.<br />
+<span style="text-decoration:underline;"><b>Strategy:</b></span></p>
+<p><span style="text-decoration:underline;">Using Min Heap:</span></p>
+<p>Use a min-heap of 10 elements.Initialize the heap with first 10 elements in O(10) [constant] time.For each of the next element,check whether it is greater than root of min heap,if it is,replace that element by the next element and heapify the heap again in O(log10) [constant] time.At last extract all the 10 elements one by one in O(log10) constant time each.so space complexity O(1) time complexity O(N).<br />
+<span style="text-decoration:underline;">Using Max Heap:</span></p>
+<p>A solution for this problem may be to divide the data in some sets of 1000 elements (let’s say 1000), make a heap of them, and take 10 elements from each heap one by one. Finally heap sort all the sets of 10 elements and take top 10 among those. But the problem in this approach is where to store 10 elements from each heap. That may require a large amount of memory as we have billions of numbers.</p>
+<p><b>Reuse top 20 elements</b> from earlier heap in subsequent elements can solve this problem. I meant to take first block of 1000 elements and subsequent blocks of 990 elements each. Initially heapsort first set of 1000 numbers, took max 10 elements and mix them with 990 elements of 2<sup>nd</sup>set. Again heapsort these 1000 numbers (10 from first set and 990 from 2<sup>nd</sup> set), take 10 max element and mix those with 980 elements of 3<sup>rd</sup> set. Repeat the same exercise till last set of 990 (or less) elements and take max 20 elements from final heap. Those 10 elements will be your answer.</p>
+<p><b>Complexity:</b> O(n) = n/1000*(complexity of heapsort 1000 elements)</p>
+<p>Since complexity of heap sorting 1000 elements will be a constant so the <b>O(n) = N i.e. linear complexity </b></p>

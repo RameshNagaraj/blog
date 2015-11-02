@@ -1,0 +1,252 @@
+---
+layout: post
+title: "[Linked List] Find Length of Linked List that contains Loop"
+date: 2013-09-17 13:54:26.000000000 +05:30
+type: post
+published: true
+status: publish
+categories:
+- Algos
+tags: []
+meta:
+  _edit_last: '18160588'
+  _publicize_job_id: '16454361425'
+author:
+  login: rameshnagaraj
+  email: rameshn@live.in
+  display_name: R@M3$H.N
+  first_name: ''
+  last_name: ''
+---
+<p>In current post we discuss how to calculate length of the linked list when there is a loop in the linked list.</p>
+<p>Following procedure explains how to calculate length of the linked list that contains loop:</p>
+<ul>
+<li>Use the standard fast and slow pointer algorithm discussed in <a href="http://crackinterviewtoday.wordpress.com/2010/03/16/loop-in-a-linked-list/">previous post</a> to find the loop detection point</li>
+<li>Take two pointers P1 and P2 at loop detection point. Place pointer P1 at the same place and move P2 forward one step at a time. Repeat until both the pointers meet together. Keep a count variable incremented for every iteration which gives length of the loop. Let say the length is L1</li>
+<li>Again take two pointers P1 and P2. P1 at the head of the linked list and P2 at the loop detection point. Forward both the pointers one step at a time. Repeat until both the pointers meet together. This procedure is equivalent to the one we use to calculate node that causes loop in a linked list. Keep a count variable incremented for every iteration which gives the length of the list until the merging point. Let say the length is L2</li>
+<li>Now the length of the list that contains loop is L1+ L2</li>
+</ul>
+<p>Consider the following list that contains loop:</p>
+<p><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist1.jpeg"><img title="LoopList1" alt="" src="{{ site.baseurl }}/assets/looplist1.jpeg?w=675&amp;h=153" width="450" height="102" /></a></p>
+<p>Dry run for the above example:</p>
+<p>To calculate loop length:</p>
+<p><strong>Iteration 1:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist10.jpeg"><img title="LoopList10" alt="" src="{{ site.baseurl }}/assets/looplist10.jpeg?w=675&amp;h=288" width="450" height="192" /></a></strong></p>
+<p><strong>Iteration 2:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist11.jpeg"><img title="LoopList11" alt="" src="{{ site.baseurl }}/assets/looplist11.jpeg?w=675" width="450" height="163" /></a></strong></p>
+<p><strong>Iteration 3:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist12.jpeg"><img title="LoopList12" alt="" src="{{ site.baseurl }}/assets/looplist12.jpeg?w=675&amp;h=362" width="450" height="241" /></a></strong></p>
+<p><strong>Iteration 4:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist13.jpeg"><img title="LoopList13" alt="" src="{{ site.baseurl }}/assets/looplist13.jpeg?w=675&amp;h=362" width="450" height="241" /></a></strong></p>
+<p><strong>Iteration 5:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist14.jpeg"><img title="LoopList14" alt="" src="{{ site.baseurl }}/assets/looplist14.jpeg?w=675" width="450" height="192" /></a></strong></p>
+<p>From the above it is clear that loop length, L1 is 4.</p>
+<p>To calculate length of the list until merging point:</p>
+<p><strong>Iteration 1:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist15.jpeg"><img title="LoopList15" alt="" src="{{ site.baseurl }}/assets/looplist15.jpeg?w=675&amp;h=312" width="450" height="208" /></a></strong></p>
+<p><strong>Iteration 2:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist16.jpeg"><img title="LoopList16" alt="" src="{{ site.baseurl }}/assets/looplist16.jpeg?w=675&amp;h=312" width="450" height="208" /></a></strong></p>
+<p><strong>Iteration 3:</strong></p>
+<p><strong><a href="http://crackinterviewtoday.files.wordpress.com/2010/03/looplist17.jpeg"><img title="LoopList17" alt="" src="{{ site.baseurl }}/assets/looplist17.jpeg?w=675" width="450" height="199" /></a></strong></p>
+<p>From the above it is clear that the length of the loop till merging point, L2 is 2.</p>
+<p>Therefore the length of the list that contains loop is L1 + L2 = 4 + 2 = 6</p>
+<p>Implementation for class ListNode and class SingleLinkedList is given in the<a href="http://crackinterviewtoday.wordpress.com/2010/03/16/loop-in-a-linked-list/"> previous post.</a></p>
+<p>Code for the above solution is as follows:</p>
+<div>
+<div id="highlighter_794905">
+<table border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+<div>12</div>
+<div>13</div>
+<div>14</div>
+<div>15</div>
+<div>16</div>
+<div>17</div>
+<div>18</div>
+<div>19</div>
+<div>20</div>
+<div>21</div>
+<div>22</div>
+<div>23</div>
+<div>24</div>
+<div>25</div>
+<div>26</div>
+<div>27</div>
+<div>28</div>
+<div>29</div>
+<div>30</div>
+<div>31</div>
+<div>32</div>
+<div>33</div>
+<div>34</div>
+<div>35</div>
+<div>36</div>
+<div>37</div>
+<div>38</div>
+<div>39</div>
+<div>40</div>
+<div>41</div>
+<div>42</div>
+<div>43</div>
+<div>44</div>
+<div>45</div>
+<div>46</div>
+<div>47</div>
+<div>48</div>
+<div>49</div>
+<div>50</div>
+<div>51</div>
+<div>52</div>
+<div>53</div>
+<div>54</div>
+<div>55</div>
+<div>56</div>
+<div>57</div>
+<div>58</div>
+<div>59</div>
+<div>60</div>
+<div>61</div>
+<div>62</div>
+<div>63</div>
+<div>64</div>
+<div>65</div>
+<div>66</div>
+<div>67</div>
+<div>68</div>
+<div>69</div>
+<div>70</div>
+<div>71</div>
+<div>72</div>
+<div>73</div>
+<div>74</div>
+<div>75</div>
+<div>76</div>
+<div>77</div>
+<div>78</div>
+<div>79</div>
+<div>80</div>
+<div>81</div>
+<div>82</div>
+<div>83</div>
+<div>84</div>
+<div>85</div>
+<div>86</div>
+<div>87</div>
+<div>88</div>
+<div>89</div>
+<div>90</div>
+</td>
+<td>
+<div>
+<div><code>package</code> <code>ds;</code></div>
+<div> </div>
+<div><code>public</code> <code>class</code> <code>LengthOfLoopedList</code></div>
+<div><code>{</code></div>
+<div><code>    </code><code>public</code> <code>LengthOfLoopedList()</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>    </code><code>}</code></div>
+<div> </div>
+<div><code>    </code><code>public</code> <code>ListNode returnLoopDetectionNode(ListNode loopedList)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode fastNode = loopedList;</code></div>
+<div><code>        </code><code>ListNode slowNode = loopedList;</code></div>
+<div> </div>
+<div><code>        </code><code>while</code><code>(fastNode.next.next != </code><code>null</code><code>)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>slowNode = slowNode.next;</code></div>
+<div><code>            </code><code>fastNode = fastNode.next.next;</code></div>
+<div> </div>
+<div><code>            </code><code>if</code><code>(slowNode == fastNode)</code></div>
+<div><code>            </code><code>{</code></div>
+<div><code>                </code><code>break</code><code>;</code></div>
+<div><code>            </code><code>}</code></div>
+<div><code>        </code><code>}</code></div>
+<div> </div>
+<div><code>        </code><code>return</code> <code>slowNode;</code></div>
+<div><code>    </code><code>}</code></div>
+<div> </div>
+<div><code>    </code><code>public</code> <code>int</code> <code>getLoopLength(ListNode loopDetectionNode)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>//  Take two pointers at loop detection node and calculate loop length</code></div>
+<div><code>        </code><code>ListNode P1 = loopDetectionNode;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div> </div>
+<div><code>        </code><code>int</code> <code>loopLength = </code><code>1</code><code>;</code></div>
+<div> </div>
+<div><code>        </code><code>do</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>loopLength++;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>        </code><code>}</code><code>while</code><code>(P1 != P2);</code></div>
+<div> </div>
+<div><code>        </code><code>return</code> <code>(loopLength - </code><code>1</code><code>);</code></div>
+<div><code>    </code><code>}</code></div>
+<div> </div>
+<div><code>    </code><code>public</code> <code>int</code> <code>getMergingPointLength(ListNode loopedList, ListNode loopDetectionNode)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>ListNode P1 = loopedList;</code></div>
+<div><code>        </code><code>ListNode P2 = loopDetectionNode;</code></div>
+<div> </div>
+<div><code>        </code><code>//  Calculate length till the merging point</code></div>
+<div><code>        </code><code>int</code> <code>length = </code><code>1</code><code>;</code></div>
+<div><code>        </code><code>while</code><code>(P1 != P2)</code></div>
+<div><code>        </code><code>{</code></div>
+<div><code>            </code><code>P1 = P1.next;</code></div>
+<div><code>            </code><code>P2 = P2.next;</code></div>
+<div><code>            </code><code>length ++;</code></div>
+<div><code>        </code><code>}</code></div>
+<div> </div>
+<div><code>        </code><code>return</code> <code>(length - </code><code>1</code><code>);</code></div>
+<div><code>    </code><code>}</code></div>
+<div> </div>
+<div><code>    </code><code>public</code> <code>static</code> <code>void</code> <code>main(String[] args)</code></div>
+<div><code>    </code><code>{</code></div>
+<div><code>        </code><code>SingleLinkedList newList = </code><code>new</code> <code>SingleLinkedList();</code></div>
+<div><code>        </code><code>newList.add(</code><code>1</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>2</code><code>);</code></div>
+<div> </div>
+<div><code>        </code><code>ListNode loopNode = newList.add(</code><code>3</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>4</code><code>);</code></div>
+<div><code>        </code><code>newList.add(</code><code>5</code><code>);</code></div>
+<div> </div>
+<div><code>        </code><code>ListNode endNode = newList.add(</code><code>6</code><code>);</code></div>
+<div><code>        </code><code>//  Creating a loop</code></div>
+<div><code>        </code><code>endNode.next = loopNode;</code></div>
+<div> </div>
+<div><code>        </code><code>ListNode loopedList = newList.getList();</code></div>
+<div><code>        </code><code>LengthOfLoopedList lengthLoopedList = </code><code>new</code> <code>LengthOfLoopedList();</code></div>
+<div> </div>
+<div><code>        </code><code>//  Assuming there is a loop in linked list and finding loop detection node</code></div>
+<div><code>        </code><code>//  Loop detection node is the one where slow pointer and fast pointer meet</code></div>
+<div><code>        </code><code>ListNode loopDetectionNode = lengthLoopedList.returnLoopDetectionNode(loopedList);</code></div>
+<div><code>        </code><code>int</code> <code>loopLength = lengthLoopedList.getLoopLength(loopDetectionNode);</code></div>
+<div><code>        </code><code>int</code> <code>lengthTillMergingPoint = lengthLoopedList.getMergingPointLength(loopedList, loopDetectionNode);</code></div>
+<div><code>        </code><code>int</code> <code>lengthOfList = loopLength + lengthTillMergingPoint;</code></div>
+<div> </div>
+<div><code>        </code><code>System.out.println(</code><code>"Length of the linked list that contains a loop is  "</code><code>+ lengthOfList);</code></div>
+<div> </div>
+<div><code>    </code><code>}</code></div>
+<div> </div>
+<div><code>}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>&nbsp;</p>
+<p>END</p>
