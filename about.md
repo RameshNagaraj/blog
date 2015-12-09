@@ -4,5 +4,5 @@ title: About
 permalink: /about/
 ---
 
-Software Developer at PayPal
+Software Developer at PayPal.
 mail@ramz.in
