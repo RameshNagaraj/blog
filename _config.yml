@@ -13,5 +13,5 @@ facebook_username: rameshnagaraj
 
 
 # Build settings
-markdown: redcarpet
+markdown: GFM
 pygments: true
