@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Your awesome title</title>
-    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+    <title>R@M3$H.N</title>
+    <description>Tech Blog.
 </description>
-    <link>http://yourdomain.com/</link>
-    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 02 Nov 2015 23:09:14 +0530</pubDate>
-    <lastBuildDate>Mon, 02 Nov 2015 23:09:14 +0530</lastBuildDate>
-    <generator>Jekyll v2.5.3</generator>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 12 Sep 2020 13:49:03 -0700</pubDate>
+    <lastBuildDate>Sat, 12 Sep 2020 13:49:03 -0700</lastBuildDate>
+    <generator>Jekyll v3.9.0</generator>
     
       <item>
         <title>Call Base class method through base class pointer pointing to derived class</title>
@@ -39,19 +39,19 @@
 &lt;p&gt;Something like this:&lt;/p&gt;
 &lt;p&gt;pBase-&amp;gt;Base::foo()&lt;/p&gt;
 </description>
-        <pubDate>Mon, 02 Nov 2015 16:03:14 +0530</pubDate>
-        <link>http://yourdomain.com/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</guid>
+        <pubDate>Mon, 02 Nov 2015 02:33:14 -0800</pubDate>
+        <link>http://localhost:4000/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</guid>
         
         
-        <category>cpp</category>
+        <category>CPP</category>
         
       </item>
     
       <item>
         <title>Json &amp; XML Formating on Mac CommandLine</title>
         <description>&lt;p&gt; print formatted JSON, XML from osx command line&lt;br /&gt;
-Working with various interfaces that output json or xml results in lots of situations where you have a single-line, unformatted output. Here&#39;s a quick way to format json, xml from the CLI.&lt;/p&gt;
+Working with various interfaces that output json or xml results in lots of situations where you have a single-line, unformatted output. Here's a quick way to format json, xml from the CLI.&lt;/p&gt;
 &lt;p&gt;via the command line:&lt;/p&gt;
 &lt;p&gt;format json&lt;/p&gt;
 &lt;p&gt;cat unformatted.json | python -m json.tool&lt;br /&gt;
@@ -62,12 +62,12 @@ format xml from clipboard&lt;/p&gt;
 xmllint is part of libxml2 and installed by default on OSX. Be aware that xmllint cleans up XML as well as formatting it, ocassionally modifying the output.&lt;br /&gt;
 for all above examples, you can pipe back to the clipboard with | pbcopy at the end of the command, or output to a file with &amp;gt; output.json or &amp;gt; output.xml.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 14 Oct 2015 15:57:01 +0530</pubDate>
-        <link>http://yourdomain.com/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</guid>
+        <pubDate>Wed, 14 Oct 2015 03:27:01 -0700</pubDate>
+        <link>http://localhost:4000/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</link>
+        <guid isPermaLink="true">http://localhost:4000/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</guid>
         
         
-        <category>linux</category>
+        <category>Linux</category>
         
       </item>
     
@@ -96,21 +96,21 @@ which is 1 3 4 6 7&lt;/p&gt;
 (1,1) (3,2) (4,3) (6,4) (7,5)&lt;/p&gt;
 &lt;p&gt;EDIT:&lt;br /&gt;
 If we have the elements sorted by their Below Bank, then we can tell if two pairs are orderable by &amp;lt;=, by just looking at their positions in the Above Bank.&lt;br /&gt;
-If the first pair(1,1) is to the left of the second pair(3,2), we immediately know that the second elements of the first pair(1) is less than the second element of the second pair(2), since we&#39;ve sorted them by the second coordinate.&lt;br /&gt;
+If the first pair(1,1) is to the left of the second pair(3,2), we immediately know that the second elements of the first pair(1) is less than the second element of the second pair(2), since we've sorted them by the second coordinate.&lt;br /&gt;
 We then have this pair of elements can have Bridge built together if and only if the first element of the first pair(1) is less than the first element of the second pair(3).&lt;/p&gt;
-&lt;p&gt;Consequently, if we want to find a set of Bridges that can be built together, we&#39;re looking for an Increasing Sub-Sequence of the Cities in Above Bank, since in that case both the first and second elements of the pairs are increasing as we move from the left to the right.&lt;/p&gt;
+&lt;p&gt;Consequently, if we want to find a set of Bridges that can be built together, we're looking for an Increasing Sub-Sequence of the Cities in Above Bank, since in that case both the first and second elements of the pairs are increasing as we move from the left to the right.&lt;/p&gt;
 &lt;p&gt;Finding the longest increasing subsequence then solves this problem.&lt;/p&gt;
 &lt;p&gt;Complexity:&lt;br /&gt;
 Sort the pairs by their Below Bank = O(N log N)&lt;br /&gt;
 Find the LIS in O(N log N)&lt;br /&gt;
 So, this is an O(N log N) solution.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 01 Jan 2015 18:37:25 +0530</pubDate>
-        <link>http://yourdomain.com/algos/2015/01/01/constructing-bridges.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/algos/2015/01/01/constructing-bridges.html</guid>
+        <pubDate>Thu, 01 Jan 2015 05:07:25 -0800</pubDate>
+        <link>http://localhost:4000/algos/2015/01/01/constructing-bridges.html</link>
+        <guid isPermaLink="true">http://localhost:4000/algos/2015/01/01/constructing-bridges.html</guid>
         
         
-        <category>algos</category>
+        <category>Algos</category>
         
       </item>
     
@@ -169,12 +169,12 @@ assertEquals ( 123, decode(&quot;b9&quot;) ) ;&lt;br /&gt;
 ---- mobile app to create urls quickly&lt;/p&gt;
 &lt;p&gt;.....&lt;/p&gt;
 </description>
-        <pubDate>Thu, 01 Jan 2015 18:34:54 +0530</pubDate>
-        <link>http://yourdomain.com/design/2015/01/01/design-a-tiny-url-service.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/design/2015/01/01/design-a-tiny-url-service.html</guid>
+        <pubDate>Thu, 01 Jan 2015 05:04:54 -0800</pubDate>
+        <link>http://localhost:4000/design/2015/01/01/design-a-tiny-url-service.html</link>
+        <guid isPermaLink="true">http://localhost:4000/design/2015/01/01/design-a-tiny-url-service.html</guid>
         
         
-        <category>design</category>
+        <category>Design</category>
         
       </item>
     
@@ -232,12 +232,12 @@ since you&amp;#039;re assigning a new value to an element, rather than accessing
 &lt;p&gt;No enclosing instance of type Server is accessible&lt;/p&gt;
 &lt;p&gt;&amp;quot;No enclosing instance of type&amp;quot; error while calling method from another class in Android&lt;/p&gt;
 </description>
-        <pubDate>Wed, 19 Nov 2014 21:41:12 +0530</pubDate>
-        <link>http://yourdomain.com/java/2014/11/19/creating-an-array-of-objects.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/java/2014/11/19/creating-an-array-of-objects.html</guid>
+        <pubDate>Wed, 19 Nov 2014 08:11:12 -0800</pubDate>
+        <link>http://localhost:4000/java/2014/11/19/creating-an-array-of-objects.html</link>
+        <guid isPermaLink="true">http://localhost:4000/java/2014/11/19/creating-an-array-of-objects.html</guid>
         
         
-        <category>java</category>
+        <category>Java</category>
         
       </item>
     
@@ -299,12 +299,12 @@ since you&amp;#039;re assigning a new value to an element, rather than accessing
 &lt;p&gt;This is a great interview question that tests data structure fundamentals in a subtle way.&lt;/p&gt;
 &lt;p&gt;- See more at: http://www.ardendertat.com/2011/11/03/programming-interview-questions-13-median-of-integer-stream/#sthash.dvIFZG2G.dpuf&lt;/p&gt;&lt;/div&gt;
 </description>
-        <pubDate>Wed, 08 Oct 2014 22:08:00 +0530</pubDate>
-        <link>http://yourdomain.com/algos/2014/10/08/algo-median-of-integer-stream.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/algos/2014/10/08/algo-median-of-integer-stream.html</guid>
+        <pubDate>Wed, 08 Oct 2014 09:38:00 -0700</pubDate>
+        <link>http://localhost:4000/algos/2014/10/08/algo-median-of-integer-stream.html</link>
+        <guid isPermaLink="true">http://localhost:4000/algos/2014/10/08/algo-median-of-integer-stream.html</guid>
         
         
-        <category>algos</category>
+        <category>Algos</category>
         
       </item>
     
@@ -329,7 +329,7 @@ since you&amp;#039;re assigning a new value to an element, rather than accessing
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p&gt;This post explains a general interview question that has been asked by Google and a lot of companies. It&#39;s low-level and not about how to design concurrent program.&lt;/p&gt;
+&lt;p&gt;This post explains a general interview question that has been asked by Google and a lot of companies. It's low-level and not about how to design concurrent program.&lt;/p&gt;
 &lt;p&gt;First of all, the answer is NO. The method is not thread-safe, because the &lt;em&gt;counter++&lt;/em&gt; operation is not atomic, which means it consists more than one atomic operations. In this case, one is accessing value and the other is increasing the value by one.&lt;/p&gt;
 &lt;p&gt;&lt;img class=&quot;alignnone size-full wp-image-11967&quot; src=&quot;/assets/thread-safe-method1.png&quot; alt=&quot;thread-safe method&quot; width=&quot;400&quot; height=&quot;280&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;When Thread 1 accesses the method at t1, Thread 2 may not be done with the method. So the value returned to Thread 1 is the value that has not been increased.&lt;/p&gt;
@@ -380,12 +380,12 @@ public class MyCounter {
 &lt;p&gt;Each thread has its own stack. Two different threads never shares the same stack. All local variables defined in a method will be allocated memory in stack. As soon as method execution is completed by the current thread, stack frame will be removed.&lt;/p&gt;
 &lt;p&gt;http://www.programcreek.com/2014/02/how-to-make-a-method-thread-safe-in-java/&lt;/p&gt;
 </description>
-        <pubDate>Sun, 14 Sep 2014 09:49:59 +0530</pubDate>
-        <link>http://yourdomain.com/java/2014/09/14/how-to-make-a-method-thread-safe-in-java-2.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/java/2014/09/14/how-to-make-a-method-thread-safe-in-java-2.html</guid>
+        <pubDate>Sat, 13 Sep 2014 21:19:59 -0700</pubDate>
+        <link>http://localhost:4000/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</link>
+        <guid isPermaLink="true">http://localhost:4000/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</guid>
         
         
-        <category>java</category>
+        <category>Java</category>
         
       </item>
     
@@ -403,7 +403,7 @@ Find inorder successor/predecessor of given node in binary search tree.&lt;/p&gt
 &lt;p&gt;Algorithm&lt;br /&gt;
 1. Start with root.&lt;br /&gt;
 2. If the node is given has less than root, then search on left side and update successor.&lt;br /&gt;
-3. If the node is greater than root, then search in right part, don&#39;t update successor.&lt;br /&gt;
+3. If the node is greater than root, then search in right part, don't update successor.&lt;br /&gt;
 4. If we find the node and if the node has right sub tree, then the minimum node on the right sub tree of node is the in-order successor.&lt;br /&gt;
 5. Return successor&lt;/p&gt;
 &lt;p&gt;The Algorithm is divided into two cases on the basis of right subtree of the input node being empty or not.&lt;/p&gt;
@@ -469,7 +469,7 @@ In this case the right most node in the left sub-tree would be the in-order pred
 &lt;p&gt;Case 2: Node has no left sub-tree.&lt;br /&gt;
 In this case in-order predecessor will be the node where we took the latest right turn.&lt;/p&gt;
 &lt;p&gt;Case 3 : Node is left most node of BST.&lt;br /&gt;
-There is no in-order predecessor in this case and In this case there won&#39;t  be any right turn.i.e. return NULL&lt;/p&gt;
+There is no in-order predecessor in this case and In this case there won't  be any right turn.i.e. return NULL&lt;/p&gt;
 &lt;p&gt;Node * find_maximum(Node *root){&lt;br /&gt;
         if(!root)&lt;br /&gt;
                 return NULL;&lt;/p&gt;
@@ -549,9 +549,9 @@ struct node * minValue(struct node* node) {&lt;br /&gt;
   return current;&lt;br /&gt;
 }&lt;/p&gt;
 &lt;p&gt;-------------------------------------------------------------------------------------------------------&lt;br /&gt;
-Here is a non-recursive version of finding the successor.  There are two cases: (i) the right child of  node is not NULL. In this case, we can find the successor by finding the minimum element of the right substree. (ii) If the right child of node is NULL, the successor must either be NULL, or the lowest node on the path from root to node whose value is larger than node&#39;s value.&lt;/p&gt;
+Here is a non-recursive version of finding the successor.  There are two cases: (i) the right child of  node is not NULL. In this case, we can find the successor by finding the minimum element of the right substree. (ii) If the right child of node is NULL, the successor must either be NULL, or the lowest node on the path from root to node whose value is larger than node's value.&lt;/p&gt;
 &lt;p&gt;/*&lt;br /&gt;
- * We assume that &#39;node&#39; is in the tree&lt;br /&gt;
+ * We assume that 'node' is in the tree&lt;br /&gt;
  */&lt;br /&gt;
 Node * find_successor(Node * root, Node * node)&lt;br /&gt;
 {&lt;br /&gt;
@@ -592,12 +592,12 @@ Node * find_successor(Node * root, Node * node)&lt;br /&gt;
     return c;&lt;br /&gt;
 }&lt;/p&gt;
 </description>
-        <pubDate>Mon, 24 Mar 2014 22:20:24 +0530</pubDate>
-        <link>http://yourdomain.com/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</guid>
+        <pubDate>Mon, 24 Mar 2014 09:50:24 -0700</pubDate>
+        <link>http://localhost:4000/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</link>
+        <guid isPermaLink="true">http://localhost:4000/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</guid>
         
         
-        <category>algos</category>
+        <category>Algos</category>
         
       </item>
     
@@ -636,12 +636,12 @@ Do we really need (arr[arr[i]] % size) why cant we directly put the arr[arr[i]] 
 {2,3,1,0} will become:&lt;br /&gt;
 {1,0,3,6}&lt;/p&gt;
 </description>
-        <pubDate>Mon, 03 Mar 2014 16:28:36 +0530</pubDate>
-        <link>http://yourdomain.com/algos/2014/03/03/array-relocate-arri-arrarri.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/algos/2014/03/03/array-relocate-arri-arrarri.html</guid>
+        <pubDate>Mon, 03 Mar 2014 02:58:36 -0800</pubDate>
+        <link>http://localhost:4000/algos/2014/03/03/array-relocate-arri-arrarri.html</link>
+        <guid isPermaLink="true">http://localhost:4000/algos/2014/03/03/array-relocate-arri-arrarri.html</guid>
         
         
-        <category>algos</category>
+        <category>Algos</category>
         
       </item>
     
@@ -649,29 +649,29 @@ Do we really need (arr[arr[i]] % size) why cant we directly put the arr[arr[i]] 
         <title>Melbourne --- AUSTRALIAN GRAND PRIX</title>
         <description>&lt;p&gt;
 Why go?&lt;/p&gt;
-&lt;p&gt;The Australian Grand Prix Corporation coined the phrase &#39;a great place for the race&#39; and Melbourne is just that. Australia&#39;s second largest city is one of the most vibrant and cosmopolitan on earth, with plenty to do both day and night. The climate in late summer is perfect, the people are friendly and, to top it all, the Grand Prix is one of the most well organised of the year.&lt;/p&gt;
+&lt;p&gt;The Australian Grand Prix Corporation coined the phrase 'a great place for the race' and Melbourne is just that. Australia's second largest city is one of the most vibrant and cosmopolitan on earth, with plenty to do both day and night. The climate in late summer is perfect, the people are friendly and, to top it all, the Grand Prix is one of the most well organised of the year.&lt;/p&gt;
 &lt;p&gt;&quot;Melburnians are sports-mad,&quot; says local hero Mark Webber. &quot;The climate allows for a very outdoor lifestyle, so people are always doing something.&quot;&lt;/p&gt;
-&lt;p&gt;Albert Park staged a non-championship Grand Prix between 1956 and &#39;58, but only in 1996 did it appear on the world championship calendar. Until 2005 the race had always been the season-opener, but that changed for 2006 due to the Commonwealth Games being staged in Melbourne until mid-March.&lt;/p&gt;
-&lt;p&gt;&quot;You&#39;re totally spoilt for choice when it comes to restaurants, so you could spend the whole time eating if you wanted,&quot; adds Webber. &quot;I take a look at the Melbourne Cricket Ground and tootle down the Great Ocean Road, which is an easy drive away.&quot;&lt;/p&gt;
+&lt;p&gt;Albert Park staged a non-championship Grand Prix between 1956 and '58, but only in 1996 did it appear on the world championship calendar. Until 2005 the race had always been the season-opener, but that changed for 2006 due to the Commonwealth Games being staged in Melbourne until mid-March.&lt;/p&gt;
+&lt;p&gt;&quot;You're totally spoilt for choice when it comes to restaurants, so you could spend the whole time eating if you wanted,&quot; adds Webber. &quot;I take a look at the Melbourne Cricket Ground and tootle down the Great Ocean Road, which is an easy drive away.&quot;&lt;/p&gt;
 &lt;p&gt;Did you know? Melbourne is said to be the fox capital of the western world, with an estimated six foxes per square kilometre in the metropolitan area.&lt;br /&gt;
 Transport&lt;/p&gt;
-&lt;p&gt;International flights arrive at Melbourne&#39;s Tullamarine Airport, 22 kilometres north west of the city. A taxi from there to the city centre is inexpensive. Alternatively, there is a regular bus service.&lt;/p&gt;
-&lt;p&gt;Melbourne&#39;s parks, beaches and open spaces make it pleasurable city to walk around. Everything is quite spread out, but the city&#39;s cheap and convenient tram system makes getting about easy. There are several stops near the Albert Park circuit, which is two kilometres south of the city centre.&lt;/p&gt;
-&lt;p&gt;If hiring a car, don&#39;t forget to pay the automatic motorway toll, and have plenty of coins handy as most inner city parking is metered.&lt;br /&gt;
+&lt;p&gt;International flights arrive at Melbourne's Tullamarine Airport, 22 kilometres north west of the city. A taxi from there to the city centre is inexpensive. Alternatively, there is a regular bus service.&lt;/p&gt;
+&lt;p&gt;Melbourne's parks, beaches and open spaces make it pleasurable city to walk around. Everything is quite spread out, but the city's cheap and convenient tram system makes getting about easy. There are several stops near the Albert Park circuit, which is two kilometres south of the city centre.&lt;/p&gt;
+&lt;p&gt;If hiring a car, don't forget to pay the automatic motorway toll, and have plenty of coins handy as most inner city parking is metered.&lt;br /&gt;
 Useful tips&lt;/p&gt;
 &lt;p&gt;Set in mown parkland, the circuit is easy to walk around. That makes general admission an appealing ticket to have on race day. But there are lots of grandstands too, particularly at the beginning and end of the lap, divided into three basic ticket prices. Remember to take sun cream and a hat. Even in March, the days are long and the rays are strong.&lt;br /&gt;
 Book Tickets&lt;/p&gt;
-&lt;p&gt;In the evenings, don&#39;t book early for dinner. Melbourne&#39;s bustling nightlife doesn&#39;t kick off until around 9pm, and don&#39;t go clubbing until gone midnight - unless you suffer from claustrophobia and like an empty dance floor...&lt;/p&gt;
-&lt;p&gt;Another bit of advice - and one well worth heeding - comes direct from the state department&#39;s traffic agency, which has the following slogan visible at various points around Albert Park: &#39;If you drink and drive, you&#39;re a bl**dy idiot!&#39;&lt;br /&gt;
+&lt;p&gt;In the evenings, don't book early for dinner. Melbourne's bustling nightlife doesn't kick off until around 9pm, and don't go clubbing until gone midnight - unless you suffer from claustrophobia and like an empty dance floor...&lt;/p&gt;
+&lt;p&gt;Another bit of advice - and one well worth heeding - comes direct from the state department's traffic agency, which has the following slogan visible at various points around Albert Park: 'If you drink and drive, you're a bl**dy idiot!'&lt;br /&gt;
 Where to go?&lt;/p&gt;
-&lt;p&gt;There&#39;s something for everyone in Melbourne, as you&#39;d expect from a city known for being the arts, culinary and sporting capital of Australia. To name just a few daytime attractions: the Aquarium, the old Gaol, Melbourne Zoo, Melbourne Cricket Ground, the Ian Potter Centre and Chinatown.&lt;/p&gt;
-&lt;p&gt;&quot;This might sound a bit weird,&quot; says Webber, &quot;but a lot of young Aussies are getting into lawn bowls. They have a few beers and have a good laugh doing that. Don&#39;t knock it until you&#39;ve tried it!&quot;&lt;br /&gt;
+&lt;p&gt;There's something for everyone in Melbourne, as you'd expect from a city known for being the arts, culinary and sporting capital of Australia. To name just a few daytime attractions: the Aquarium, the old Gaol, Melbourne Zoo, Melbourne Cricket Ground, the Ian Potter Centre and Chinatown.&lt;/p&gt;
+&lt;p&gt;&quot;This might sound a bit weird,&quot; says Webber, &quot;but a lot of young Aussies are getting into lawn bowls. They have a few beers and have a good laugh doing that. Don't knock it until you've tried it!&quot;&lt;br /&gt;
 Where to stay?&lt;/p&gt;
 &lt;p&gt;Since the Grand Prix came to Albert Park, the south Melbourne area has benefited from a lot of regeneration and there are now plenty of places to stay within walking distance of the track.&lt;/p&gt;
 &lt;p&gt;St Kilda is a popular destination for the F1 media because of its mix of street restaurants, clubs and stunning views of Port Phillip Bay. Drivers and senior team members tend to stay more centrally, usually at the Crown Towers.&lt;br /&gt;
 Extended stay&lt;/p&gt;
-&lt;p&gt;There are plenty of things to do in Victoria, but if you&#39;d prefer to get away from it all, jump on a plane, head north and visit the Great Barrier Reef.&lt;/p&gt;
-&lt;p&gt;&quot;Victoria is not my home state,&quot; says Webber, &quot;but I always fancy a road trip up the Great Ocean Road to check out some of the beaches. You&#39;ve got to go to Lorne, Torquay or Bell&#39;s Beach, where they filmed the movie Point Break. If you plan to surf, that place isn&#39;t for boys, let me tell you. Elsewhere, I&#39;d head to the snowfields to the north or to some of the vineyards.&quot;&lt;br /&gt;
+&lt;p&gt;There are plenty of things to do in Victoria, but if you'd prefer to get away from it all, jump on a plane, head north and visit the Great Barrier Reef.&lt;/p&gt;
+&lt;p&gt;&quot;Victoria is not my home state,&quot; says Webber, &quot;but I always fancy a road trip up the Great Ocean Road to check out some of the beaches. You've got to go to Lorne, Torquay or Bell's Beach, where they filmed the movie Point Break. If you plan to surf, that place isn't for boys, let me tell you. Elsewhere, I'd head to the snowfields to the north or to some of the vineyards.&quot;&lt;br /&gt;
 Enthusiasts only&lt;/p&gt;
 &lt;p&gt;Phillip Island, home of the Australian Motorcycle Grand Prix is 140 kilometres south east of Melbourne. The bikers are often testing at around the time of the Formula One Grand Prix, so you might get to see some action.&lt;/p&gt;
 &lt;p&gt;For those in search of some Grand Prix nostalgia, go to Adelaide and drive the old Grand Prix track, which hosted the Australian race from 1985 to 1995.&lt;br /&gt;
@@ -682,12 +682,12 @@ South Melbourne&lt;br /&gt;
 Victoria 3205&lt;br /&gt;
 Australia&lt;/p&gt;
 </description>
-        <pubDate>Tue, 11 Feb 2014 12:18:16 +0530</pubDate>
-        <link>http://yourdomain.com/travel/2014/02/11/melbourne-australian-grand-prix.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/travel/2014/02/11/melbourne-australian-grand-prix.html</guid>
+        <pubDate>Mon, 10 Feb 2014 22:48:16 -0800</pubDate>
+        <link>http://localhost:4000/travel/2014/02/10/melbourne-australian-grand-prix.html</link>
+        <guid isPermaLink="true">http://localhost:4000/travel/2014/02/10/melbourne-australian-grand-prix.html</guid>
         
         
-        <category>travel</category>
+        <category>Travel</category>
         
       </item>
     

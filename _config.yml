@@ -13,4 +13,4 @@ facebook_username: rameshnagaraj
 
 
 # Build settings
-markdown: GFM
+markdown: kramdown
