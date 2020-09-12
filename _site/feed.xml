@@ -4,10 +4,10 @@
     <title>R@M3$H.N</title>
     <description>Tech Blog.
 </description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Sep 2020 13:49:03 -0700</pubDate>
-    <lastBuildDate>Sat, 12 Sep 2020 13:49:03 -0700</lastBuildDate>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 12 Sep 2020 13:58:39 -0700</pubDate>
+    <lastBuildDate>Sat, 12 Sep 2020 13:58:39 -0700</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -40,8 +40,8 @@
 &lt;p&gt;pBase-&amp;gt;Base::foo()&lt;/p&gt;
 </description>
         <pubDate>Mon, 02 Nov 2015 02:33:14 -0800</pubDate>
-        <link>http://localhost:4000/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</guid>
+        <link>/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</link>
+        <guid isPermaLink="true">/cpp/2015/11/02/call-base-class-method-through-base-class-pointer-pointing-to-derived-class-2.html</guid>
         
         
         <category>CPP</category>
@@ -63,8 +63,8 @@ xmllint is part of libxml2 and installed by default on OSX. Be aware that xmllin
 for all above examples, you can pipe back to the clipboard with | pbcopy at the end of the command, or output to a file with &amp;gt; output.json or &amp;gt; output.xml.&lt;/p&gt;
 </description>
         <pubDate>Wed, 14 Oct 2015 03:27:01 -0700</pubDate>
-        <link>http://localhost:4000/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</link>
-        <guid isPermaLink="true">http://localhost:4000/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</guid>
+        <link>/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</link>
+        <guid isPermaLink="true">/linux/2015/10/14/json-xml-formating-on-mac-commandline.html</guid>
         
         
         <category>Linux</category>
@@ -106,8 +106,8 @@ Find the LIS in O(N log N)&lt;br /&gt;
 So, this is an O(N log N) solution.&lt;/p&gt;
 </description>
         <pubDate>Thu, 01 Jan 2015 05:07:25 -0800</pubDate>
-        <link>http://localhost:4000/algos/2015/01/01/constructing-bridges.html</link>
-        <guid isPermaLink="true">http://localhost:4000/algos/2015/01/01/constructing-bridges.html</guid>
+        <link>/algos/2015/01/01/constructing-bridges.html</link>
+        <guid isPermaLink="true">/algos/2015/01/01/constructing-bridges.html</guid>
         
         
         <category>Algos</category>
@@ -170,8 +170,8 @@ assertEquals ( 123, decode(&quot;b9&quot;) ) ;&lt;br /&gt;
 &lt;p&gt;.....&lt;/p&gt;
 </description>
         <pubDate>Thu, 01 Jan 2015 05:04:54 -0800</pubDate>
-        <link>http://localhost:4000/design/2015/01/01/design-a-tiny-url-service.html</link>
-        <guid isPermaLink="true">http://localhost:4000/design/2015/01/01/design-a-tiny-url-service.html</guid>
+        <link>/design/2015/01/01/design-a-tiny-url-service.html</link>
+        <guid isPermaLink="true">/design/2015/01/01/design-a-tiny-url-service.html</guid>
         
         
         <category>Design</category>
@@ -233,8 +233,8 @@ since you&amp;#039;re assigning a new value to an element, rather than accessing
 &lt;p&gt;&amp;quot;No enclosing instance of type&amp;quot; error while calling method from another class in Android&lt;/p&gt;
 </description>
         <pubDate>Wed, 19 Nov 2014 08:11:12 -0800</pubDate>
-        <link>http://localhost:4000/java/2014/11/19/creating-an-array-of-objects.html</link>
-        <guid isPermaLink="true">http://localhost:4000/java/2014/11/19/creating-an-array-of-objects.html</guid>
+        <link>/java/2014/11/19/creating-an-array-of-objects.html</link>
+        <guid isPermaLink="true">/java/2014/11/19/creating-an-array-of-objects.html</guid>
         
         
         <category>Java</category>
@@ -300,8 +300,8 @@ since you&amp;#039;re assigning a new value to an element, rather than accessing
 &lt;p&gt;- See more at: http://www.ardendertat.com/2011/11/03/programming-interview-questions-13-median-of-integer-stream/#sthash.dvIFZG2G.dpuf&lt;/p&gt;&lt;/div&gt;
 </description>
         <pubDate>Wed, 08 Oct 2014 09:38:00 -0700</pubDate>
-        <link>http://localhost:4000/algos/2014/10/08/algo-median-of-integer-stream.html</link>
-        <guid isPermaLink="true">http://localhost:4000/algos/2014/10/08/algo-median-of-integer-stream.html</guid>
+        <link>/algos/2014/10/08/algo-median-of-integer-stream.html</link>
+        <guid isPermaLink="true">/algos/2014/10/08/algo-median-of-integer-stream.html</guid>
         
         
         <category>Algos</category>
@@ -381,8 +381,8 @@ public class MyCounter {
 &lt;p&gt;http://www.programcreek.com/2014/02/how-to-make-a-method-thread-safe-in-java/&lt;/p&gt;
 </description>
         <pubDate>Sat, 13 Sep 2014 21:19:59 -0700</pubDate>
-        <link>http://localhost:4000/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</link>
-        <guid isPermaLink="true">http://localhost:4000/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</guid>
+        <link>/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</link>
+        <guid isPermaLink="true">/java/2014/09/13/how-to-make-a-method-thread-safe-in-java-2.html</guid>
         
         
         <category>Java</category>
@@ -593,8 +593,8 @@ Node * find_successor(Node * root, Node * node)&lt;br /&gt;
 }&lt;/p&gt;
 </description>
         <pubDate>Mon, 24 Mar 2014 09:50:24 -0700</pubDate>
-        <link>http://localhost:4000/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</link>
-        <guid isPermaLink="true">http://localhost:4000/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</guid>
+        <link>/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</link>
+        <guid isPermaLink="true">/algos/2014/03/24/tree-inorder-successor-and-predecessor-of-a-bst-without-parent-pointer.html</guid>
         
         
         <category>Algos</category>
@@ -637,8 +637,8 @@ Do we really need (arr[arr[i]] % size) why cant we directly put the arr[arr[i]] 
 {1,0,3,6}&lt;/p&gt;
 </description>
         <pubDate>Mon, 03 Mar 2014 02:58:36 -0800</pubDate>
-        <link>http://localhost:4000/algos/2014/03/03/array-relocate-arri-arrarri.html</link>
-        <guid isPermaLink="true">http://localhost:4000/algos/2014/03/03/array-relocate-arri-arrarri.html</guid>
+        <link>/algos/2014/03/03/array-relocate-arri-arrarri.html</link>
+        <guid isPermaLink="true">/algos/2014/03/03/array-relocate-arri-arrarri.html</guid>
         
         
         <category>Algos</category>
@@ -683,8 +683,8 @@ Victoria 3205&lt;br /&gt;
 Australia&lt;/p&gt;
 </description>
         <pubDate>Mon, 10 Feb 2014 22:48:16 -0800</pubDate>
-        <link>http://localhost:4000/travel/2014/02/10/melbourne-australian-grand-prix.html</link>
-        <guid isPermaLink="true">http://localhost:4000/travel/2014/02/10/melbourne-australian-grand-prix.html</guid>
+        <link>/travel/2014/02/10/melbourne-australian-grand-prix.html</link>
+        <guid isPermaLink="true">/travel/2014/02/10/melbourne-australian-grand-prix.html</guid>
         
         
         <category>Travel</category>
